@@ -1,9 +1,7 @@
 "use client";
 
-import Image from "next/image";
-import { getRoomById } from "@/lib/building-data";
+import { getRoomsOnFloor, getRoomById } from "@/lib/building-data";
 import { PathStep } from "@/lib/pathfinding";
-import { getFloorConfig } from "@/lib/floor-plan-coords";
 
 interface Props {
   step: PathStep;
@@ -17,6 +15,7 @@ const FLOOR_ACCENT: Record<number, string> = {
   5: "#ef4444",
 };
 
+// 사용자가 제공한 좌표를 기반으로 SVG 렌더
 export default function FloorPlanView({ step }: Props) {
   // 계단 이동
   if (step.isStairs) {
@@ -47,21 +46,22 @@ export default function FloorPlanView({ step }: Props) {
     );
   }
 
-  const config = getFloorConfig(step.floor);
-  if (!config) return null;
+  const rooms = getRoomsOnFloor(step.floor);
+  if (!rooms || rooms.length === 0) return null;
 
-  const { imageUrl, fullW, fullH } = config;
-  const accent = FLOOR_ACCENT[step.floor] ?? "#6b7280";
+  const pathRoomSet = new Set(step.pathRoomIds);
 
-  // 경로 포인트 (imageX, imageY 사용)
-  // x는 0~100 범위, y는 0~100 범위로 정규화됨
-  const SCALE_X = fullW / 100;
-  const SCALE_Y = fullH / 100;
+  // SVG 크기 설정 (사용자 좌표 범위 기반: 0~100)
+  const SVG_WIDTH = 1000;
+  const SVG_HEIGHT = 900;
+  const SCALE = 10; // 좌표 100 = SVG 1000픽셀
+
+  // 경로 포인트 (imageX, imageY 직접 사용)
   const pathPoints = step.pathRoomIds
     .map(id => {
       const room = getRoomById(id);
       if (!room || room.imageX === undefined || room.imageY === undefined) return null;
-      return { x: room.imageX * SCALE_X, y: room.imageY * SCALE_Y };
+      return { x: room.imageX * SCALE, y: room.imageY * SCALE };
     })
     .filter((p): p is { x: number; y: number } => p !== null);
 
@@ -69,18 +69,16 @@ export default function FloorPlanView({ step }: Props) {
   const pathColor = step.isOutdoor ? "#f59e0b" : "#3b82f6";
   const glowColor = step.isOutdoor ? "#fcd34d" : "#93c5fd";
 
-
   const firstRoom = getRoomById(step.pathRoomIds[0]);
   const lastRoom = getRoomById(step.pathRoomIds[step.pathRoomIds.length - 1]);
   const startPos = (firstRoom && firstRoom.imageX !== undefined && firstRoom.imageY !== undefined)
-    ? { x: firstRoom.imageX * SCALE_X, y: firstRoom.imageY * SCALE_Y }
+    ? { x: firstRoom.imageX * SCALE, y: firstRoom.imageY * SCALE }
     : null;
   const endPos = (lastRoom && lastRoom.id !== firstRoom?.id && lastRoom.imageX !== undefined && lastRoom.imageY !== undefined)
-    ? { x: lastRoom.imageX * SCALE_X, y: lastRoom.imageY * SCALE_Y }
+    ? { x: lastRoom.imageX * SCALE, y: lastRoom.imageY * SCALE }
     : null;
 
-  // 이미지 비율 유지하면서 컨테이너 높이 결정
-  const aspectRatio = fullH / fullW;
+  const accent = FLOOR_ACCENT[step.floor] ?? "#6b7280";
 
   return (
     <div className="w-full rounded-2xl overflow-hidden border border-gray-200">
@@ -92,29 +90,56 @@ export default function FloorPlanView({ step }: Props) {
         )}
       </div>
 
-      {/* 이미지 + SVG 오버레이 */}
-      <div className="relative w-full bg-white" style={{ paddingBottom: `${aspectRatio * 100}%`, minHeight: "500px" }}>
-        <Image
-          src={imageUrl}
-          alt={`${step.floor}층 평면도`}
-          fill
-          style={{ objectFit: "fill" }}
-          sizes="100vw"
-          priority
-        />
+      {/* SVG 평면도 */}
+      <div className="relative w-full bg-white flex items-center justify-center" style={{ minHeight: "600px" }}>
         <svg
-          viewBox={`0 0 ${fullW} ${fullH}`}
-          className="absolute inset-0 w-full h-full"
-          style={{ pointerEvents: "none", overflow: "visible" }}
-          preserveAspectRatio="xMidYMid slice"
+          viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
+          style={{ width: "100%", maxWidth: "900px", height: "auto", pointerEvents: "none" }}
+          preserveAspectRatio="xMidYMid meet"
         >
-          {/* 경로 글로우 */}
+          {/* 방들 그리기 */}
+          {rooms.map((room) => {
+            if (!room.imageX || !room.imageY) return null;
+
+            const isInPath = pathRoomSet.has(room.id);
+            const size = 30; // 기본 방 크기
+            const x = room.imageX * SCALE - size / 2;
+            const y = room.imageY * SCALE - size / 2;
+
+            let color = "#e5e7eb"; // 기본 회색
+            if (room.building === "강의동") color = "#dbeafe"; // 파랑
+            if (room.building === "실험동") color = "#dcfce7"; // 초록
+            if (room.building === "본관") color = "#fef9c3"; // 노랑
+            if (room.type === "corridor") color = "#f3f4f6";
+            if (room.type === "staircase") color = "#e0e7ff";
+
+            if (isInPath) color = "rgba(251, 191, 36, 0.6)"; // 형광
+
+            return (
+              <g key={room.id}>
+                <circle cx={room.imageX * SCALE} cy={room.imageY * SCALE} r="15" fill={color} stroke="#999" strokeWidth="1" />
+                <text
+                  x={room.imageX * SCALE}
+                  y={room.imageY * SCALE + 25}
+                  textAnchor="middle"
+                  fontSize="10"
+                  fill="#333"
+                  fontWeight="500"
+                  style={{ userSelect: "none", pointerEvents: "none" }}
+                >
+                  {room.name}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* 경로 글로우 + 선 */}
           {pathPoints.length > 1 && (
             <>
               <polyline
                 points={polyline}
                 stroke={glowColor}
-                strokeWidth={28}
+                strokeWidth={20}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -123,11 +148,10 @@ export default function FloorPlanView({ step }: Props) {
               <polyline
                 points={polyline}
                 stroke={pathColor}
-                strokeWidth={10}
+                strokeWidth={8}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeDasharray={step.isOutdoor ? "20 9" : undefined}
                 opacity={0.95}
               />
             </>
@@ -136,11 +160,11 @@ export default function FloorPlanView({ step }: Props) {
           {/* S 마커 */}
           {startPos && (
             <g>
-              <circle cx={startPos.x} cy={startPos.y} r={22} fill="#22c55e" stroke="white" strokeWidth={3} />
+              <circle cx={startPos.x} cy={startPos.y} r={18} fill="#22c55e" stroke="white" strokeWidth={2} />
               <text
                 x={startPos.x} y={startPos.y + 1}
                 textAnchor="middle" dominantBaseline="middle"
-                fontSize="18" fill="white" fontWeight="bold"
+                fontSize="14" fill="white" fontWeight="bold"
                 style={{ userSelect: "none" }}
               >S</text>
             </g>
@@ -149,11 +173,11 @@ export default function FloorPlanView({ step }: Props) {
           {/* E 마커 */}
           {endPos && (
             <g>
-              <circle cx={endPos.x} cy={endPos.y} r={22} fill="#ef4444" stroke="white" strokeWidth={3} />
+              <circle cx={endPos.x} cy={endPos.y} r={18} fill="#ef4444" stroke="white" strokeWidth={2} />
               <text
                 x={endPos.x} y={endPos.y + 1}
                 textAnchor="middle" dominantBaseline="middle"
-                fontSize="18" fill="white" fontWeight="bold"
+                fontSize="14" fill="white" fontWeight="bold"
                 style={{ userSelect: "none" }}
               >E</text>
             </g>
