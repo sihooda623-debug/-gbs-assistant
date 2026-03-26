@@ -1,6 +1,14 @@
 "use client";
 
-import { SceneBlock } from "@/lib/pathfinding";
+interface SceneBlock {
+  id: string;
+  col: number;
+  row: number;
+  width: number;
+  height: number;
+  label: string;
+  role: "start" | "destination" | "stairs" | "turn" | "path" | "context" | "landmark";
+}
 
 const ROLE_STYLES: Record<
   string,
