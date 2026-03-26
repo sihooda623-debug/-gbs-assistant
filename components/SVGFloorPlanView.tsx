@@ -7,16 +7,19 @@ interface Props {
   step: PathStep;
 }
 
-const CELL = 40;
+const CELL = 50;
 const BUILDING_COLORS: Record<string, string> = {
   강의동: "#dbeafe",
   실험동: "#dcfce7",
   본관: "#fef9c3",
+  외부: "#f3f4f6",
 };
 
 const TYPE_COLORS: Record<string, string> = {
-  corridor: "#f1f5f9",
+  corridor: "#f0f0f0",
   staircase: "#e0e7ff",
+  elevator: "#f5e6ff",
+  entrance: "#ffe6e6",
 };
 
 export default function SVGFloorPlanView({ step }: Props) {
@@ -55,20 +58,35 @@ export default function SVGFloorPlanView({ step }: Props) {
   // 경로에 포함된 방 ID 세트
   const pathRoomSet = new Set(step.pathRoomIds);
 
-  // SVG 너비/높이 계산 (전체 그리드 범위)
-  const viewBoxWidth = 23 * CELL;  // col 0-22
-  const viewBoxHeight = 7 * CELL;  // row 0-6
-  const aspectRatio = viewBoxHeight / viewBoxWidth;
+  // 좌표 변환: col→y축(세로), row→x축(가로)로 회전
+  // U자 모양: 강의동(위좌), 본관(아래), 실험동(위우)
+  const transformCoord = (col: number, row: number) => {
+    if (row < 3) {
+      // 강의동/실험동 (위쪽)
+      return {
+        x: row * CELL + 20,
+        y: col * CELL + 20,
+      };
+    } else {
+      // 본관 (아래쪽)
+      return {
+        x: col * CELL + 20,
+        y: (row - 3) * CELL + 400,
+      };
+    }
+  };
+
+  // SVG 뷰박스 계산
+  const viewBoxWidth = 23 * CELL;
+  const viewBoxHeight = 7 * CELL;
 
   // 경로 포인트 계산
   const pathPoints = step.pathRoomIds
     .map(id => {
       const room = rooms.find(r => r.id === id);
       if (!room) return null;
-      return {
-        x: (room.col + room.width / 2) * CELL,
-        y: (room.row + room.height / 2) * CELL,
-      };
+      const coord = transformCoord(room.col + room.width / 2, room.row + room.height / 2);
+      return coord;
     })
     .filter((p): p is { x: number; y: number } => p !== null);
 
@@ -78,8 +96,8 @@ export default function SVGFloorPlanView({ step }: Props) {
 
   const firstRoom = rooms.find(r => r.id === step.pathRoomIds[0]);
   const lastRoom = rooms.find(r => r.id === step.pathRoomIds[step.pathRoomIds.length - 1]);
-  const startPos = firstRoom ? { x: (firstRoom.col + firstRoom.width / 2) * CELL, y: (firstRoom.row + firstRoom.height / 2) * CELL } : null;
-  const endPos = (lastRoom && lastRoom.id !== firstRoom?.id) ? { x: (lastRoom.col + lastRoom.width / 2) * CELL, y: (lastRoom.row + lastRoom.height / 2) * CELL } : null;
+  const startPos = firstRoom ? transformCoord(firstRoom.col + firstRoom.width / 2, firstRoom.row + firstRoom.height / 2) : null;
+  const endPos = (lastRoom && lastRoom.id !== firstRoom?.id) ? transformCoord(lastRoom.col + lastRoom.width / 2, lastRoom.row + lastRoom.height / 2) : null;
 
   const FLOOR_ACCENT: Record<number, string> = {
     1: "#0ea5e9",
@@ -101,10 +119,10 @@ export default function SVGFloorPlanView({ step }: Props) {
       </div>
 
       {/* SVG 평면도 */}
-      <div className="relative w-full bg-white" style={{ paddingBottom: `${aspectRatio * 100}%`, minHeight: "400px" }}>
+      <div className="relative w-full bg-white overflow-x-auto" style={{ minHeight: "600px" }}>
         <svg
           viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
-          className="absolute inset-0 w-full h-full"
+          className="w-full"
           style={{ pointerEvents: "none" }}
           preserveAspectRatio="xMidYMid meet"
         >
@@ -112,34 +130,41 @@ export default function SVGFloorPlanView({ step }: Props) {
           {rooms.map((room) => {
             const isInPath = pathRoomSet.has(room.id);
             const color = TYPE_COLORS[room.type] || BUILDING_COLORS[room.building] || "#f3f4f6";
-            const fillColor = isInPath ? "rgba(251, 191, 36, 0.4)" : color;
+            const fillColor = isInPath ? "rgba(251, 191, 36, 0.5)" : color;
+
+            const coord1 = transformCoord(room.col, room.row);
+            const coord2 = transformCoord(room.col + room.width, room.row + room.height);
+            const x = Math.min(coord1.x, coord2.x);
+            const y = Math.min(coord1.y, coord2.y);
+            const width = Math.abs(coord2.x - coord1.x);
+            const height = Math.abs(coord2.y - coord1.y);
+
+            const centerCoord = transformCoord(room.col + room.width / 2, room.row + room.height / 2);
 
             return (
               <g key={room.id}>
                 <rect
-                  x={room.col * CELL}
-                  y={room.row * CELL}
-                  width={room.width * CELL}
-                  height={room.height * CELL}
+                  x={x}
+                  y={y}
+                  width={width}
+                  height={height}
                   fill={fillColor}
-                  stroke="#d1d5db"
-                  strokeWidth={1}
+                  stroke="#999"
+                  strokeWidth={0.5}
                 />
-                {/* 방 이름 라벨 (큰 방만) */}
-                {room.width >= 1.5 && room.height >= 1.5 && (
-                  <text
-                    x={(room.col + room.width / 2) * CELL}
-                    y={(room.row + room.height / 2) * CELL}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fontSize="11"
-                    fill="#4b5563"
-                    fontWeight="500"
-                    style={{ userSelect: "none", pointerEvents: "none" }}
-                  >
-                    {room.name}
-                  </text>
-                )}
+                {/* 방 이름 라벨 (모든 방) */}
+                <text
+                  x={centerCoord.x}
+                  y={centerCoord.y}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fontSize={width > 60 ? "11" : "8"}
+                  fill="#333"
+                  fontWeight="500"
+                  style={{ userSelect: "none", pointerEvents: "none" }}
+                >
+                  {room.name}
+                </text>
               </g>
             );
           })}
@@ -150,7 +175,7 @@ export default function SVGFloorPlanView({ step }: Props) {
               <polyline
                 points={polyline}
                 stroke={glowColor}
-                strokeWidth={16}
+                strokeWidth={12}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -159,11 +184,11 @@ export default function SVGFloorPlanView({ step }: Props) {
               <polyline
                 points={polyline}
                 stroke={pathColor}
-                strokeWidth={6}
+                strokeWidth={5}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeDasharray={step.isOutdoor ? "10 5" : undefined}
+                strokeDasharray={step.isOutdoor ? "8 4" : undefined}
                 opacity={0.95}
               />
             </>
@@ -172,11 +197,11 @@ export default function SVGFloorPlanView({ step }: Props) {
           {/* S 마커 */}
           {startPos && (
             <g>
-              <circle cx={startPos.x} cy={startPos.y} r={16} fill="#22c55e" stroke="white" strokeWidth={2} />
+              <circle cx={startPos.x} cy={startPos.y} r={12} fill="#22c55e" stroke="white" strokeWidth={1.5} />
               <text
-                x={startPos.x} y={startPos.y + 0.5}
+                x={startPos.x} y={startPos.y + 0.3}
                 textAnchor="middle" dominantBaseline="middle"
-                fontSize="14" fill="white" fontWeight="bold"
+                fontSize="10" fill="white" fontWeight="bold"
                 style={{ userSelect: "none" }}
               >S</text>
             </g>
@@ -185,11 +210,11 @@ export default function SVGFloorPlanView({ step }: Props) {
           {/* E 마커 */}
           {endPos && (
             <g>
-              <circle cx={endPos.x} cy={endPos.y} r={16} fill="#ef4444" stroke="white" strokeWidth={2} />
+              <circle cx={endPos.x} cy={endPos.y} r={12} fill="#ef4444" stroke="white" strokeWidth={1.5} />
               <text
-                x={endPos.x} y={endPos.y + 0.5}
+                x={endPos.x} y={endPos.y + 0.3}
                 textAnchor="middle" dominantBaseline="middle"
-                fontSize="14" fill="white" fontWeight="bold"
+                fontSize="10" fill="white" fontWeight="bold"
                 style={{ userSelect: "none" }}
               >E</text>
             </g>
