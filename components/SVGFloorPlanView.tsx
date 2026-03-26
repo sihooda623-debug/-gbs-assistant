@@ -7,7 +7,7 @@ interface Props {
   step: PathStep;
 }
 
-const CELL = 80;
+const CELL = 120;
 const BUILDING_COLORS: Record<string, string> = {
   강의동: "#dbeafe",
   실험동: "#dcfce7",
@@ -129,11 +129,10 @@ export default function SVGFloorPlanView({ step }: Props) {
       </div>
 
       {/* SVG 평면도 */}
-      <div className="relative w-full bg-white overflow-auto" style={{ minHeight: "800px", maxHeight: "90vh" }}>
+      <div className="relative w-full bg-white" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <svg
           viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
-          className="w-full"
-          style={{ pointerEvents: "none" }}
+          style={{ width: "100%", height: "100%", pointerEvents: "none" }}
           preserveAspectRatio="xMidYMid meet"
         >
           {/* 방 그리기 */}
