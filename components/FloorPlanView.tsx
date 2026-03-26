@@ -54,11 +54,13 @@ export default function FloorPlanView({ step }: Props) {
   const accent = FLOOR_ACCENT[step.floor] ?? "#6b7280";
 
   // 경로 포인트 (imageX, imageY 사용)
+  // 좌표가 100 범위라서 992픽셀에 맞게 스케일 필요
+  const SCALE = fullW / 100;
   const pathPoints = step.pathRoomIds
     .map(id => {
       const room = getRoomById(id);
       if (!room || room.imageX === undefined || room.imageY === undefined) return null;
-      return { x: room.imageX, y: room.imageY };
+      return { x: room.imageX * SCALE, y: room.imageY * SCALE };
     })
     .filter((p): p is { x: number; y: number } => p !== null);
 
@@ -69,10 +71,10 @@ export default function FloorPlanView({ step }: Props) {
   const firstRoom = getRoomById(step.pathRoomIds[0]);
   const lastRoom = getRoomById(step.pathRoomIds[step.pathRoomIds.length - 1]);
   const startPos = (firstRoom && firstRoom.imageX !== undefined && firstRoom.imageY !== undefined)
-    ? { x: firstRoom.imageX, y: firstRoom.imageY }
+    ? { x: firstRoom.imageX * SCALE, y: firstRoom.imageY * SCALE }
     : null;
   const endPos = (lastRoom && lastRoom.id !== firstRoom?.id && lastRoom.imageX !== undefined && lastRoom.imageY !== undefined)
-    ? { x: lastRoom.imageX, y: lastRoom.imageY }
+    ? { x: lastRoom.imageX * SCALE, y: lastRoom.imageY * SCALE }
     : null;
 
   // 이미지 비율 유지하면서 컨테이너 높이 결정
