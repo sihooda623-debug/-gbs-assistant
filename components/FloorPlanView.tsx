@@ -85,7 +85,7 @@ export default function FloorPlanView({ step }: Props) {
       </div>
 
       {/* 이미지 + SVG 오버레이 */}
-      <div className="relative w-full bg-white" style={{ paddingBottom: `${aspectRatio * 100}%` }}>
+      <div className="relative w-full bg-white" style={{ paddingBottom: `${aspectRatio * 100}%`, minHeight: "500px" }}>
         <Image
           src={imageUrl}
           alt={`${step.floor}층 평면도`}
@@ -97,7 +97,8 @@ export default function FloorPlanView({ step }: Props) {
         <svg
           viewBox={`0 0 ${fullW} ${fullH}`}
           className="absolute inset-0 w-full h-full"
-          style={{ pointerEvents: "none" }}
+          style={{ pointerEvents: "none", overflow: "visible" }}
+          preserveAspectRatio="none"
         >
           {/* 경로 글로우 */}
           {pathPoints.length > 1 && (
