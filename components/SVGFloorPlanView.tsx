@@ -7,7 +7,7 @@ interface Props {
   step: PathStep;
 }
 
-const CELL = 50;
+const CELL = 80;
 const BUILDING_COLORS: Record<string, string> = {
   강의동: "#dbeafe",
   실험동: "#dcfce7",
@@ -63,15 +63,25 @@ export default function SVGFloorPlanView({ step }: Props) {
   const transformCoord = (col: number, row: number) => {
     if (row < 3) {
       // 강의동/실험동 (위쪽)
+      // 강의동: col 0-7 → 가장 아래부터 위로 (반전)
+      // 실험동: col 13-22 → 가장 아래부터 위로 (반전)
+      let yOffset: number;
+      if (col < 8) {
+        // 강의동 (col 0-7)
+        yOffset = (7 - col) * CELL + 20;
+      } else {
+        // 실험동 (col 13-22)
+        yOffset = (22 - col) * CELL + 20;
+      }
       return {
         x: row * CELL + 20,
-        y: col * CELL + 20,
+        y: yOffset,
       };
     } else {
       // 본관 (아래쪽)
       return {
         x: col * CELL + 20,
-        y: (row - 3) * CELL + 400,
+        y: (row - 3) * CELL + 650,
       };
     }
   };
@@ -119,7 +129,7 @@ export default function SVGFloorPlanView({ step }: Props) {
       </div>
 
       {/* SVG 평면도 */}
-      <div className="relative w-full bg-white overflow-x-auto" style={{ minHeight: "600px" }}>
+      <div className="relative w-full bg-white overflow-auto" style={{ minHeight: "800px", maxHeight: "90vh" }}>
         <svg
           viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
           className="w-full"
