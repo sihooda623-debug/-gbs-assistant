@@ -67,7 +67,7 @@ export default function MapPage() {
     setError("");
   }
 
-  function handleSearch() {
+  async function handleSearch() {
     if (!fromRoom || !toRoom) {
       setError("출발지와 목적지를 모두 선택해주세요.");
       return;
@@ -77,10 +77,32 @@ export default function MapPage() {
       setError("경로를 찾을 수 없습니다.");
       return;
     }
+
     setSteps(result);
     setCurrentStep(0);
     setMode("navigate");
     setError("");
+
+    // OpenRouter로 경로 설명 개선 (백그라운드)
+    try {
+      const response = await fetch("/api/enhance-path", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          steps: result,
+          fromRoom: fromRoom.name,
+          toRoom: toRoom.name,
+        }),
+      });
+
+      if (response.ok) {
+        const { steps: enhancedSteps } = await response.json();
+        setSteps(enhancedSteps);
+      }
+    } catch (error) {
+      console.warn("Failed to enhance path descriptions:", error);
+      // 실패해도 원본 설명으로 계속 진행
+    }
   }
 
   function prevStep() { setCurrentStep((s) => Math.max(0, s - 1)); }
