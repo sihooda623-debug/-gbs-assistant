@@ -15,7 +15,6 @@ const FLOOR_ACCENT: Record<number, string> = {
   5: "#ef4444",
 };
 
-// 사용자가 제공한 좌표를 기반으로 SVG 렌더
 export default function FloorPlanView({ step }: Props) {
   // 계단 이동
   if (step.isStairs) {
@@ -51,12 +50,11 @@ export default function FloorPlanView({ step }: Props) {
 
   const pathRoomSet = new Set(step.pathRoomIds);
 
-  // SVG 크기 설정 (사용자 좌표 범위 기반: 0~100)
   const SVG_WIDTH = 1000;
   const SVG_HEIGHT = 900;
-  const SCALE = 10; // 좌표 100 = SVG 1000픽셀
+  const SCALE = 10;
 
-  // 경로 포인트 (imageX, imageY 직접 사용)
+  // 경로 포인트
   const pathPoints = step.pathRoomIds
     .map(id => {
       const room = getRoomById(id);
@@ -82,7 +80,6 @@ export default function FloorPlanView({ step }: Props) {
 
   return (
     <div className="w-full rounded-2xl overflow-hidden border border-gray-200">
-      {/* 층 라벨 */}
       <div className="flex items-center gap-2 px-3 py-2" style={{ background: accent }}>
         <span className="text-white font-bold text-sm">{step.floor}층</span>
         {step.isOutdoor && (
@@ -90,41 +87,50 @@ export default function FloorPlanView({ step }: Props) {
         )}
       </div>
 
-      {/* SVG 평면도 */}
-      <div className="relative w-full bg-white flex items-center justify-center" style={{ minHeight: "600px" }}>
+      <div className="relative w-full bg-white flex items-center justify-center" style={{ minHeight: "700px" }}>
         <svg
           viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
           style={{ width: "100%", maxWidth: "900px", height: "auto", pointerEvents: "none" }}
           preserveAspectRatio="xMidYMid meet"
         >
+          {/* 건물 테두리와 복도 */}
+          {/* 강의동 박스 (좌측) */}
+          <rect x={0} y={0} width={80} height={100} fill="none" stroke="#999" strokeWidth={2} />
+          {/* 본관 박스 (중앙 하단) */}
+          <rect x={0} y={100} width={1000} height={250} fill="none" stroke="#999" strokeWidth={2} />
+          {/* 실험동 박스 (우측) */}
+          <rect x={920} y={0} width={80} height={100} fill="none" stroke="#999" strokeWidth={2} />
+
+          {/* 복도 라인 */}
+          <line x1={0} y1={50} x2={1000} y2={50} stroke="#ddd" strokeWidth={8} /> {/* 가로 복도 */}
+          <line x1={40} y1={0} x2={40} y2={150} stroke="#ddd" strokeWidth={6} /> {/* 세로 복도 */}
+          <line x1={960} y1={0} x2={960} y2={150} stroke="#ddd" strokeWidth={6} /> {/* 세로 복도 */}
+
           {/* 방들 그리기 */}
           {rooms.map((room) => {
             if (!room.imageX || !room.imageY) return null;
 
             const isInPath = pathRoomSet.has(room.id);
-            const size = 30; // 기본 방 크기
-            const x = room.imageX * SCALE - size / 2;
-            const y = room.imageY * SCALE - size / 2;
+            const x = room.imageX * SCALE;
+            const y = room.imageY * SCALE;
 
-            let color = "#e5e7eb"; // 기본 회색
-            if (room.building === "강의동") color = "#dbeafe"; // 파랑
-            if (room.building === "실험동") color = "#dcfce7"; // 초록
-            if (room.building === "본관") color = "#fef9c3"; // 노랑
-            if (room.type === "corridor") color = "#f3f4f6";
+            let color = "#e5e7eb";
+            if (room.building === "강의동") color = "#dbeafe";
+            if (room.building === "실험동") color = "#dcfce7";
+            if (room.building === "본관") color = "#fef9c3";
+            if (room.type === "corridor") color = "#f1f5f9";
             if (room.type === "staircase") color = "#e0e7ff";
-
-            if (isInPath) color = "rgba(251, 191, 36, 0.6)"; // 형광
+            if (isInPath) color = "rgba(251, 191, 36, 0.7)";
 
             return (
               <g key={room.id}>
-                <circle cx={room.imageX * SCALE} cy={room.imageY * SCALE} r="15" fill={color} stroke="#999" strokeWidth="1" />
+                <circle cx={x} cy={y} r={12} fill={color} stroke="#666" strokeWidth={1} />
                 <text
-                  x={room.imageX * SCALE}
-                  y={room.imageY * SCALE + 25}
+                  x={x}
+                  y={y + 22}
                   textAnchor="middle"
-                  fontSize="10"
+                  fontSize="9"
                   fill="#333"
-                  fontWeight="500"
                   style={{ userSelect: "none", pointerEvents: "none" }}
                 >
                   {room.name}
@@ -133,53 +139,25 @@ export default function FloorPlanView({ step }: Props) {
             );
           })}
 
-          {/* 경로 글로우 + 선 */}
+          {/* 경로 */}
           {pathPoints.length > 1 && (
             <>
-              <polyline
-                points={polyline}
-                stroke={glowColor}
-                strokeWidth={20}
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                opacity={0.4}
-              />
-              <polyline
-                points={polyline}
-                stroke={pathColor}
-                strokeWidth={8}
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                opacity={0.95}
-              />
+              <polyline points={polyline} stroke={glowColor} strokeWidth={16} fill="none" strokeLinecap="round" strokeLinejoin="round" opacity={0.3} />
+              <polyline points={polyline} stroke={pathColor} strokeWidth={6} fill="none" strokeLinecap="round" strokeLinejoin="round" opacity={0.95} />
             </>
           )}
 
-          {/* S 마커 */}
+          {/* 마커 */}
           {startPos && (
             <g>
-              <circle cx={startPos.x} cy={startPos.y} r={18} fill="#22c55e" stroke="white" strokeWidth={2} />
-              <text
-                x={startPos.x} y={startPos.y + 1}
-                textAnchor="middle" dominantBaseline="middle"
-                fontSize="14" fill="white" fontWeight="bold"
-                style={{ userSelect: "none" }}
-              >S</text>
+              <circle cx={startPos.x} cy={startPos.y} r={16} fill="#22c55e" stroke="white" strokeWidth={2} />
+              <text x={startPos.x} y={startPos.y + 1} textAnchor="middle" dominantBaseline="middle" fontSize="12" fill="white" fontWeight="bold">S</text>
             </g>
           )}
-
-          {/* E 마커 */}
           {endPos && (
             <g>
-              <circle cx={endPos.x} cy={endPos.y} r={18} fill="#ef4444" stroke="white" strokeWidth={2} />
-              <text
-                x={endPos.x} y={endPos.y + 1}
-                textAnchor="middle" dominantBaseline="middle"
-                fontSize="14" fill="white" fontWeight="bold"
-                style={{ userSelect: "none" }}
-              >E</text>
+              <circle cx={endPos.x} cy={endPos.y} r={16} fill="#ef4444" stroke="white" strokeWidth={2} />
+              <text x={endPos.x} y={endPos.y + 1} textAnchor="middle" dominantBaseline="middle" fontSize="12" fill="white" fontWeight="bold">E</text>
             </g>
           )}
         </svg>
