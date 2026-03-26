@@ -23,6 +23,8 @@ export interface Room {
   height: number;
   type: RoomType;
   isOutdoor?: boolean; // 실외 구간
+  imageX?: number; // 평면도 이미지 x 좌표
+  imageY?: number; // 평면도 이미지 y 좌표
 }
 
 // ─── 그리드 레이아웃 ───────────────────────────────────────────────────────────
