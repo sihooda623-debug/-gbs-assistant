@@ -68,7 +68,15 @@ export default function FloorPlanView({ step }: Props) {
   const pathColor = step.isOutdoor ? "#f59e0b" : "#3b82f6";
   const glowColor = step.isOutdoor ? "#fcd34d" : "#93c5fd";
 
-  console.log("Floor:", step.floor, "PathPoints:", pathPoints.length, "Polyline:", polyline);
+  console.log("=== FloorPlanView Debug ===");
+  console.log("Floor:", step.floor);
+  console.log("PathRoomIds:", step.pathRoomIds);
+  console.log("SCALE:", SCALE, "fullW:", fullW);
+  step.pathRoomIds.forEach(id => {
+    const room = getRoomById(id);
+    console.log(`Room ${id}:`, room?.name, "imageX:", room?.imageX, "imageY:", room?.imageY);
+  });
+  console.log("PathPoints length:", pathPoints.length, "Polyline:", polyline);
 
   const firstRoom = getRoomById(step.pathRoomIds[0]);
   const lastRoom = getRoomById(step.pathRoomIds[step.pathRoomIds.length - 1]);
