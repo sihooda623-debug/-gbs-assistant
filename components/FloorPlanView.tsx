@@ -54,13 +54,14 @@ export default function FloorPlanView({ step }: Props) {
   const accent = FLOOR_ACCENT[step.floor] ?? "#6b7280";
 
   // 경로 포인트 (imageX, imageY 사용)
-  // 좌표가 100 범위라서 992픽셀에 맞게 스케일 필요
-  const SCALE = fullW / 100;
+  // x는 0~100 범위, y는 0~100 범위로 정규화됨
+  const SCALE_X = fullW / 100;
+  const SCALE_Y = fullH / 100;
   const pathPoints = step.pathRoomIds
     .map(id => {
       const room = getRoomById(id);
       if (!room || room.imageX === undefined || room.imageY === undefined) return null;
-      return { x: room.imageX * SCALE, y: room.imageY * SCALE };
+      return { x: room.imageX * SCALE_X, y: room.imageY * SCALE_Y };
     })
     .filter((p): p is { x: number; y: number } => p !== null);
 
@@ -68,23 +69,14 @@ export default function FloorPlanView({ step }: Props) {
   const pathColor = step.isOutdoor ? "#f59e0b" : "#3b82f6";
   const glowColor = step.isOutdoor ? "#fcd34d" : "#93c5fd";
 
-  console.log("=== FloorPlanView Debug ===");
-  console.log("Floor:", step.floor);
-  console.log("PathRoomIds:", step.pathRoomIds);
-  console.log("SCALE:", SCALE, "fullW:", fullW);
-  step.pathRoomIds.forEach(id => {
-    const room = getRoomById(id);
-    console.log(`Room ${id}:`, room?.name, "imageX:", room?.imageX, "imageY:", room?.imageY);
-  });
-  console.log("PathPoints length:", pathPoints.length, "Polyline:", polyline);
 
   const firstRoom = getRoomById(step.pathRoomIds[0]);
   const lastRoom = getRoomById(step.pathRoomIds[step.pathRoomIds.length - 1]);
   const startPos = (firstRoom && firstRoom.imageX !== undefined && firstRoom.imageY !== undefined)
-    ? { x: firstRoom.imageX * SCALE, y: firstRoom.imageY * SCALE }
+    ? { x: firstRoom.imageX * SCALE_X, y: firstRoom.imageY * SCALE_Y }
     : null;
   const endPos = (lastRoom && lastRoom.id !== firstRoom?.id && lastRoom.imageX !== undefined && lastRoom.imageY !== undefined)
-    ? { x: lastRoom.imageX * SCALE, y: lastRoom.imageY * SCALE }
+    ? { x: lastRoom.imageX * SCALE_X, y: lastRoom.imageY * SCALE_Y }
     : null;
 
   // 이미지 비율 유지하면서 컨테이너 높이 결정
