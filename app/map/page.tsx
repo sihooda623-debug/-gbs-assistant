@@ -92,37 +92,52 @@ export default function MapPage() {
   const style = step ? getStepStyle(step, isLast) : STEP_STYLES.indoor;
 
   return (
-    <div className="flex flex-col pb-24 min-h-screen bg-gray-50">
+    <div className="flex flex-col pb-24 min-h-screen" style={{ background: "#f0f4ff" }}>
+      {/* 수정 중 배너 */}
+      <div className="bg-amber-50 border-b border-amber-200 px-4 py-2.5 flex items-center gap-2">
+        <span className="text-amber-500 text-base">🚧</span>
+        <p className="text-xs font-semibold text-amber-700">길찾기 기능 수정 중입니다 — 경로가 부정확할 수 있어요</p>
+      </div>
+
       {/* 헤더 */}
-      <div className="bg-white px-4 pt-10 pb-4 border-b border-gray-100">
-        <h1 className="text-xl font-bold text-gray-900">교내 길찾기</h1>
-        <p className="text-sm text-gray-500 mt-0.5">평면도로 안내합니다</p>
+      <div style={{ background: "linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%)" }} className="px-4 pt-6 pb-5">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 bg-white/15 rounded-xl flex items-center justify-center">
+            <span className="text-xl">🗺️</span>
+          </div>
+          <div>
+            <h1 className="text-lg font-bold text-white">교내 길찾기</h1>
+            <p className="text-blue-200 text-xs">층별 평면도로 안내</p>
+          </div>
+        </div>
       </div>
 
       {/* 검색 영역 */}
-      <div className="bg-white px-4 py-4 border-b border-gray-100 flex flex-col gap-2.5">
+      <div className="mx-4 -mt-3 bg-white rounded-2xl shadow-md px-4 py-4 flex flex-col gap-2.5 z-10 relative">
         {/* 출발지 */}
         <div className="relative">
-          <div className={`flex items-center gap-2.5 border rounded-xl px-4 py-3 bg-white transition-colors
-            ${fromRoom ? "border-green-400 bg-green-50" : "border-gray-200 focus-within:border-green-400"}`}>
-            <span className="text-green-500 text-lg leading-none">●</span>
+          <div className={`flex items-center gap-2.5 border-2 rounded-xl px-3 py-2.5 transition-colors
+            ${fromRoom ? "border-emerald-400 bg-emerald-50" : "border-gray-100 bg-gray-50 focus-within:border-emerald-300"}`}>
+            <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center shrink-0">
+              <span className="text-white text-xs font-bold">S</span>
+            </div>
             <input
               type="text"
-              placeholder="출발지 (예: 강의실 301)"
+              placeholder="출발지 검색"
               value={fromQuery}
               onChange={(e) => handleFromChange(e.target.value)}
-              className="flex-1 text-sm outline-none bg-transparent"
+              className="flex-1 text-sm outline-none bg-transparent text-gray-800 placeholder-gray-400"
             />
             {fromRoom && (
               <button onClick={() => { setFromRoom(null); setFromQuery(""); resetPath(); }}
-                className="text-gray-400 hover:text-gray-600 text-sm">✕</button>
+                className="w-5 h-5 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center text-gray-500 text-xs shrink-0">✕</button>
             )}
           </div>
           {fromResults.length > 0 && (
             <ul className="absolute z-30 left-0 right-0 bg-white border border-gray-200 rounded-xl mt-1 shadow-xl overflow-hidden">
               {fromResults.map((r) => (
                 <li key={r.id} onClick={() => selectFrom(r)}
-                  className="px-4 py-3 text-sm cursor-pointer hover:bg-green-50 flex justify-between items-center border-b border-gray-50 last:border-0">
+                  className="px-4 py-3 text-sm cursor-pointer hover:bg-emerald-50 flex justify-between items-center border-b border-gray-50 last:border-0">
                   <span className="font-medium text-gray-800">{r.name}</span>
                   <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
                     {r.building} {r.floor}층
@@ -133,25 +148,29 @@ export default function MapPage() {
           )}
         </div>
 
-        <div className="flex items-center px-4">
-          <div className="w-0.5 h-5 bg-gray-200 ml-[7px]" />
+        {/* 구분선 */}
+        <div className="flex items-center gap-2 px-2">
+          <div className="w-px h-4 bg-gray-200 ml-[11px]" />
+          <span className="text-xs text-gray-300 ml-1">↓</span>
         </div>
 
         {/* 도착지 */}
         <div className="relative">
-          <div className={`flex items-center gap-2.5 border rounded-xl px-4 py-3 bg-white transition-colors
-            ${toRoom ? "border-red-400 bg-red-50" : "border-gray-200 focus-within:border-red-400"}`}>
-            <span className="text-red-500 text-lg leading-none">●</span>
+          <div className={`flex items-center gap-2.5 border-2 rounded-xl px-3 py-2.5 transition-colors
+            ${toRoom ? "border-red-400 bg-red-50" : "border-gray-100 bg-gray-50 focus-within:border-red-300"}`}>
+            <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center shrink-0">
+              <span className="text-white text-xs font-bold">E</span>
+            </div>
             <input
               type="text"
-              placeholder="목적지 (예: 물리실험실)"
+              placeholder="목적지 검색"
               value={toQuery}
               onChange={(e) => handleToChange(e.target.value)}
-              className="flex-1 text-sm outline-none bg-transparent"
+              className="flex-1 text-sm outline-none bg-transparent text-gray-800 placeholder-gray-400"
             />
             {toRoom && (
               <button onClick={() => { setToRoom(null); setToQuery(""); resetPath(); }}
-                className="text-gray-400 hover:text-gray-600 text-sm">✕</button>
+                className="w-5 h-5 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center text-gray-500 text-xs shrink-0">✕</button>
             )}
           </div>
           {toResults.length > 0 && (
@@ -174,7 +193,8 @@ export default function MapPage() {
         <button
           onClick={handleSearch}
           disabled={!fromRoom || !toRoom}
-          className="w-full bg-blue-600 disabled:bg-gray-200 disabled:text-gray-400 text-white rounded-xl py-3 text-sm font-bold transition-colors active:bg-blue-700"
+          className="w-full disabled:opacity-40 text-white rounded-xl py-3 text-sm font-bold transition-all active:scale-95"
+          style={{ background: (!fromRoom || !toRoom) ? "#d1d5db" : "linear-gradient(90deg, #1d4ed8, #2563eb)" }}
         >
           길찾기 시작
         </button>
@@ -182,109 +202,103 @@ export default function MapPage() {
 
       {/* 네비게이션 뷰 */}
       {mode === "navigate" && step && (
-        <div className="flex flex-col flex-1 px-4 pt-4 gap-4">
+        <div className="flex flex-col px-4 pt-4 gap-3">
 
-          {/* 단계 진행 */}
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
-              {currentStep + 1} / {steps.length} 단계
+          {/* 단계 진행 바 */}
+          <div className="bg-white rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm">
+            <span className="text-xs font-bold text-blue-700 bg-blue-100 px-2.5 py-1 rounded-full shrink-0">
+              {currentStep + 1} / {steps.length}
             </span>
-            <div className="flex gap-1.5 items-center">
-              {steps.map((s, i) => {
-                const st = getStepStyle(s, i === steps.length - 1);
-                return (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentStep(i)}
-                    className={`transition-all rounded-full ${i === currentStep
-                      ? "w-5 h-2.5 bg-blue-600"
-                      : "w-2 h-2 bg-gray-300"}`}
-                    title={s.instruction}
-                  />
-                );
-              })}
+            <div className="flex-1 flex gap-1 items-center overflow-hidden">
+              {steps.map((s, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentStep(i)}
+                  className={`transition-all rounded-full h-2 ${i === currentStep ? "bg-blue-600 flex-[2]" : "bg-gray-200 flex-1"}`}
+                  title={s.instruction}
+                />
+              ))}
             </div>
+            <span className="text-xs text-gray-400 shrink-0">{isLast ? "마지막 단계" : `${steps.length - currentStep - 1}단계 남음`}</span>
           </div>
 
           {/* 현재 단계 카드 */}
-          <div className={`border rounded-2xl overflow-hidden ${style.bg} ${style.border}`}>
+          <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
             {/* 카드 헤더 */}
-            <div className="px-4 pt-4 pb-3 flex items-start gap-3">
-              <span className="text-2xl mt-0.5">{style.icon}</span>
+            <div className={`px-4 py-3 flex items-center gap-3 ${style.bg} border-b ${style.border}`}>
+              <span className="text-2xl">{style.icon}</span>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <p className="text-base font-bold text-gray-900">{step.instruction}</p>
-                  {step.isOutdoor && (
-                    <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">
-                      실외
-                    </span>
-                  )}
-                </div>
-                {!step.isStairs && (
-                  <p className="text-xs text-gray-500 mt-0.5">{step.floor}층</p>
-                )}
+                <p className="text-base font-bold text-gray-900 leading-tight">{step.instruction}</p>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  {step.isStairs
+                    ? `${step.stairFrom}층 → ${step.stairTo}층`
+                    : `${step.floor}층${step.isOutdoor ? " · 실외 구간" : ""}`}
+                </p>
               </div>
+              {step.isOutdoor && (
+                <span className="text-xs font-semibold px-2 py-1 rounded-full bg-amber-100 text-amber-700 shrink-0">실외</span>
+              )}
             </div>
 
             {/* 평면도 */}
-            <div className="px-3 pb-2">
-              <FloorPlanView
-                step={step}
-                overallFromId={fromRoom?.id ?? ""}
-                overallToId={toRoom?.id ?? ""}
-              />
+            <div className="p-3">
+              <FloorPlanView step={step} />
             </div>
 
             {/* 상세 설명 */}
-            <div className="mx-3 mb-3 bg-white rounded-xl px-4 py-3">
+            <div className="mx-3 mb-3 bg-gray-50 rounded-xl px-4 py-3 border border-gray-100">
               <p className="text-sm text-gray-700 leading-relaxed">{step.detail}</p>
             </div>
           </div>
 
           {/* 이전/다음 버튼 */}
-          <div className="flex gap-3">
+          <div className="flex gap-2.5">
             <button
               onClick={prevStep}
               disabled={isFirst}
-              className="flex-1 py-3 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 disabled:opacity-30 active:bg-gray-100 transition-colors"
+              className="flex-1 py-3 rounded-xl border-2 border-gray-200 text-sm font-semibold text-gray-600 disabled:opacity-20 bg-white active:bg-gray-50 transition-all"
             >
               ← 이전
             </button>
             <button
               onClick={nextStep}
               disabled={isLast}
-              className={`flex-1 py-3 rounded-xl text-sm font-bold transition-colors ${isLast
-                ? "bg-green-500 text-white"
-                : "bg-blue-600 text-white active:bg-blue-700"}`}
+              className="flex-[2] py-3 rounded-xl text-sm font-bold transition-all active:scale-95 text-white"
+              style={{ background: isLast ? "#22c55e" : "linear-gradient(90deg, #1d4ed8, #2563eb)" }}
             >
-              {isLast ? "🎯 도착!" : "다음 →"}
+              {isLast ? "🎯 도착!" : "다음 단계 →"}
             </button>
           </div>
 
           {/* 전체 경로 요약 */}
-          <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
-            <div className="px-4 py-3 border-b border-gray-50">
-              <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">전체 경로</span>
+          <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
+            <div className="px-4 py-3 border-b border-gray-50 flex items-center gap-2">
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-wide">전체 경로</span>
+              <span className="text-xs text-gray-300">·</span>
+              <span className="text-xs text-gray-400">{steps.length}단계</span>
             </div>
-            <ul className="px-4 py-2">
+            <ul className="px-3 py-1">
               {steps.map((s, i) => {
                 const st = getStepStyle(s, i === steps.length - 1);
+                const active = i === currentStep;
                 return (
                   <li
                     key={i}
                     onClick={() => setCurrentStep(i)}
-                    className={`flex items-center gap-3 py-2.5 cursor-pointer border-b border-gray-50 last:border-0 transition-colors ${i === currentStep ? "opacity-100" : "opacity-50"}`}
+                    className={`flex items-center gap-3 py-2.5 cursor-pointer border-b border-gray-50 last:border-0 rounded-xl px-2 my-0.5 transition-colors ${active ? "bg-blue-50" : "hover:bg-gray-50"}`}
                   >
-                    <span className="text-base">{st.icon}</span>
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-sm shrink-0 ${active ? "bg-blue-100" : "bg-gray-100"}`}>
+                      {st.icon}
+                    </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-sm truncate ${i === currentStep ? "font-semibold text-blue-600" : "text-gray-700"}`}>
+                      <p className={`text-sm truncate ${active ? "font-semibold text-blue-700" : "text-gray-600"}`}>
                         {s.instruction}
                       </p>
                       <p className="text-xs text-gray-400">
                         {s.isStairs ? `${s.stairFrom}층 → ${s.stairTo}층` : `${s.floor}층${s.isOutdoor ? " · 실외" : ""}`}
                       </p>
                     </div>
-                    {i === currentStep && <span className="text-blue-400 text-xs">◀</span>}
+                    {active && <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />}
                   </li>
                 );
               })}
@@ -295,18 +309,27 @@ export default function MapPage() {
 
       {/* 검색 전 안내 */}
       {mode === "search" && (
-        <div className="flex flex-col items-center justify-center flex-1 px-8 py-16 gap-3 text-center">
-          <span className="text-5xl">🏫</span>
-          <p className="text-base font-semibold text-gray-700">출발지와 목적지를 입력하세요</p>
-          <p className="text-sm text-gray-400">
-            교실 이름을 검색하면<br />
-            평면도로 경로를 안내해드립니다
-          </p>
-          <div className="mt-4 flex flex-col gap-1.5 text-xs text-gray-400 text-left bg-gray-100 rounded-xl px-4 py-3">
-            <p>🏢 <strong>본관</strong>: 계단·엘리베이터·행정실 등</p>
-            <p>📚 <strong>강의동</strong>: 강의실 201~505</p>
-            <p>🔬 <strong>실험동</strong>: 각 과학 실험실</p>
-            <p>⚠️ 2층 강의동↔실험동: 실외 통로 이용</p>
+        <div className="flex flex-col items-center justify-center flex-1 px-6 py-12 gap-4 text-center">
+          <div className="w-20 h-20 rounded-3xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #dbeafe, #ede9fe)" }}>
+            <span className="text-4xl">🏫</span>
+          </div>
+          <div>
+            <p className="text-base font-bold text-gray-800">어디로 갈까요?</p>
+            <p className="text-sm text-gray-400 mt-1">출발지와 목적지를 검색하면<br />층별 평면도로 안내해드려요</p>
+          </div>
+          <div className="w-full mt-2 grid grid-cols-2 gap-2">
+            {[
+              { icon: "🏢", title: "본관", desc: "계단·행정실·교무실" },
+              { icon: "📚", title: "강의동", desc: "강의실 201~505" },
+              { icon: "🔬", title: "실험동", desc: "과학 실험실" },
+              { icon: "⚠️", title: "2층 연결", desc: "실외 통로 이용" },
+            ].map((item) => (
+              <div key={item.title} className="bg-white rounded-2xl p-3 text-left shadow-sm border border-gray-100">
+                <span className="text-xl">{item.icon}</span>
+                <p className="text-xs font-semibold text-gray-700 mt-1">{item.title}</p>
+                <p className="text-xs text-gray-400">{item.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       )}
