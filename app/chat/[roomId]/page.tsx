@@ -211,7 +211,7 @@ export default function RoomPage() {
       image_url: imageFile ? URL.createObjectURL(imageFile) : null,
       is_anonymous: room?.type === "anonymous" ? isAnon : false,
       created_at: new Date().toISOString(),
-      sender_name: null,
+      sender_name: undefined,
     };
     setMessages(prev => [...prev, tempMsg]);
 

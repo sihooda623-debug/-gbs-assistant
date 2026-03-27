@@ -116,16 +116,18 @@ export default function HomePage() {
           const d = new Date();
           const todayStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
           // 다가오는 숙제 - 캐시 또는 네트워크에서 로드
-          supabase.from("homework").select("*")
-            .eq("user_id", session.user.id).eq("completed", false)
-            .gte("due_date", todayStr)
-            .order("due_date", { ascending: true }).limit(5)
-            .then(({ data: hw }) => { if (hw) setUpcomingHw(hw as Homework[]); })
+          Promise.resolve(
+            supabase.from("homework").select("*")
+              .eq("user_id", session.user.id).eq("completed", false)
+              .gte("due_date", todayStr)
+              .order("due_date", { ascending: true }).limit(5)
+          ).then(({ data: hw }) => { if (hw) setUpcomingHw(hw as Homework[]); })
             .catch(() => {});
           // 오늘 마감 숙제
-          supabase.from("homework").select("*")
-            .eq("user_id", session.user.id).eq("completed", false).eq("due_date", todayStr)
-            .then(({ data: hw }) => { if (hw) setTodayHw(hw as Homework[]); })
+          Promise.resolve(
+            supabase.from("homework").select("*")
+              .eq("user_id", session.user.id).eq("completed", false).eq("due_date", todayStr)
+          ).then(({ data: hw }) => { if (hw) setTodayHw(hw as Homework[]); })
             .catch(() => {});
         } catch (e) {
           console.error("캐시 로드 실패:", e);
@@ -134,36 +136,38 @@ export default function HomePage() {
       setAuthChecked(true);
 
       // 3단계: 백그라운드에서 Supabase 검증 및 업데이트
-      supabase.auth.getUser().then(({ data: { user } }) => {
+      Promise.resolve(supabase.auth.getUser()).then(({ data: { user } }) => {
         if (!user) { router.replace("/login"); return; }
 
-        supabase.from("profiles")
-          .select("name, grade, class_num, club_name, after_name, after_day, after_time, rne_name")
-          .eq("id", user.id).single()
-          .then(({ data }) => {
-            if (!data) { router.replace("/onboarding"); return; }
-            setProfile(data as Profile);
-            localStorage.setItem("cached_profile", JSON.stringify(data));
-            if (!isWeekend) {
-              fetch(`/api/timetable?grade=${data.grade}&class=${data.class_num}`)
-                .then((r) => r.json())
-                .then((d) => { if (d.timetable?.[todayIdx]) setTodayPeriods(d.timetable[todayIdx]); })
-                .catch(() => {});
-            }
-            const d = new Date();
-            const todayStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+        Promise.resolve(
+          supabase.from("profiles")
+            .select("name, grade, class_num, club_name, after_name, after_day, after_time, rne_name")
+            .eq("id", user.id).single()
+        ).then(({ data }) => {
+          if (!data) { router.replace("/onboarding"); return; }
+          setProfile(data as Profile);
+          localStorage.setItem("cached_profile", JSON.stringify(data));
+          if (!isWeekend) {
+            fetch(`/api/timetable?grade=${data.grade}&class=${data.class_num}`)
+              .then((r) => r.json())
+              .then((d) => { if (d.timetable?.[todayIdx]) setTodayPeriods(d.timetable[todayIdx]); })
+              .catch(() => {});
+          }
+          const d = new Date();
+          const todayStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+          Promise.resolve(
             supabase.from("homework").select("*")
               .eq("user_id", user.id).eq("completed", false)
               .gte("due_date", todayStr)
               .order("due_date", { ascending: true }).limit(5)
-              .then(({ data: hw }) => { if (hw) setUpcomingHw(hw as Homework[]); })
-              .catch(() => {});
+          ).then(({ data: hw }) => { if (hw) setUpcomingHw(hw as Homework[]); })
+            .catch(() => {});
+          Promise.resolve(
             supabase.from("homework").select("*")
               .eq("user_id", user.id).eq("completed", false).eq("due_date", todayStr)
-              .then(({ data: hw }) => { if (hw) setTodayHw(hw as Homework[]); })
-              .catch(() => {});
-          })
-          .catch(() => {});
+          ).then(({ data: hw }) => { if (hw) setTodayHw(hw as Homework[]); })
+            .catch(() => {});
+        }).catch(() => {});
       }).catch(() => {});
     }).catch(() => {
       setAuthChecked(true); // 에러 시에도 렌더링은 허용

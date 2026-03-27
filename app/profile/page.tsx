@@ -105,27 +105,27 @@ export default function ProfilePage() {
       setAuthChecked(true);
 
       // 3단계: 백그라운드에서 Supabase 검증 및 업데이트
-      supabase.auth.getUser().then(({ data: { user } }) => {
+      Promise.resolve(supabase.auth.getUser()).then(({ data: { user } }) => {
         if (!user) {
           router.replace("/login");
           return;
         }
 
-        supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", user.id)
-          .single()
-          .then(({ data }) => {
-            if (!data) {
-              router.replace("/onboarding");
-              return;
-            }
-            setProfile(data as Profile);
-            localStorage.setItem("cached_profile", JSON.stringify(data));
-            loadProfileState(data);
-          })
-          .catch(() => {});
+        Promise.resolve(
+          supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", user.id)
+            .single()
+        ).then(({ data }) => {
+          if (!data) {
+            router.replace("/onboarding");
+            return;
+          }
+          setProfile(data as Profile);
+          localStorage.setItem("cached_profile", JSON.stringify(data));
+          loadProfileState(data);
+        }).catch(() => {});
       }).catch(() => {});
     }).catch(() => {
       setAuthChecked(true);
