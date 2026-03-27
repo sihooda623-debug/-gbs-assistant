@@ -14,6 +14,7 @@ type PeriodData = {
   classTime: number;
   teacher: string;
   subject: string;
+  room: string;
 };
 
 type Profile = {
@@ -72,8 +73,10 @@ export default function TimetablePage() {
       const res = await fetch(`/api/timetable?grade=${g}&class=${c}`);
       const data = await res.json();
       if (data.error) throw new Error(data.error);
-      setTimetable(data.timetable);
-    } catch {
+      // timetable은 2D 배열: timetable[weekday][period]
+      setTimetable(data.timetable || []);
+    } catch (err) {
+      console.error("시간표 로드 실패:", err);
       setError("시간표를 불러오지 못했어요");
     }
     setLoading(false);
@@ -188,6 +191,7 @@ export default function TimetablePage() {
                       {subject.subject}
                       {isWedClub && profile?.club_name ? ` (${profile.club_name})` : ""}
                       {subject.teacher ? ` · ${getFullName(subject.teacher, subject.subject)} 선생님` : ""}
+                      {subject.room && ` · ${subject.room}`}
                     </div>
                   )}
                   {isAfterPeriod && profile?.after_name && (
@@ -249,6 +253,7 @@ export default function TimetablePage() {
                       </div>
                       <div className="text-xs text-gray-500">
                         {subject.teacher ? `${getFullName(subject.teacher, subject.subject)} 선생님` : ""}
+                        {subject.room && <span> · {subject.room}</span>}
                         {isAfterPeriod && profile?.after_name ? ` · 방과후: ${profile.after_name}` : ""}
                       </div>
                     </div>

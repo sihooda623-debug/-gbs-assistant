@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
-type ActivityType = "rne" | "club" | "after";
+type ActivityType = "general" | "rne" | "club" | "after";
 
 const META: Record<ActivityType, { emoji: string; title: string; color: string; bg: string }> = {
-  rne:   { emoji: "🔬", title: "R&E",   color: "text-purple-700", bg: "bg-purple-600" },
-  club:  { emoji: "🎯", title: "동아리", color: "text-green-700",  bg: "bg-green-600"  },
-  after: { emoji: "📚", title: "방과후", color: "text-orange-700", bg: "bg-orange-600" },
+  general: { emoji: "📝", title: "기타",  color: "text-gray-700",   bg: "bg-gray-600"   },
+  rne:     { emoji: "🔬", title: "R&E",   color: "text-purple-700", bg: "bg-purple-600" },
+  club:    { emoji: "🎯", title: "동아리", color: "text-green-700",  bg: "bg-green-600"  },
+  after:   { emoji: "📚", title: "방과후", color: "text-orange-700", bg: "bg-orange-600" },
 };
 
 type Record_ = { id: string; title: string; content: string; created_at: string };

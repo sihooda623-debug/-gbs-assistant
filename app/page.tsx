@@ -24,13 +24,14 @@ type Profile = {
 };
 
 const TYPE_META: Record<string, { emoji: string; label: string }> = {
-  school: { emoji: "🏫", label: "학교" },
-  rne:    { emoji: "🔬", label: "R&E" },
-  club:   { emoji: "🎯", label: "동아리" },
-  after:  { emoji: "📚", label: "방과후" },
+  school:  { emoji: "🏫", label: "학교" },
+  general: { emoji: "📝", label: "기타" },
+  rne:     { emoji: "🔬", label: "R&E" },
+  club:    { emoji: "🎯", label: "동아리" },
+  after:   { emoji: "📚", label: "방과후" },
 };
 
-type PeriodData = { weekday: number; classTime: number; teacher: string; subject: string };
+type PeriodData = { weekday: number; classTime: number; teacher: string; subject: string; room: string };
 
 const DAYS = ["월", "화", "수", "목", "금"];
 const DAY_IDX: Record<string, number> = { 월: 0, 화: 1, 수: 2, 목: 3, 금: 4 };
@@ -96,34 +97,74 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!user) { router.replace("/login"); return; }
-      setAuthChecked(true);
+    // 1단계: 로컬 세션 확인 (오프라인 지원)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) { router.replace("/login"); return; }
 
-      supabase.from("profiles")
-        .select("name, grade, class_num, club_name, after_name, after_day, after_time, rne_name")
-        .eq("id", user.id).single()
-        .then(({ data }) => {
-          if (!data) { router.replace("/onboarding"); return; }
-          setProfile(data as Profile);
+      // 2단계: 캐시된 프로필 먼저 로드
+      const cached = localStorage.getItem("cached_profile");
+      if (cached) {
+        try {
+          const cachedProfile = JSON.parse(cached) as Profile;
+          setProfile(cachedProfile);
           if (!isWeekend) {
-            fetch(`/api/timetable?grade=${data.grade}&class=${data.class_num}`)
+            fetch(`/api/timetable?grade=${cachedProfile.grade}&class=${cachedProfile.class_num}`)
               .then((r) => r.json())
-              .then((d) => { if (d.timetable?.[todayIdx]) setTodayPeriods(d.timetable[todayIdx]); });
+              .then((d) => { if (d.timetable?.[todayIdx]) setTodayPeriods(d.timetable[todayIdx]); })
+              .catch(() => {});
           }
           const d = new Date();
           const todayStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-          // 다가오는 숙제 (미완료, 마감일 기준 오름차순)
+          // 다가오는 숙제 - 캐시 또는 네트워크에서 로드
           supabase.from("homework").select("*")
-            .eq("user_id", user.id).eq("completed", false)
+            .eq("user_id", session.user.id).eq("completed", false)
             .gte("due_date", todayStr)
             .order("due_date", { ascending: true }).limit(5)
-            .then(({ data: hw }) => { if (hw) setUpcomingHw(hw as Homework[]); });
+            .then(({ data: hw }) => { if (hw) setUpcomingHw(hw as Homework[]); })
+            .catch(() => {});
           // 오늘 마감 숙제
           supabase.from("homework").select("*")
-            .eq("user_id", user.id).eq("completed", false).eq("due_date", todayStr)
-            .then(({ data: hw }) => { if (hw) setTodayHw(hw as Homework[]); });
-        });
+            .eq("user_id", session.user.id).eq("completed", false).eq("due_date", todayStr)
+            .then(({ data: hw }) => { if (hw) setTodayHw(hw as Homework[]); })
+            .catch(() => {});
+        } catch (e) {
+          console.error("캐시 로드 실패:", e);
+        }
+      }
+      setAuthChecked(true);
+
+      // 3단계: 백그라운드에서 Supabase 검증 및 업데이트
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        if (!user) { router.replace("/login"); return; }
+
+        supabase.from("profiles")
+          .select("name, grade, class_num, club_name, after_name, after_day, after_time, rne_name")
+          .eq("id", user.id).single()
+          .then(({ data }) => {
+            if (!data) { router.replace("/onboarding"); return; }
+            setProfile(data as Profile);
+            localStorage.setItem("cached_profile", JSON.stringify(data));
+            if (!isWeekend) {
+              fetch(`/api/timetable?grade=${data.grade}&class=${data.class_num}`)
+                .then((r) => r.json())
+                .then((d) => { if (d.timetable?.[todayIdx]) setTodayPeriods(d.timetable[todayIdx]); })
+                .catch(() => {});
+            }
+            const d = new Date();
+            const todayStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+            supabase.from("homework").select("*")
+              .eq("user_id", user.id).eq("completed", false)
+              .gte("due_date", todayStr)
+              .order("due_date", { ascending: true }).limit(5)
+              .then(({ data: hw }) => { if (hw) setUpcomingHw(hw as Homework[]); })
+              .catch(() => {});
+            supabase.from("homework").select("*")
+              .eq("user_id", user.id).eq("completed", false).eq("due_date", todayStr)
+              .then(({ data: hw }) => { if (hw) setTodayHw(hw as Homework[]); })
+              .catch(() => {});
+          })
+          .catch(() => {});
+      }).catch(() => {});
     }).catch(() => {
       setAuthChecked(true); // 에러 시에도 렌더링은 허용
     });
@@ -170,10 +211,11 @@ export default function HomePage() {
             )}
           </div>
           <button
-            onClick={handleLogout}
-            className="bg-blue-500 hover:bg-blue-400 text-white text-xs px-3 py-1.5 rounded-lg transition-colors"
+            onClick={() => router.push("/profile")}
+            className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white font-bold text-lg transition-colors"
+            title="프로필"
           >
-            로그아웃
+            {profile?.name?.[0] ?? "?"}
           </button>
         </div>
       </div>
@@ -272,10 +314,12 @@ export default function HomePage() {
                       {isWedClub && profile?.club_name && (
                         <span className="text-xs text-green-600 ml-1">({profile.club_name})</span>
                       )}
+                      <div className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
+                        {p.teacher && <span>{getFullName(p.teacher, p.subject)}</span>}
+                        {p.room && <span>·</span>}
+                        {p.room && <span>{p.room}</span>}
+                      </div>
                     </div>
-                    {p.teacher && (
-                      <span className="text-xs text-gray-400">{getFullName(p.teacher, p.subject)}</span>
-                    )}
                   </div>
                 );
               })}
@@ -337,7 +381,13 @@ export default function HomePage() {
       {profile && (
         <div className="px-4 mt-4">
           <h2 className="text-base font-bold text-gray-800 mb-2">내 활동</h2>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-4 gap-2">
+            <Link href="/activity/general">
+              <div className="bg-gray-50 rounded-2xl p-3 flex flex-col items-center gap-1 active:opacity-70">
+                <span className="text-2xl">📝</span>
+                <span className="text-xs font-semibold text-gray-700">기타</span>
+              </div>
+            </Link>
             <Link href="/activity/rne">
               <div className="bg-purple-50 rounded-2xl p-3 flex flex-col items-center gap-1 active:opacity-70">
                 <span className="text-2xl">🔬</span>
@@ -379,6 +429,7 @@ export default function HomePage() {
               const label = diff === 0 ? "D-Day" : `D-${diff}`;
               const urgent = diff <= 3;
               const actMeta: Record<string, { emoji: string; name: string }> = {
+                general: { emoji: "📝", name: "기타" },
                 rne: { emoji: "🔬", name: "R&E" },
                 club: { emoji: "🎯", name: "동아리" },
                 after: { emoji: "📚", name: "방과후" },
