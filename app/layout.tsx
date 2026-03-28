@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
-import BottomNav from "@/components/BottomNav";
+import BottomNavWrapper from "@/components/BottomNavWrapper";
 import Script from "next/script";
 
 const notoSansKR = Noto_Sans_KR({
@@ -33,10 +33,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="h-full">
-      <body className={`${notoSansKR.className} h-full bg-primary-100`}>
-        <div className="max-w-md mx-auto h-full flex flex-col bg-primary-100 relative">
+      <body className={`${notoSansKR.className} h-full bg-white`} suppressHydrationWarning>
+        <div className="max-w-md mx-auto h-full flex flex-col bg-white relative">
           <main className="flex-1 overflow-y-auto pb-20">{children}</main>
-          <BottomNav />
+          <BottomNavWrapper />
         </div>
         <Script id="sw-register" strategy="afterInteractive">
           {`if ('serviceWorker' in navigator) {

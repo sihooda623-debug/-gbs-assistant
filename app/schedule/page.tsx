@@ -27,17 +27,17 @@ const EVENT_TEXT: Record<SchoolEvent["type"], string> = {
 // ───── 탭 / 분류 ─────
 const TABS = [
   { key: "all",    label: "전체" },
-  { key: "school", label: "🏫 학교" },
-  { key: "rne",    label: "🔬 R&E" },
-  { key: "club",   label: "🎯 동아리" },
-  { key: "after",  label: "📚 방과후" },
+  { key: "school", label: "학교" },
+  { key: "rne",    label: "R&E" },
+  { key: "club",   label: "동아리" },
+  { key: "after",  label: "방과후" },
 ];
 
-const TYPE_META: Record<string, { emoji: string; label: string; color: string }> = {
-  school: { emoji: "🏫", label: "학교",   color: "bg-primary-100 text-primary-700" },
-  rne:    { emoji: "🔬", label: "R&E",    color: "bg-purple-100 text-purple-700" },
-  club:   { emoji: "🎯", label: "동아리", color: "bg-success-100 text-success-700" },
-  after:  { emoji: "📚", label: "방과후", color: "bg-warning-100 text-warning-700" },
+const TYPE_META: Record<string, { label: string; color: string }> = {
+  school: { label: "학교",   color: "bg-primary-100 text-primary-700" },
+  rne:    { label: "R&E",    color: "bg-purple-100 text-purple-700" },
+  club:   { label: "동아리", color: "bg-success-100 text-success-700" },
+  after:  { label: "방과후", color: "bg-warning-100 text-warning-700" },
 };
 
 const inputClass = "w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-400 bg-white";
@@ -135,11 +135,13 @@ function Calendar({
                 isToday ? "text-primary-600 font-bold" :
                 isSun ? "text-danger-400" : isSat ? "text-primary-400" : "text-gray-700"
               }`}>{d}</span>
-              <div className="flex gap-0.5 mt-0.5 h-2 items-center">
-                {evList.slice(0, 2).map((ev, j) => (
-                  <div key={j} className={`w-1 h-1 rounded-full ${isSelected ? "bg-white" : EVENT_COLOR[ev.type]}`} />
-                ))}
-                {hasHw && <div className={`w-1 h-1 rounded-full ${isSelected ? "bg-yellow-200" : "bg-yellow-400"}`} />}
+              <div className="flex gap-1 mt-1 h-3 items-center">
+                {evList.length > 0 && (
+                  <div className={`text-xs font-bold px-1.5 py-0.5 rounded-sm ${isSelected ? "bg-white text-primary-600" : "bg-primary-600 text-white"}`}>
+                    {evList.length === 1 ? evList[0].type === "holiday" ? "휴" : evList[0].type === "exam" ? "시" : "일" : "일정"}
+                  </div>
+                )}
+                {hasHw && <div className={`text-xs font-bold px-1.5 py-0.5 rounded-sm ${isSelected ? "bg-yellow-100 text-yellow-700" : "bg-yellow-400 text-yellow-700"}`}>숙</div>}
               </div>
             </button>
           );
@@ -331,7 +333,7 @@ export default function SchedulePage() {
                     className={`px-3 py-1.5 rounded-full text-xs font-medium border-2 transition-colors ${
                       type === k ? "border-primary-600 bg-primary-50 text-primary-700" : "border-gray-200 text-gray-500"
                     }`}>
-                    {v.emoji} {v.label}
+                    {v.label}
                   </button>
                 ))}
               </div>

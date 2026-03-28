@@ -23,12 +23,12 @@ type Profile = {
   rne_name: string;
 };
 
-const TYPE_META: Record<string, { emoji: string; label: string }> = {
-  school:  { emoji: "🏫", label: "학교" },
-  general: { emoji: "📝", label: "기타" },
-  rne:     { emoji: "🔬", label: "R&E" },
-  club:    { emoji: "🎯", label: "동아리" },
-  after:   { emoji: "📚", label: "방과후" },
+const TYPE_META: Record<string, { label: string }> = {
+  school:  { label: "학교" },
+  general: { label: "기타" },
+  rne:     { label: "R&E" },
+  club:    { label: "동아리" },
+  after:   { label: "방과후" },
 };
 
 type PeriodData = { weekday: number; classTime: number; teacher: string; subject: string; room: string };
@@ -54,6 +54,7 @@ export default function HomePage() {
   const [authChecked, setAuthChecked] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [todayPeriods, setTodayPeriods] = useState<PeriodData[]>([]);
+  const [allPeriods, setAllPeriods] = useState<PeriodData[][]>([]);
   const [upcomingHw, setUpcomingHw] = useState<Homework[]>([]);
   const [todayHw, setTodayHw] = useState<Homework[]>([]);
   const [lunchFavs, setLunchFavs] = useState<string[]>([]);
@@ -110,7 +111,12 @@ export default function HomePage() {
           if (!isWeekend) {
             fetch(`/api/timetable?grade=${cachedProfile.grade}&class=${cachedProfile.class_num}`)
               .then((r) => r.json())
-              .then((d) => { if (d.timetable?.[todayIdx]) setTodayPeriods(d.timetable[todayIdx]); })
+              .then((d) => {
+                if (d.timetable) {
+                  setAllPeriods(d.timetable);
+                  if (d.timetable?.[todayIdx]) setTodayPeriods(d.timetable[todayIdx]);
+                }
+              })
               .catch(() => {});
           }
           const d = new Date();
@@ -150,7 +156,12 @@ export default function HomePage() {
           if (!isWeekend) {
             fetch(`/api/timetable?grade=${data.grade}&class=${data.class_num}`)
               .then((r) => r.json())
-              .then((d) => { if (d.timetable?.[todayIdx]) setTodayPeriods(d.timetable[todayIdx]); })
+              .then((d) => {
+                if (d.timetable) {
+                  setAllPeriods(d.timetable);
+                  if (d.timetable?.[todayIdx]) setTodayPeriods(d.timetable[todayIdx]);
+                }
+              })
               .catch(() => {});
           }
           const d = new Date();
@@ -199,24 +210,32 @@ export default function HomePage() {
   );
 
   return (
-    <div className="flex flex-col pb-4 bg-primary-200">
+    <div className="flex flex-col pb-4 bg-white">
       {/* 헤더 */}
-      <div className="bg-white border-b border-gray-200 px-4 pt-10 pb-6">
+      <div className="bg-white border-b border-gray-50 px-5 pt-12 pb-8">
         <div className="flex items-center justify-between">
-          <div>
-            <p className="text-gray-500 text-sm">{dateStr}</p>
-            <h1 className="text-3xl font-bold mt-2 text-gray-900">
-              {profile?.name ? `안녕하세요, ${profile.name} 👋` : "안녕하세요 👋"}
+          <div className="flex-1">
+            <p className="text-gray-400 text-sm font-medium">{dateStr}</p>
+            <h1 className="text-4xl font-bold mt-3 text-gray-900 leading-tight">
+              {profile?.name ? (
+                <>
+                  안녕하세요,
+                  <br className="hidden sm:block" />
+                  {profile.name}
+                </>
+              ) : (
+                "안녕하세요"
+              )}
             </h1>
             {profile && (
-              <p className="text-gray-500 text-sm mt-1">
+              <p className="text-gray-500 text-sm mt-2 font-medium">
                 {profile.grade}학년 {profile.class_num}반
               </p>
             )}
           </div>
           <button
             onClick={() => router.push("/profile")}
-            className="w-10 h-10 rounded-full bg-primary-100 hover:bg-primary-200 flex items-center justify-center text-primary-700 font-bold text-lg transition-colors"
+            className="w-12 h-12 rounded-full bg-primary-50 hover:bg-primary-100 active:scale-95 flex items-center justify-center text-primary-700 font-bold text-lg transition-all ml-4 shrink-0"
             title="프로필"
           >
             {profile?.name?.[0] ?? "?"}
@@ -226,8 +245,8 @@ export default function HomePage() {
 
       {/* 현재/다음 교시 카드 */}
       {!isWeekend && (
-        <div className="px-4 -mt-4">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+        <div className="px-5 mt-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-50 p-5">
             {current ? (
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-success-500 rounded-full animate-pulse shrink-0" />
@@ -282,68 +301,54 @@ export default function HomePage() {
 
       {/* 오늘 활동 배지 */}
       {(isClubToday || isAfterToday) && (
-        <div className="px-4 mt-3 flex gap-2">
+        <div className="px-5 mt-5 flex gap-2">
           {isClubToday && (
             <div className="flex items-center gap-1.5 bg-success-50 border border-success-100 rounded-full px-3 py-1.5">
-              <span className="text-sm">🎯</span>
               <span className="text-xs font-medium text-success-700">오늘 동아리 · {profile?.club_name}</span>
             </div>
           )}
           {isAfterToday && profile?.after_name && (
             <div className="flex items-center gap-1.5 bg-purple-50 border border-purple-100 rounded-full px-3 py-1.5">
-              <span className="text-sm">📚</span>
               <span className="text-xs font-medium text-purple-700">방과후 · {profile.after_name}</span>
             </div>
           )}
         </div>
       )}
 
-      {/* 오늘 시간표 */}
-      {!isWeekend && (
-        <div className="px-4 mt-4">
-          <h2 className="text-base font-bold text-gray-800 mb-2">
-            오늘 시간표 <span className="text-sm font-normal text-gray-400">({DAYS[todayIdx]}요일)</span>
-          </h2>
-          {todayClasses.length > 0 ? (
-            <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-              {todayClasses.map((p, i) => {
-                const isWedClub = todayIdx === 2 && p.periodNum === 7 && !!profile?.club_name;
-                return (
-                  <div key={i} className={`flex items-center gap-3 px-4 py-2.5 ${i > 0 ? "border-t border-gray-50" : ""}`}>
-                    <div className="w-6 h-6 bg-primary-100 text-primary-600 rounded-md flex items-center justify-center text-xs font-bold shrink-0">
-                      {p.periodNum}
-                    </div>
-                    <div className="flex-1">
-                      <span className="text-sm font-medium text-gray-800">{p.subject}</span>
-                      {isWedClub && profile?.club_name && (
-                        <span className="text-xs text-success-600 ml-1">({profile.club_name})</span>
-                      )}
-                      <div className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
-                        {p.teacher && <span>{getFullName(p.teacher, p.subject)}</span>}
-                        {p.room && <span>·</span>}
-                        {p.room && <span>{p.room}</span>}
-                      </div>
+
+      {/* 월요일 시간표 */}
+      <div className="px-5 mt-8">
+        <h2 className="text-lg font-bold text-gray-900 mb-4">월요일 시간표</h2>
+        {allPeriods.length > 0 && allPeriods[0]?.length > 0 ? (
+          <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+            {allPeriods[0]
+              .map((p, i) => ({ ...p, periodNum: i + 1 }))
+              .filter((p) => p.subject)
+              .map((p, i) => (
+                <div key={i} className={`flex items-center gap-3 px-4 py-2.5 ${i > 0 ? "border-t border-gray-50" : ""}`}>
+                  <div className="w-6 h-6 bg-primary-100 text-primary-600 rounded-md flex items-center justify-center text-xs font-bold shrink-0">
+                    {p.periodNum}
+                  </div>
+                  <div className="flex-1">
+                    <span className="text-sm font-medium text-gray-800">{p.subject}</span>
+                    <div className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
+                      {p.teacher && <span>{getFullName(p.teacher, p.subject)}</span>}
+                      {p.room && <span>·</span>}
+                      {p.room && <span>{p.room}</span>}
                     </div>
                   </div>
-                );
-              })}
-              {isFriday && (
-                <div className="border-t border-gray-50 px-4 py-2 text-center text-xs text-gray-400">
-                  🏠 6교시 후 하교
                 </div>
-              )}
-            </div>
-          ) : (
-            <div className="bg-gray-50 rounded-xl p-5 text-center text-gray-400 text-sm">
-              {profile ? "시간표를 불러오는 중이에요..." : "프로필을 설정하면 시간표가 표시돼요"}
-            </div>
-          )}
-        </div>
-      )}
+              ))}
+          </div>
+        ) : (
+          <div className="bg-gray-50 rounded-xl p-5 text-center text-gray-400 text-sm">
+            {profile ? "시간표를 불러오는 중이에요..." : "프로필을 설정하면 시간표가 표시돼요"}
+          </div>
+        )}
+      </div>
 
       {isWeekend && (
-        <div className="px-4 mt-6 text-center">
-          <p className="text-4xl mb-3">🎉</p>
+        <div className="px-5 mt-12 text-center">
           <p className="text-base font-bold text-gray-800">주말이에요!</p>
           <p className="text-sm text-gray-400 mt-1">푹 쉬세요</p>
         </div>
@@ -351,8 +356,8 @@ export default function HomePage() {
 
       {/* 방과후 시간표 */}
       {isAfterToday && afterTimes.length > 0 && (
-        <div className="px-4 mt-4">
-          <h2 className="text-base font-bold text-gray-800 mb-2">방과후</h2>
+        <div className="px-5 mt-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">방과후</h2>
           <div className="bg-purple-50 rounded-2xl border border-purple-100 px-4 py-3 flex flex-col gap-1">
             {afterTimes.map((t, i) => (
               <div key={i} className="flex items-center gap-2">
@@ -367,10 +372,9 @@ export default function HomePage() {
 
       {/* 오늘 급식 미리보기 */}
       {!isWeekend && lunchFavs.length > 0 && (
-        <div className="px-4 mt-4">
+        <div className="px-5 mt-8">
           <Link href="/meal">
             <div className="bg-warning-50 border border-warning-100 rounded-2xl px-4 py-3 flex items-center gap-3">
-              <span className="text-2xl">🍱</span>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-warning-700">오늘 좋아하는 거 나와요!</p>
                 <p className="text-xs text-warning-500 mt-0.5">{lunchFavs.join(", ")}</p>
@@ -383,18 +387,16 @@ export default function HomePage() {
 
       {/* 활동 카드 */}
       {profile && (
-        <div className="px-4 mt-4">
-          <h2 className="text-base font-bold text-gray-800 mb-2">내 활동</h2>
+        <div className="px-5 mt-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">내 활동</h2>
           <div className="grid grid-cols-4 gap-2">
             <Link href="/activity/general">
               <div className="bg-gray-50 rounded-2xl p-3 flex flex-col items-center gap-1 active:opacity-70">
-                <span className="text-2xl">📝</span>
                 <span className="text-xs font-semibold text-gray-700">기타</span>
               </div>
             </Link>
             <Link href="/activity/rne">
               <div className="bg-purple-50 rounded-2xl p-3 flex flex-col items-center gap-1 active:opacity-70">
-                <span className="text-2xl">🔬</span>
                 <span className="text-xs font-semibold text-purple-700">R&amp;E</span>
                 {profile.rne_name && (
                   <span className="text-xs text-purple-400 text-center line-clamp-1">{profile.rne_name}</span>
@@ -403,7 +405,6 @@ export default function HomePage() {
             </Link>
             <Link href="/activity/club">
               <div className="bg-success-50 rounded-2xl p-3 flex flex-col items-center gap-1 active:opacity-70">
-                <span className="text-2xl">🎯</span>
                 <span className="text-xs font-semibold text-success-700">동아리</span>
                 {profile.club_name && (
                   <span className="text-xs text-success-400 text-center line-clamp-1">{profile.club_name}</span>
@@ -412,7 +413,6 @@ export default function HomePage() {
             </Link>
             <Link href="/activity/after">
               <div className="bg-warning-50 rounded-2xl p-3 flex flex-col items-center gap-1 active:opacity-70">
-                <span className="text-2xl">📚</span>
                 <span className="text-xs font-semibold text-warning-700">방과후</span>
                 {profile.after_name && (
                   <span className="text-xs text-warning-400 text-center line-clamp-1">{profile.after_name}</span>
@@ -425,24 +425,23 @@ export default function HomePage() {
 
       {/* 숙제 알림 */}
       {upcomingHw.length > 0 && (
-        <div className="px-4 mt-4">
-          <h2 className="text-base font-bold text-gray-800 mb-2">다가오는 숙제</h2>
+        <div className="px-5 mt-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">다가오는 숙제</h2>
           <div className="flex flex-col gap-2">
             {upcomingHw.map((h) => {
               const diff = Math.ceil((new Date(h.due_date).getTime() - new Date().setHours(0,0,0,0)) / 86400000);
               const label = diff === 0 ? "D-Day" : `D-${diff}`;
               const urgent = diff <= 3;
-              const actMeta: Record<string, { emoji: string; name: string }> = {
-                general: { emoji: "📝", name: "기타" },
-                rne: { emoji: "🔬", name: "R&E" },
-                club: { emoji: "🎯", name: "동아리" },
-                after: { emoji: "📚", name: "방과후" },
+              const actMeta: Record<string, { name: string }> = {
+                general: { name: "기타" },
+                rne: { name: "R&E" },
+                club: { name: "동아리" },
+                after: { name: "방과후" },
               };
-              const act = actMeta[h.activity_type] ?? { emoji: "📋", name: "" };
+              const act = actMeta[h.activity_type] ?? { name: "" };
               return (
                 <Link key={h.id} href={`/activity/${h.activity_type}`}>
                   <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${urgent ? "bg-danger-50 border-danger-100" : "bg-white border-gray-100"}`}>
-                    <span className="text-lg">{act.emoji}</span>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-800">{h.title}</p>
                       <p className="text-xs text-gray-400">{act.name} · {new Date(h.due_date).toLocaleDateString("ko-KR", { month: "long", day: "numeric" })}</p>
@@ -466,8 +465,8 @@ export default function HomePage() {
         );
         if (todaySchoolEvents.length === 0 && todayHw.length === 0) return null;
         return (
-          <div className="px-4 mt-4">
-            <h2 className="text-base font-bold text-gray-800 mb-2">오늘의 일정</h2>
+          <div className="px-5 mt-8">
+            <h2 className="text-lg font-bold text-gray-900 mb-4">오늘의 일정</h2>
             <div className="flex flex-col gap-2">
               {todaySchoolEvents.map((ev, i) => (
                 <div key={i} className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${
@@ -475,7 +474,6 @@ export default function HomePage() {
                   ev.type === "exam" ? "bg-warning-50 border-warning-100" :
                   "bg-primary-50 border-primary-100"
                 }`}>
-                  <span className="text-lg">{ev.type === "holiday" ? "🏖️" : ev.type === "exam" ? "📝" : "📅"}</span>
                   <span className="text-sm font-medium text-gray-800">{ev.title}</span>
                 </div>
               ))}
@@ -483,7 +481,6 @@ export default function HomePage() {
                 const meta = TYPE_META[h.activity_type] ?? TYPE_META.school;
                 return (
                   <div key={h.id} className="flex items-center gap-3 px-4 py-3 rounded-xl border bg-yellow-50 border-yellow-100">
-                    <span className="text-lg">{meta.emoji}</span>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-800">{h.title}</p>
                       <p className="text-xs text-gray-400">{meta.label} · 오늘 마감</p>
@@ -499,9 +496,8 @@ export default function HomePage() {
 
       {/* 프로필 미설정 안내 */}
       {!profile && (
-        <div className="px-4 mt-4">
+        <div className="px-5 mt-8">
           <div className="bg-primary-50 border border-primary-100 rounded-xl p-4 flex items-center gap-3">
-            <span className="text-2xl">⚙️</span>
             <div>
               <p className="text-sm font-semibold text-primary-800">프로필을 설정해보세요</p>
               <p className="text-xs text-primary-600 mt-0.5">

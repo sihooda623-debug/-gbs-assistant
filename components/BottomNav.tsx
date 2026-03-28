@@ -10,8 +10,9 @@ const navItems = [
     href: "/",
     label: "홈",
     icon: (active: boolean) => (
-      <svg viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth={2} className="w-6 h-6">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M12 3l9 7v11a1 1 0 01-1 1H4a1 1 0 01-1-1V10l9-7z" />
+        <path d="M9 21v-8h6v8" />
       </svg>
     ),
   },
@@ -19,8 +20,9 @@ const navItems = [
     href: "/timetable",
     label: "시간표",
     icon: (active: boolean) => (
-      <svg viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth={2} className="w-6 h-6">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18M10 3v18M14 3v18M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
+      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="3" y="4" width="18" height="18" rx="1" />
+        <path d="M16 2v4M8 2v4M3 10h18" />
       </svg>
     ),
   },
@@ -28,8 +30,8 @@ const navItems = [
     href: "/chat",
     label: "채팅",
     icon: (active: boolean) => (
-      <svg viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth={2} className="w-6 h-6">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M12 21c5.523 0 10-3.582 10-8s-4.477-8-10-8S2 8.582 2 13c0 1.6.406 3.109 1.121 4.495L2 21l4.574-1.348A9.96 9.96 0 0012 21z" />
       </svg>
     ),
   },
@@ -37,8 +39,10 @@ const navItems = [
     href: "/schedule",
     label: "일정",
     icon: (active: boolean) => (
-      <svg viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth={2} className="w-6 h-6">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="3" y="4" width="18" height="18" rx="1" />
+        <path d="M16 2v4M8 2v4M3 10h18" />
+        <circle cx="9" cy="17" r="1" fill="currentColor" />
       </svg>
     ),
   },
@@ -46,9 +50,9 @@ const navItems = [
     href: "/map",
     label: "길찾기",
     icon: (active: boolean) => (
-      <svg viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth={2} className="w-6 h-6">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M12 2a7 7 0 110 14 7 7 0 010-14z" />
+        <circle cx="12" cy="9" r="2" fill="currentColor" />
       </svg>
     ),
   },
@@ -60,7 +64,7 @@ export default function BottomNav() {
   if (pathname.startsWith("/chat/")) return null; // 채팅방 내부는 네비 숨김
 
   return (
-    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 z-50 shadow-lg">
+    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-100 z-50 shadow-lg">
       <div className="flex">
         {navItems.map((item) => {
           const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
@@ -68,8 +72,8 @@ export default function BottomNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex-1 flex flex-col items-center py-3 gap-1 text-xs font-medium transition-colors rounded-t-lg ${
-                active ? "text-primary-600 bg-white/50" : "text-gray-500 hover:text-gray-700"
+              className={`flex-1 flex flex-col items-center py-4 gap-2 text-xs font-semibold transition-colors ${
+                active ? "text-primary-600" : "text-gray-400 hover:text-gray-600"
               }`}
             >
               {item.icon(active)}
