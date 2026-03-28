@@ -193,7 +193,7 @@ export default function AdminPage() {
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="text-center">
           <p className="text-gray-500 mb-4">접근 권한이 없습니다.</p>
-          <button onClick={() => router.back()} className="text-blue-600 font-semibold">
+          <button onClick={() => router.back()} className="text-primary-600 font-semibold">
             뒤로가기
           </button>
         </div>
@@ -204,12 +204,12 @@ export default function AdminPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* 헤더 */}
-      <div className="bg-red-600 text-white px-4 pt-10 pb-6">
+      <div className="bg-danger-600 text-white px-4 pt-10 pb-6">
         <div className="flex items-center gap-3 mb-4">
           <button onClick={() => router.back()} className="text-xl">‹</button>
           <h1 className="text-2xl font-bold">관리자 패널</h1>
         </div>
-        <p className="text-red-100 text-sm">신고 관리 및 사용자 정지</p>
+        <p className="text-danger-100 text-sm">신고 관리 및 사용자 정지</p>
       </div>
 
       <div className="flex-1 px-4 py-4 overflow-y-auto pb-10">
@@ -227,7 +227,7 @@ export default function AdminPage() {
                 <div
                   key={report.id}
                   className={`bg-white rounded-2xl p-4 border-l-4 ${
-                    report.status === "resolved" ? "border-gray-300 opacity-60" : "border-red-500"
+                    report.status === "resolved" ? "border-gray-300 opacity-60" : "border-danger-500"
                   }`}
                 >
                   <div className="flex items-start justify-between mb-2">
@@ -238,7 +238,7 @@ export default function AdminPage() {
                     <span className={`text-xs px-2 py-1 rounded-full font-semibold ${
                       report.status === "resolved"
                         ? "bg-gray-100 text-gray-700"
-                        : "bg-red-100 text-red-700"
+                        : "bg-danger-100 text-danger-700"
                     }`}>
                       {report.status === "resolved" ? "처리됨" : "대기중"}
                     </span>
@@ -256,7 +256,7 @@ export default function AdminPage() {
                           setSelectedReport(report);
                           setShowBanModal(true);
                         }}
-                        className="text-red-600 font-semibold hover:underline"
+                        className="text-danger-600 font-semibold hover:underline"
                       >
                         정지 처리
                       </button>
@@ -281,13 +281,13 @@ export default function AdminPage() {
               {bans.map((ban) => {
                 const daysLeft = Math.ceil((new Date(ban.ban_until).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
                 return (
-                  <div key={ban.id} className="bg-white rounded-2xl p-4 border-l-4 border-orange-500">
+                  <div key={ban.id} className="bg-white rounded-2xl p-4 border-l-4 border-warning-500">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex-1">
                         <p className="text-sm font-bold text-gray-900">{ban.profile?.name || "알 수 없음"}</p>
                         <p className="text-xs text-gray-500 mt-0.5">사유: {ban.reason}</p>
                       </div>
-                      <span className="text-xs px-2 py-1 rounded-full font-semibold bg-orange-100 text-orange-700">
+                      <span className="text-xs px-2 py-1 rounded-full font-semibold bg-warning-100 text-warning-700">
                         {daysLeft}일 남음
                       </span>
                     </div>
@@ -296,7 +296,7 @@ export default function AdminPage() {
                       <span>정지 만료: {formatDate(ban.ban_until)}</span>
                       <button
                         onClick={() => handleUnban(ban)}
-                        className="text-blue-600 font-semibold hover:underline"
+                        className="text-primary-600 font-semibold hover:underline"
                       >
                         해제
                       </button>
@@ -315,7 +315,7 @@ export default function AdminPage() {
           <div className="bg-white w-full rounded-t-3xl px-6 py-8 flex flex-col gap-4 max-w-md">
             <h2 className="text-lg font-bold text-gray-900">정지 처리</h2>
 
-            <div className="bg-red-50 rounded-xl p-3 border border-red-200">
+            <div className="bg-danger-50 rounded-xl p-3 border border-danger-200">
               <p className="text-sm text-gray-600">
                 <span className="font-semibold">{selectedReport.reported_profile?.name || "알 수 없음"}</span>을(를) 정지합니다.
               </p>
@@ -347,7 +347,7 @@ export default function AdminPage() {
               </button>
               <button
                 onClick={() => handleBan(selectedReport, banDays)}
-                className="flex-1 px-4 py-3 bg-red-600 text-white rounded-2xl font-semibold text-sm"
+                className="flex-1 px-4 py-3 bg-danger-600 text-white rounded-2xl font-semibold text-sm"
               >
                 정지 처리
               </button>

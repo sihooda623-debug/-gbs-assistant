@@ -9,8 +9,8 @@ type ActivityType = "general" | "rne" | "club" | "after";
 const META: Record<ActivityType, { emoji: string; title: string; color: string; bg: string }> = {
   general: { emoji: "📝", title: "기타",  color: "text-gray-700",   bg: "bg-gray-600"   },
   rne:     { emoji: "🔬", title: "R&E",   color: "text-purple-700", bg: "bg-purple-600" },
-  club:    { emoji: "🎯", title: "동아리", color: "text-green-700",  bg: "bg-green-600"  },
-  after:   { emoji: "📚", title: "방과후", color: "text-orange-700", bg: "bg-orange-600" },
+  club:    { emoji: "🎯", title: "동아리", color: "text-success-700",  bg: "bg-success-600"  },
+  after:   { emoji: "📚", title: "방과후", color: "text-warning-700", bg: "bg-warning-600" },
 };
 
 type Record_ = { id: string; title: string; content: string; created_at: string };
@@ -108,7 +108,7 @@ export default function ActivityPage() {
     return { label: `D-${diff}`, urgent: diff <= 3, past: false };
   }
 
-  const inputClass = "w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-blue-400 bg-white";
+  const inputClass = "w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-400 bg-white";
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -146,12 +146,12 @@ export default function ActivityPage() {
                   placeholder="제목 (예: 3월 25일 실험 내용)" className={inputClass} />
                 <textarea value={recContent} onChange={(e) => setRecContent(e.target.value)}
                   placeholder="내용을 자유롭게 적어요" rows={5}
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-blue-400 bg-white resize-none" />
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-400 bg-white resize-none" />
                 <div className="flex gap-2">
                   <button onClick={() => setShowRecForm(false)}
                     className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-500">취소</button>
                   <button onClick={saveRecord} disabled={loading || !recTitle.trim()}
-                    className="flex-1 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold disabled:opacity-50">저장</button>
+                    className="flex-1 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-semibold disabled:opacity-50">저장</button>
                 </div>
               </div>
             ) : (
@@ -195,7 +195,7 @@ export default function ActivityPage() {
                   <button onClick={() => setShowHwForm(false)}
                     className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-500">취소</button>
                   <button onClick={saveHomework} disabled={loading || !hwTitle.trim() || !hwDue}
-                    className="flex-1 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold disabled:opacity-50">등록</button>
+                    className="flex-1 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-semibold disabled:opacity-50">등록</button>
                 </div>
               </div>
             ) : (
@@ -213,11 +213,11 @@ export default function ActivityPage() {
               const { label, urgent, past } = dDay(h.due_date);
               return (
                 <div key={h.id} className={`bg-white rounded-2xl border p-4 flex items-center gap-3 ${
-                  h.completed ? "border-gray-100 opacity-60" : urgent ? "border-red-100" : "border-gray-100"
+                  h.completed ? "border-gray-100 opacity-60" : urgent ? "border-danger-100" : "border-gray-100"
                 }`}>
                   <button onClick={() => toggleHomework(h.id, h.completed)}
                     className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
-                      h.completed ? "bg-green-500 border-green-500" : "border-gray-300"
+                      h.completed ? "bg-success-500 border-success-500" : "border-gray-300"
                     }`}>
                     {h.completed && <span className="text-white text-xs">✓</span>}
                   </button>
@@ -232,7 +232,7 @@ export default function ActivityPage() {
                   <span className={`text-xs font-bold px-2 py-1 rounded-full ${
                     h.completed ? "bg-gray-100 text-gray-400" :
                     past ? "bg-gray-100 text-gray-400" :
-                    urgent ? "bg-red-100 text-red-600" : "bg-blue-100 text-blue-600"
+                    urgent ? "bg-danger-100 text-danger-600" : "bg-primary-100 text-primary-600"
                   }`}>
                     {h.completed ? "완료" : label}
                   </span>

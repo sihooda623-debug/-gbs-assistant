@@ -194,29 +194,29 @@ export default function HomePage() {
 
   if (!authChecked) return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+      <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin" />
     </div>
   );
 
   return (
     <div className="flex flex-col pb-4">
       {/* 헤더 */}
-      <div className="bg-blue-600 text-white px-4 pt-10 pb-8">
+      <div className="bg-white border-b border-gray-200 px-4 pt-10 pb-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-blue-200 text-sm">{dateStr}</p>
-            <h1 className="text-2xl font-bold mt-1">
+            <p className="text-gray-500 text-sm">{dateStr}</p>
+            <h1 className="text-3xl font-bold mt-2 text-gray-900">
               {profile?.name ? `안녕하세요, ${profile.name} 👋` : "안녕하세요 👋"}
             </h1>
             {profile && (
-              <p className="text-blue-100 text-sm mt-0.5">
+              <p className="text-gray-500 text-sm mt-1">
                 {profile.grade}학년 {profile.class_num}반
               </p>
             )}
           </div>
           <button
             onClick={() => router.push("/profile")}
-            className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white font-bold text-lg transition-colors"
+            className="w-10 h-10 rounded-full bg-primary-100 hover:bg-primary-200 flex items-center justify-center text-primary-700 font-bold text-lg transition-colors"
             title="프로필"
           >
             {profile?.name?.[0] ?? "?"}
@@ -230,7 +230,7 @@ export default function HomePage() {
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
             {current ? (
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shrink-0" />
+                <div className="w-2 h-2 bg-success-500 rounded-full animate-pulse shrink-0" />
                 <div>
                   <p className="text-xs text-gray-400">지금</p>
                   <p className="text-base font-bold text-gray-900">{current.period}</p>
@@ -241,7 +241,7 @@ export default function HomePage() {
                   const subj = todayPeriods[num - 1];
                   return subj?.subject ? (
                     <div className="ml-auto text-right">
-                      <p className="text-sm font-semibold text-blue-700">{subj.subject}</p>
+                      <p className="text-sm font-semibold text-primary-700">{subj.subject}</p>
                       {subj.teacher && (
                         <p className="text-xs text-gray-400">{getFullName(subj.teacher, subj.subject)} 선생님</p>
                       )}
@@ -251,7 +251,7 @@ export default function HomePage() {
               </div>
             ) : next ? (
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-blue-400 rounded-full shrink-0" />
+                <div className="w-2 h-2 bg-primary-400 rounded-full shrink-0" />
                 <div>
                   <p className="text-xs text-gray-400">다음</p>
                   <p className="text-base font-bold text-gray-900">{next.period}</p>
@@ -262,7 +262,7 @@ export default function HomePage() {
                   const subj = todayPeriods[num - 1];
                   return subj?.subject ? (
                     <div className="ml-auto text-right">
-                      <p className="text-sm font-semibold text-blue-700">{subj.subject}</p>
+                      <p className="text-sm font-semibold text-primary-700">{subj.subject}</p>
                       {subj.teacher && (
                         <p className="text-xs text-gray-400">{getFullName(subj.teacher, subj.subject)} 선생님</p>
                       )}
@@ -284,9 +284,9 @@ export default function HomePage() {
       {(isClubToday || isAfterToday) && (
         <div className="px-4 mt-3 flex gap-2">
           {isClubToday && (
-            <div className="flex items-center gap-1.5 bg-green-50 border border-green-100 rounded-full px-3 py-1.5">
+            <div className="flex items-center gap-1.5 bg-success-50 border border-success-100 rounded-full px-3 py-1.5">
               <span className="text-sm">🎯</span>
-              <span className="text-xs font-medium text-green-700">오늘 동아리 · {profile?.club_name}</span>
+              <span className="text-xs font-medium text-success-700">오늘 동아리 · {profile?.club_name}</span>
             </div>
           )}
           {isAfterToday && profile?.after_name && (
@@ -310,13 +310,13 @@ export default function HomePage() {
                 const isWedClub = todayIdx === 2 && p.periodNum === 7 && !!profile?.club_name;
                 return (
                   <div key={i} className={`flex items-center gap-3 px-4 py-2.5 ${i > 0 ? "border-t border-gray-50" : ""}`}>
-                    <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-md flex items-center justify-center text-xs font-bold shrink-0">
+                    <div className="w-6 h-6 bg-primary-100 text-primary-600 rounded-md flex items-center justify-center text-xs font-bold shrink-0">
                       {p.periodNum}
                     </div>
                     <div className="flex-1">
                       <span className="text-sm font-medium text-gray-800">{p.subject}</span>
                       {isWedClub && profile?.club_name && (
-                        <span className="text-xs text-green-600 ml-1">({profile.club_name})</span>
+                        <span className="text-xs text-success-600 ml-1">({profile.club_name})</span>
                       )}
                       <div className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
                         {p.teacher && <span>{getFullName(p.teacher, p.subject)}</span>}
@@ -369,13 +369,13 @@ export default function HomePage() {
       {!isWeekend && lunchFavs.length > 0 && (
         <div className="px-4 mt-4">
           <Link href="/meal">
-            <div className="bg-orange-50 border border-orange-100 rounded-2xl px-4 py-3 flex items-center gap-3">
+            <div className="bg-warning-50 border border-warning-100 rounded-2xl px-4 py-3 flex items-center gap-3">
               <span className="text-2xl">🍱</span>
               <div className="flex-1">
-                <p className="text-sm font-semibold text-orange-700">오늘 좋아하는 거 나와요!</p>
-                <p className="text-xs text-orange-500 mt-0.5">{lunchFavs.join(", ")}</p>
+                <p className="text-sm font-semibold text-warning-700">오늘 좋아하는 거 나와요!</p>
+                <p className="text-xs text-warning-500 mt-0.5">{lunchFavs.join(", ")}</p>
               </div>
-              <span className="text-orange-300 text-sm">›</span>
+              <span className="text-warning-300 text-sm">›</span>
             </div>
           </Link>
         </div>
@@ -402,20 +402,20 @@ export default function HomePage() {
               </div>
             </Link>
             <Link href="/activity/club">
-              <div className="bg-green-50 rounded-2xl p-3 flex flex-col items-center gap-1 active:opacity-70">
+              <div className="bg-success-50 rounded-2xl p-3 flex flex-col items-center gap-1 active:opacity-70">
                 <span className="text-2xl">🎯</span>
-                <span className="text-xs font-semibold text-green-700">동아리</span>
+                <span className="text-xs font-semibold text-success-700">동아리</span>
                 {profile.club_name && (
-                  <span className="text-xs text-green-400 text-center line-clamp-1">{profile.club_name}</span>
+                  <span className="text-xs text-success-400 text-center line-clamp-1">{profile.club_name}</span>
                 )}
               </div>
             </Link>
             <Link href="/activity/after">
-              <div className="bg-orange-50 rounded-2xl p-3 flex flex-col items-center gap-1 active:opacity-70">
+              <div className="bg-warning-50 rounded-2xl p-3 flex flex-col items-center gap-1 active:opacity-70">
                 <span className="text-2xl">📚</span>
-                <span className="text-xs font-semibold text-orange-700">방과후</span>
+                <span className="text-xs font-semibold text-warning-700">방과후</span>
                 {profile.after_name && (
-                  <span className="text-xs text-orange-400 text-center line-clamp-1">{profile.after_name}</span>
+                  <span className="text-xs text-warning-400 text-center line-clamp-1">{profile.after_name}</span>
                 )}
               </div>
             </Link>
@@ -441,13 +441,13 @@ export default function HomePage() {
               const act = actMeta[h.activity_type] ?? { emoji: "📋", name: "" };
               return (
                 <Link key={h.id} href={`/activity/${h.activity_type}`}>
-                  <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${urgent ? "bg-red-50 border-red-100" : "bg-white border-gray-100"}`}>
+                  <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${urgent ? "bg-danger-50 border-danger-100" : "bg-white border-gray-100"}`}>
                     <span className="text-lg">{act.emoji}</span>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-800">{h.title}</p>
                       <p className="text-xs text-gray-400">{act.name} · {new Date(h.due_date).toLocaleDateString("ko-KR", { month: "long", day: "numeric" })}</p>
                     </div>
-                    <span className={`text-xs font-bold px-2 py-1 rounded-full ${urgent ? "bg-red-100 text-red-600" : "bg-blue-100 text-blue-600"}`}>
+                    <span className={`text-xs font-bold px-2 py-1 rounded-full ${urgent ? "bg-danger-100 text-danger-600" : "bg-primary-100 text-primary-600"}`}>
                       {label}
                     </span>
                   </div>
@@ -471,9 +471,9 @@ export default function HomePage() {
             <div className="flex flex-col gap-2">
               {todaySchoolEvents.map((ev, i) => (
                 <div key={i} className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${
-                  ev.type === "holiday" ? "bg-red-50 border-red-100" :
-                  ev.type === "exam" ? "bg-orange-50 border-orange-100" :
-                  "bg-blue-50 border-blue-100"
+                  ev.type === "holiday" ? "bg-danger-50 border-danger-100" :
+                  ev.type === "exam" ? "bg-warning-50 border-warning-100" :
+                  "bg-primary-50 border-primary-100"
                 }`}>
                   <span className="text-lg">{ev.type === "holiday" ? "🏖️" : ev.type === "exam" ? "📝" : "📅"}</span>
                   <span className="text-sm font-medium text-gray-800">{ev.title}</span>
@@ -488,7 +488,7 @@ export default function HomePage() {
                       <p className="text-sm font-medium text-gray-800">{h.title}</p>
                       <p className="text-xs text-gray-400">{meta.label} · 오늘 마감</p>
                     </div>
-                    <span className="text-xs font-bold text-red-500 bg-red-100 px-2 py-1 rounded-full">D-Day</span>
+                    <span className="text-xs font-bold text-danger-500 bg-danger-100 px-2 py-1 rounded-full">D-Day</span>
                   </div>
                 );
               })}
@@ -500,11 +500,11 @@ export default function HomePage() {
       {/* 프로필 미설정 안내 */}
       {!profile && (
         <div className="px-4 mt-4">
-          <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-center gap-3">
+          <div className="bg-primary-50 border border-primary-100 rounded-xl p-4 flex items-center gap-3">
             <span className="text-2xl">⚙️</span>
             <div>
-              <p className="text-sm font-semibold text-blue-800">프로필을 설정해보세요</p>
-              <p className="text-xs text-blue-600 mt-0.5">
+              <p className="text-sm font-semibold text-primary-800">프로필을 설정해보세요</p>
+              <p className="text-xs text-primary-600 mt-0.5">
                 학년·반·동아리를 등록하면
                 <br />
                 오늘 시간표와 일정이 자동으로 표시돼요

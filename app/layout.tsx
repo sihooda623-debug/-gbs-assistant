@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2563EB",
+  themeColor: "#a64d5c",
   width: "device-width",
   initialScale: 1,
 };
@@ -33,8 +33,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="h-full">
-      <body className={`${notoSansKR.className} h-full bg-gray-50`}>
-        <div className="max-w-md mx-auto h-full flex flex-col bg-white relative">
+      <body className={`${notoSansKR.className} h-full bg-white`}>
+        <div className="max-w-md mx-auto h-full flex flex-col bg-gray-50 relative">
           <main className="flex-1 overflow-y-auto pb-20">{children}</main>
           <BottomNav />
         </div>

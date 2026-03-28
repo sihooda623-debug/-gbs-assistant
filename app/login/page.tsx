@@ -28,12 +28,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-50">
       {/* 상단 */}
-      <div className="bg-blue-600 text-white px-6 pt-16 pb-10 text-center">
+      <div className="bg-white border-b border-gray-200 px-6 pt-16 pb-10 text-center">
         <div className="text-4xl mb-3">🔬</div>
-        <h1 className="text-2xl font-bold">GBS 어시스트</h1>
-        <p className="text-blue-200 text-sm mt-1">경기북과학고 학생 생활 도우미</p>
+        <h1 className="text-3xl font-bold text-gray-900">GBS 어시스트</h1>
+        <p className="text-gray-500 text-sm mt-2">경기북과학고 학생 생활 도우미</p>
       </div>
 
       {/* 로그인 폼 */}
@@ -48,7 +48,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="example@gbs.hs.kr"
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-blue-400"
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-400"
               required
             />
           </div>
@@ -60,19 +60,19 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="비밀번호 입력"
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-blue-400"
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-400"
               required
             />
           </div>
 
           {error && (
-            <p className="text-red-500 text-sm text-center">{error}</p>
+            <p className="text-danger-500 text-sm text-center">{error}</p>
           )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold text-sm disabled:opacity-60 mt-2"
+            className="w-full bg-primary-600 text-white py-3 rounded-xl font-semibold text-sm disabled:opacity-60 mt-2"
           >
             {loading ? "로그인 중..." : "로그인"}
           </button>
@@ -80,7 +80,7 @@ export default function LoginPage() {
 
         <p className="text-center text-sm text-gray-500 mt-6">
           계정이 없으신가요?{" "}
-          <Link href="/signup" className="text-blue-600 font-semibold">
+          <Link href="/signup" className="text-primary-600 font-semibold">
             회원가입
           </Link>
         </p>

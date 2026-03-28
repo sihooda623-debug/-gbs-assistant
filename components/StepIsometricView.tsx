@@ -129,7 +129,7 @@ export default function StepIsometricView({ blocks, action }: Props) {
   const sorted = [...normalized].sort((a, b) => a.row - b.row || a.col - b.col);
 
   return (
-    <div className="w-full bg-slate-50 rounded-2xl overflow-hidden">
+    <div className="w-full bg-gray-50 rounded-2xl overflow-hidden">
       {/* 범례 */}
       <div className="flex gap-3 px-3 pt-2.5 pb-0 text-xs flex-wrap">
         {[

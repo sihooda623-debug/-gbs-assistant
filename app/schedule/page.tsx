@@ -14,14 +14,14 @@ type Homework = {
 
 
 const EVENT_COLOR: Record<SchoolEvent["type"], string> = {
-  holiday: "bg-red-500",
-  exam:    "bg-orange-400",
-  event:   "bg-blue-500",
+  holiday: "bg-danger-500",
+  exam:    "bg-warning-400",
+  event:   "bg-primary-500",
 };
 const EVENT_TEXT: Record<SchoolEvent["type"], string> = {
-  holiday: "text-red-600",
-  exam:    "text-orange-600",
-  event:   "text-blue-600",
+  holiday: "text-danger-600",
+  exam:    "text-warning-600",
+  event:   "text-primary-600",
 };
 
 // ───── 탭 / 분류 ─────
@@ -34,13 +34,13 @@ const TABS = [
 ];
 
 const TYPE_META: Record<string, { emoji: string; label: string; color: string }> = {
-  school: { emoji: "🏫", label: "학교",   color: "bg-blue-100 text-blue-700" },
+  school: { emoji: "🏫", label: "학교",   color: "bg-primary-100 text-primary-700" },
   rne:    { emoji: "🔬", label: "R&E",    color: "bg-purple-100 text-purple-700" },
-  club:   { emoji: "🎯", label: "동아리", color: "bg-green-100 text-green-700" },
-  after:  { emoji: "📚", label: "방과후", color: "bg-orange-100 text-orange-700" },
+  club:   { emoji: "🎯", label: "동아리", color: "bg-success-100 text-success-700" },
+  after:  { emoji: "📚", label: "방과후", color: "bg-warning-100 text-warning-700" },
 };
 
-const inputClass = "w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-blue-400 bg-white";
+const inputClass = "w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-400 bg-white";
 const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
 // ───── 캘린더 컴포넌트 ─────
@@ -106,7 +106,7 @@ function Calendar({
       {/* 요일 헤더 */}
       <div className="grid grid-cols-7 mb-1">
         {WEEKDAYS.map((d, i) => (
-          <div key={d} className={`text-center text-xs font-medium py-1 ${i === 0 ? "text-red-400" : i === 6 ? "text-blue-400" : "text-gray-400"}`}>
+          <div key={d} className={`text-center text-xs font-medium py-1 ${i === 0 ? "text-danger-400" : i === 6 ? "text-primary-400" : "text-gray-400"}`}>
             {d}
           </div>
         ))}
@@ -128,12 +128,12 @@ function Calendar({
             <button
               key={i}
               onClick={() => onSelectDate(dateStr)}
-              className={`flex flex-col items-center py-1 rounded-xl transition-colors ${isSelected ? "bg-blue-600" : isToday ? "bg-blue-50" : "hover:bg-gray-50"}`}
+              className={`flex flex-col items-center py-1 rounded-xl transition-colors ${isSelected ? "bg-primary-600" : isToday ? "bg-primary-50" : "hover:bg-gray-50"}`}
             >
               <span className={`text-xs font-medium ${
                 isSelected ? "text-white" :
-                isToday ? "text-blue-600 font-bold" :
-                isSun ? "text-red-400" : isSat ? "text-blue-400" : "text-gray-700"
+                isToday ? "text-primary-600 font-bold" :
+                isSun ? "text-danger-400" : isSat ? "text-primary-400" : "text-gray-700"
               }`}>{d}</span>
               <div className="flex gap-0.5 mt-0.5 h-2 items-center">
                 {evList.slice(0, 2).map((ev, j) => (
@@ -148,9 +148,9 @@ function Calendar({
 
       {/* 범례 */}
       <div className="flex gap-3 mt-3 pt-3 border-t border-gray-50 flex-wrap">
-        <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-red-500" /><span className="text-xs text-gray-400">공휴일</span></div>
-        <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-orange-400" /><span className="text-xs text-gray-400">시험</span></div>
-        <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-blue-500" /><span className="text-xs text-gray-400">학사일정</span></div>
+        <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-danger-500" /><span className="text-xs text-gray-400">공휴일</span></div>
+        <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-warning-400" /><span className="text-xs text-gray-400">시험</span></div>
+        <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-primary-500" /><span className="text-xs text-gray-400">학사일정</span></div>
         <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-yellow-400" /><span className="text-xs text-gray-400">숙제마감</span></div>
         <span className="text-xs text-gray-300 ml-auto">※ 1학년 기준</span>
       </div>
@@ -265,7 +265,7 @@ export default function SchedulePage() {
           {TABS.map((t) => (
             <button key={t.key} onClick={() => setTab(t.key)}
               className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                tab === t.key ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600"
+                tab === t.key ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"
               }`}>
               {t.label}
             </button>
@@ -287,9 +287,9 @@ export default function SchedulePage() {
           <div className="flex flex-col gap-1.5">
             {selectedEvents.map((ev, i) => (
               <div key={i} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border ${
-                ev.type === "holiday" ? "bg-red-50 border-red-100" :
-                ev.type === "exam" ? "bg-orange-50 border-orange-100" :
-                "bg-blue-50 border-blue-100"
+                ev.type === "holiday" ? "bg-danger-50 border-danger-100" :
+                ev.type === "exam" ? "bg-warning-50 border-warning-100" :
+                "bg-primary-50 border-primary-100"
               }`}>
                 <span className={`text-xs font-semibold shrink-0 ${EVENT_TEXT[ev.type]}`}>
                   {ev.type === "holiday" ? "공휴일" : ev.type === "exam" ? "시험" : "학사일정"}
@@ -329,7 +329,7 @@ export default function SchedulePage() {
                 {Object.entries(TYPE_META).map(([k, v]) => (
                   <button key={k} onClick={() => setType(k)}
                     className={`px-3 py-1.5 rounded-full text-xs font-medium border-2 transition-colors ${
-                      type === k ? "border-blue-600 bg-blue-50 text-blue-700" : "border-gray-200 text-gray-500"
+                      type === k ? "border-primary-600 bg-primary-50 text-primary-700" : "border-gray-200 text-gray-500"
                     }`}>
                     {v.emoji} {v.label}
                   </button>
@@ -345,7 +345,7 @@ export default function SchedulePage() {
               <button onClick={() => setShowForm(false)}
                 className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-500">취소</button>
               <button onClick={save} disabled={loading || !title.trim() || !dueDate}
-                className="flex-1 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold disabled:opacity-50">등록</button>
+                className="flex-1 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-semibold disabled:opacity-50">등록</button>
             </div>
           </div>
         ) : (
@@ -370,11 +370,11 @@ export default function SchedulePage() {
           return (
             <div key={h.id} className={`bg-white rounded-2xl border p-4 flex items-center gap-3 ${
               h.completed ? "border-gray-100 opacity-60" :
-              urgent ? "border-red-100" : "border-gray-100"
+              urgent ? "border-danger-100" : "border-gray-100"
             }`}>
               <button onClick={() => toggle(h.id, h.completed)}
                 className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
-                  h.completed ? "bg-green-500 border-green-500" : "border-gray-300"
+                  h.completed ? "bg-success-500 border-success-500" : "border-gray-300"
                 }`}>
                 {h.completed && <span className="text-white text-xs">✓</span>}
               </button>
@@ -392,7 +392,7 @@ export default function SchedulePage() {
               <span className={`text-xs font-bold px-2 py-1 rounded-full shrink-0 ${
                 h.completed ? "bg-gray-100 text-gray-400" :
                 past ? "bg-gray-100 text-gray-500" :
-                urgent ? "bg-red-100 text-red-600" : "bg-blue-100 text-blue-600"
+                urgent ? "bg-danger-100 text-danger-600" : "bg-primary-100 text-primary-600"
               }`}>
                 {h.completed ? "완료" : label}
               </span>

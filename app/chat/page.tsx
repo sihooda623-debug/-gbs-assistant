@@ -85,6 +85,20 @@ export default function ChatPage() {
 
     setCreating(true);
 
+    // 같은 그룹의 방이 이미 있는지 확인
+    const { data: existingRoom } = await supabase
+      .from("chat_rooms")
+      .select("id")
+      .eq("group_key", groupKey)
+      .eq("type", type)
+      .single();
+
+    if (existingRoom) {
+      setCreating(false);
+      alert(type === "club" ? "이미 이 동아리의 방이 있습니다. 초대 대기를 확인하세요." : "이미 이 R&E의 방이 있습니다. 초대 대기를 확인하세요.");
+      return;
+    }
+
     // 같은 그룹 키를 가진 유저 찾기
     const field = type === "club" ? "club_name" : "rne_name";
     const { data: peers } = await supabase
@@ -118,8 +132,8 @@ export default function ChatPage() {
   }
 
   const TYPE_INFO: Record<string, { emoji: string; color: string; bg: string }> = {
-    anonymous: { emoji: "💬", color: "text-blue-700", bg: "bg-blue-50" },
-    club:      { emoji: "🎯", color: "text-green-700", bg: "bg-green-50" },
+    anonymous: { emoji: "💬", color: "text-primary-700", bg: "bg-primary-50" },
+    club:      { emoji: "🎯", color: "text-success-700", bg: "bg-success-50" },
     rne:       { emoji: "🔬", color: "text-purple-700", bg: "bg-purple-50" },
   };
 
@@ -148,7 +162,7 @@ export default function ChatPage() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleInvite(inv.id, true)}
-                      className="text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg font-semibold"
+                      className="text-xs bg-primary-600 text-white px-3 py-1.5 rounded-lg font-semibold"
                     >수락</button>
                     <button
                       onClick={() => handleInvite(inv.id, false)}
@@ -167,7 +181,7 @@ export default function ChatPage() {
         <p className="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wide">전체 공개</p>
         <Link href={`/chat/${ANON_ROOM_ID}`}>
           <div className="bg-white rounded-2xl px-4 py-4 flex items-center gap-3 border border-gray-100 active:bg-gray-50">
-            <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-2xl shrink-0">💬</div>
+            <div className="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-2xl shrink-0">💬</div>
             <div className="flex-1">
               <p className="text-sm font-bold text-gray-900">익명 질문방</p>
               <p className="text-xs text-gray-400 mt-0.5">사진과 함께 익명으로 질문하세요</p>
@@ -209,14 +223,14 @@ export default function ChatPage() {
             {profile.club_name && (
               <button
                 onClick={() => setCreateType("club")}
-                className="bg-white rounded-2xl px-4 py-4 flex items-center gap-3 border border-dashed border-green-300 active:bg-green-50 text-left"
+                className="bg-white rounded-2xl px-4 py-4 flex items-center gap-3 border border-dashed border-success-300 active:bg-success-50 text-left"
               >
-                <div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-2xl shrink-0">🎯</div>
+                <div className="w-12 h-12 bg-success-50 rounded-2xl flex items-center justify-center text-2xl shrink-0">🎯</div>
                 <div className="flex-1">
-                  <p className="text-sm font-bold text-green-700">{profile.club_name} 동아리방 만들기</p>
+                  <p className="text-sm font-bold text-success-700">{profile.club_name} 동아리방 만들기</p>
                   <p className="text-xs text-gray-400 mt-0.5">같은 동아리 멤버에게 초대 전송</p>
                 </div>
-                <span className="text-green-400 text-lg">+</span>
+                <span className="text-success-400 text-lg">+</span>
               </button>
             )}
             {profile.rne_name && (
@@ -249,7 +263,7 @@ export default function ChatPage() {
             <button
               onClick={() => createRoom(createType)}
               disabled={creating}
-              className="w-full py-3.5 bg-blue-600 text-white font-bold rounded-2xl disabled:opacity-50"
+              className="w-full py-3.5 bg-primary-600 text-white font-bold rounded-2xl disabled:opacity-50"
             >
               {creating ? "만드는 중..." : "방 만들기"}
             </button>

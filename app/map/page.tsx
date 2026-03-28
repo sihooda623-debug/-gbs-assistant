@@ -6,10 +6,10 @@ import { findPath, PathStep } from "@/lib/pathfinding";
 import FloorPlanView from "@/components/FloorPlanView";
 
 const STEP_STYLES: Record<string, { bg: string; border: string; icon: string }> = {
-  indoor:  { bg: "bg-blue-50",   border: "border-blue-200",   icon: "🚶" },
+  indoor:  { bg: "bg-primary-50",   border: "border-primary-200",   icon: "🚶" },
   outdoor: { bg: "bg-amber-50",  border: "border-amber-200",  icon: "☀️" },
   stairs:  { bg: "bg-indigo-50", border: "border-indigo-200", icon: "🪜" },
-  arrive:  { bg: "bg-green-50",  border: "border-green-200",  icon: "🎯" },
+  arrive:  { bg: "bg-success-50",  border: "border-success-200",  icon: "🎯" },
 };
 
 function getStepStyle(step: PathStep, isLast: boolean) {
@@ -129,7 +129,7 @@ export default function MapPage() {
           </div>
           <div>
             <h1 className="text-lg font-bold text-white">교내 길찾기</h1>
-            <p className="text-blue-200 text-xs">층별 평면도로 안내</p>
+            <p className="text-primary-200 text-xs">층별 평면도로 안내</p>
           </div>
         </div>
       </div>
@@ -179,8 +179,8 @@ export default function MapPage() {
         {/* 도착지 */}
         <div className="relative">
           <div className={`flex items-center gap-2.5 border-2 rounded-xl px-3 py-2.5 transition-colors
-            ${toRoom ? "border-red-400 bg-red-50" : "border-gray-100 bg-gray-50 focus-within:border-red-300"}`}>
-            <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center shrink-0">
+            ${toRoom ? "border-danger-400 bg-danger-50" : "border-gray-100 bg-gray-50 focus-within:border-danger-300"}`}>
+            <div className="w-6 h-6 bg-danger-500 rounded-full flex items-center justify-center shrink-0">
               <span className="text-white text-xs font-bold">E</span>
             </div>
             <input
@@ -199,7 +199,7 @@ export default function MapPage() {
             <ul className="absolute z-30 left-0 right-0 bg-white border border-gray-200 rounded-xl mt-1 shadow-xl overflow-hidden">
               {toResults.map((r) => (
                 <li key={r.id} onClick={() => selectTo(r)}
-                  className="px-4 py-3 text-sm cursor-pointer hover:bg-red-50 flex justify-between items-center border-b border-gray-50 last:border-0">
+                  className="px-4 py-3 text-sm cursor-pointer hover:bg-danger-50 flex justify-between items-center border-b border-gray-50 last:border-0">
                   <span className="font-medium text-gray-800">{r.name}</span>
                   <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
                     {r.building} {r.floor}층
@@ -210,7 +210,7 @@ export default function MapPage() {
           )}
         </div>
 
-        {error && <p className="text-xs text-red-500 text-center">{error}</p>}
+        {error && <p className="text-xs text-danger-500 text-center">{error}</p>}
 
         <button
           onClick={handleSearch}
@@ -228,7 +228,7 @@ export default function MapPage() {
 
           {/* 단계 진행 바 */}
           <div className="bg-white rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm">
-            <span className="text-xs font-bold text-blue-700 bg-blue-100 px-2.5 py-1 rounded-full shrink-0">
+            <span className="text-xs font-bold text-primary-700 bg-primary-100 px-2.5 py-1 rounded-full shrink-0">
               {currentStep + 1} / {steps.length}
             </span>
             <div className="flex-1 flex gap-1 items-center overflow-hidden">
@@ -236,7 +236,7 @@ export default function MapPage() {
                 <button
                   key={i}
                   onClick={() => setCurrentStep(i)}
-                  className={`transition-all rounded-full h-2 ${i === currentStep ? "bg-blue-600 flex-[2]" : "bg-gray-200 flex-1"}`}
+                  className={`transition-all rounded-full h-2 ${i === currentStep ? "bg-primary-600 flex-[2]" : "bg-gray-200 flex-1"}`}
                   title={s.instruction}
                 />
               ))}
@@ -307,20 +307,20 @@ export default function MapPage() {
                   <li
                     key={i}
                     onClick={() => setCurrentStep(i)}
-                    className={`flex items-center gap-3 py-2.5 cursor-pointer border-b border-gray-50 last:border-0 rounded-xl px-2 my-0.5 transition-colors ${active ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                    className={`flex items-center gap-3 py-2.5 cursor-pointer border-b border-gray-50 last:border-0 rounded-xl px-2 my-0.5 transition-colors ${active ? "bg-primary-50" : "hover:bg-gray-50"}`}
                   >
-                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-sm shrink-0 ${active ? "bg-blue-100" : "bg-gray-100"}`}>
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-sm shrink-0 ${active ? "bg-primary-100" : "bg-gray-100"}`}>
                       {st.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-sm truncate ${active ? "font-semibold text-blue-700" : "text-gray-600"}`}>
+                      <p className={`text-sm truncate ${active ? "font-semibold text-primary-700" : "text-gray-600"}`}>
                         {s.instruction}
                       </p>
                       <p className="text-xs text-gray-400">
                         {s.isStairs ? `${s.stairFrom}층 → ${s.stairTo}층` : `${s.floor}층${s.isOutdoor ? " · 실외" : ""}`}
                       </p>
                     </div>
-                    {active && <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />}
+                    {active && <span className="w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0" />}
                   </li>
                 );
               })}

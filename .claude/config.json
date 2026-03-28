@@ -1,0 +1,13 @@
+{
+  "models": {
+    "default": "openrouter:anthropic/claude-3.5-sonnet",
+    "background": "openrouter:anthropic/claude-3.5-haiku",
+    "think": "openrouter:anthropic/claude-3-opus-4-6",
+    "longContext": "openrouter:anthropic/claude-3-opus-4-6"
+  },
+  "routers": {
+    "openrouter": {
+      "enabled": true
+    }
+  }
+}

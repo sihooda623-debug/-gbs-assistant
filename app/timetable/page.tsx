@@ -102,11 +102,11 @@ export default function TimetablePage() {
         <div className="flex gap-1 mb-0">
           <button
             onClick={() => setMainTab("timetable")}
-            className={`flex-1 py-2.5 text-sm font-bold rounded-t-xl transition-colors ${mainTab === "timetable" ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-400"}`}
+            className={`flex-1 py-2.5 text-sm font-bold rounded-t-xl transition-colors ${mainTab === "timetable" ? "text-primary-600 border-b-2 border-primary-600" : "text-gray-400"}`}
           >시간표</button>
           <button
             onClick={() => setMainTab("meal")}
-            className={`flex-1 py-2.5 text-sm font-bold rounded-t-xl transition-colors ${mainTab === "meal" ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-400"}`}
+            className={`flex-1 py-2.5 text-sm font-bold rounded-t-xl transition-colors ${mainTab === "meal" ? "text-primary-600 border-b-2 border-primary-600" : "text-gray-400"}`}
           >급식</button>
         </div>
       </div>
@@ -127,7 +127,7 @@ export default function TimetablePage() {
             {[1,2,3,4,5].map((c) => <option key={c} value={c}>{c}반</option>)}
           </select>
           <button onClick={() => fetchTimetable()}
-            className="bg-blue-600 text-white px-4 rounded-xl text-sm font-medium">
+            className="bg-primary-600 text-white px-4 rounded-xl text-sm font-medium">
             조회
           </button>
         </div>
@@ -137,7 +137,7 @@ export default function TimetablePage() {
           {(["daily","weekly"] as const).map((t) => (
             <button key={t} onClick={() => setTab(t)}
               className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
-                tab === t ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600"}`}>
+                tab === t ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"}`}>
               {t === "daily" ? "일과표" : "주간 시간표"}
             </button>
           ))}
@@ -147,7 +147,7 @@ export default function TimetablePage() {
       {loading && (
         <div className="flex items-center justify-center py-20 text-gray-400 text-sm">불러오는 중...</div>
       )}
-      {error && <div className="px-4 py-4 text-red-500 text-sm text-center">{error}</div>}
+      {error && <div className="px-4 py-4 text-danger-500 text-sm text-center">{error}</div>}
 
       {/* 일과표 */}
       {!loading && tab === "daily" && (
@@ -157,7 +157,7 @@ export default function TimetablePage() {
             {DAYS.map((d, i) => (
               <button key={d} onClick={() => setSelectedDay(i)}
                 className={`flex-1 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  selectedDay === i ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600"}`}>
+                  selectedDay === i ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"}`}>
                 {d}
               </button>
             ))}
@@ -220,7 +220,7 @@ export default function TimetablePage() {
             {DAYS.map((d, i) => (
               <button key={d} onClick={() => setSelectedDay(i)}
                 className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
-                  selectedDay === i ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600"}`}>
+                  selectedDay === i ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"}`}>
                 {d}
               </button>
             ))}
@@ -242,12 +242,12 @@ export default function TimetablePage() {
                 );
 
                 return (
-                  <div key={idx} className="flex items-center gap-3 bg-blue-50 px-4 py-3 rounded-xl">
-                    <div className="w-8 h-8 bg-blue-600 text-white rounded-lg flex items-center justify-center text-sm font-bold shrink-0">
+                  <div key={idx} className="flex items-center gap-3 bg-primary-50 px-4 py-3 rounded-xl">
+                    <div className="w-8 h-8 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-bold shrink-0">
                       {periodNum}
                     </div>
                     <div className="flex-1">
-                      <div className="text-sm font-semibold text-blue-700">
+                      <div className="text-sm font-semibold text-primary-700">
                         {subject.subject}
                         {isWedClub && profile?.club_name ? ` (${profile.club_name})` : ""}
                       </div>

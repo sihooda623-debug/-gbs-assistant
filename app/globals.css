@@ -4,6 +4,66 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   overscroll-behavior: none;
+  background-color: #ffffff;
+  color: #111827;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* 기본 버튼 스타일 */
+button {
+  transition: all 200ms ease-out;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* 입력 요소 */
+input, textarea, select {
+  transition: color 200ms;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: #5a7cff;
+  box-shadow: 0 0 0 3px rgba(90, 124, 255, 0.1);
+}
+
+/* 카드 스타일 */
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  transition: all 200ms;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #d1d5db;
+}
+
+/* 스크롤 스타일 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }

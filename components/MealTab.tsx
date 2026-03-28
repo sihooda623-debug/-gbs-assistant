@@ -152,7 +152,7 @@ export default function MealTab() {
             <p className="text-sm text-gray-500 mt-0.5">경기북과학고등학교</p>
           </div>
           <button onClick={() => setShowSettings((v) => !v)}
-            className={`text-sm px-3 py-1.5 rounded-xl transition-colors ${showSettings ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600"}`}>
+            className={`text-sm px-3 py-1.5 rounded-xl transition-colors ${showSettings ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"}`}>
             ⚙️ 설정
           </button>
         </div>
@@ -175,8 +175,8 @@ export default function MealTab() {
             return (
               <button key={dStr} onClick={() => setSelectedDate(d)}
                 className={`flex-1 flex flex-col items-center py-2 rounded-xl transition-colors ${
-                  dStr === selStr ? "bg-blue-600 text-white" :
-                  dStr === todayStr ? "bg-blue-50 text-blue-600" : "text-gray-500"
+                  dStr === selStr ? "bg-primary-600 text-white" :
+                  dStr === todayStr ? "bg-primary-50 text-primary-600" : "text-gray-500"
                 }`}>
                 <span className="text-xs">{DAY_NAMES[d.getDay()]}</span>
                 <span className="text-sm font-bold">{d.getDate()}</span>
@@ -190,7 +190,7 @@ export default function MealTab() {
           {MEAL_TYPES.map((mt) => (
             <button key={mt.code} onClick={() => setMealTab(mt.code)}
               className={`flex-1 py-1.5 rounded-xl text-xs font-medium transition-colors ${
-                mealTab === mt.code ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-500"
+                mealTab === mt.code ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-500"
               }`}>
               {mt.label}
               {meals[mt.code] ? "" : " -"}
@@ -228,7 +228,7 @@ export default function MealTab() {
                   <button key={code}
                     onClick={() => saveAllergens(userAllergens.includes(n) ? userAllergens.filter(a=>a!==n) : [...userAllergens, n])}
                     className={`px-3 py-1.5 rounded-full text-xs font-medium border-2 transition-colors ${
-                      userAllergens.includes(n) ? "border-red-400 bg-red-50 text-red-700" : "border-gray-200 text-gray-500"
+                      userAllergens.includes(n) ? "border-red-400 bg-danger-50 text-danger-700" : "border-gray-200 text-gray-500"
                     }`}>
                     {name}
                   </button>
@@ -243,11 +243,11 @@ export default function MealTab() {
       <div className="px-4 pt-4 flex flex-col gap-3 pb-8">
         {/* 알레르기 경고 배너 */}
         {dangerItems.length > 0 && (
-          <div className="bg-red-50 border border-red-200 rounded-2xl px-4 py-3 flex items-start gap-2">
+          <div className="bg-danger-50 border border-red-200 rounded-2xl px-4 py-3 flex items-start gap-2">
             <span className="text-lg shrink-0">⚠️</span>
             <div>
-              <p className="text-sm font-semibold text-red-700">알레르기 주의!</p>
-              <p className="text-xs text-red-500 mt-0.5">
+              <p className="text-sm font-semibold text-danger-700">알레르기 주의!</p>
+              <p className="text-xs text-danger-500 mt-0.5">
                 {dangerItems.map(i => i.name).join(", ")}에 알레르기 성분이 포함돼 있어요
               </p>
             </div>
@@ -258,7 +258,7 @@ export default function MealTab() {
           <div className="bg-gray-50 rounded-2xl p-8 text-center text-gray-400 text-sm">불러오는 중...</div>
         )}
         {error && (
-          <div className="bg-red-50 rounded-2xl p-6 text-center text-red-400 text-sm">{error}</div>
+          <div className="bg-danger-50 rounded-2xl p-6 text-center text-danger-400 text-sm">{error}</div>
         )}
 
         {!loading && !error && !currentMeal && (
@@ -278,7 +278,7 @@ export default function MealTab() {
                 {selectedDate.getMonth()+1}월 {selectedDate.getDate()}일{" "}
                 <span className="text-gray-400 font-normal">({DAY_NAMES[selectedDate.getDay()]})</span>
                 {" "}{MEAL_TYPES.find(m=>m.code===mealTab)?.label}
-                {selStr === todayStr && <span className="ml-2 text-xs text-blue-600 font-medium">오늘</span>}
+                {selStr === todayStr && <span className="ml-2 text-xs text-primary-600 font-medium">오늘</span>}
               </h2>
               {currentMeal.cal && <span className="text-xs text-gray-400">{currentMeal.cal}</span>}
             </div>
@@ -290,15 +290,15 @@ export default function MealTab() {
                 const EMOJIS = ["🍚","🍲","🥗","🍖","🥬","🍱","🥘","🍜","🍳","🫕"];
                 return (
                   <div key={i} className={`flex items-center gap-3 px-4 py-3 ${i > 0 ? "border-t border-gray-50" : ""} ${
-                    danger ? "bg-red-50" : fav ? "bg-yellow-50" : ""
+                    danger ? "bg-danger-50" : fav ? "bg-yellow-50" : ""
                   }`}>
                     <span className="text-lg shrink-0">{EMOJIS[i % EMOJIS.length]}</span>
-                    <span className={`text-sm flex-1 ${danger ? "text-red-700 font-medium" : fav ? "text-yellow-800 font-medium" : "text-gray-800"}`}>
+                    <span className={`text-sm flex-1 ${danger ? "text-danger-700 font-medium" : fav ? "text-yellow-800 font-medium" : "text-gray-800"}`}>
                       {item.name}
                       {fav && !danger && <span className="ml-1 text-xs text-yellow-500">★</span>}
                     </span>
                     {danger && (
-                      <span className="text-xs text-red-500 shrink-0">
+                      <span className="text-xs text-danger-500 shrink-0">
                         ⚠️ {item.allergens.filter(a => userAllergens.includes(a)).map(a => ALLERGEN_MAP[a]).join("·")}
                       </span>
                     )}
@@ -314,7 +314,7 @@ export default function MealTab() {
             {(favPrefs.length > 0 || userAllergens.length > 0) && (
               <div className="flex gap-3 text-xs text-gray-400">
                 {favPrefs.length > 0 && <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-yellow-100 border border-yellow-300 inline-block"/>선호 음식</span>}
-                {userAllergens.length > 0 && <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-red-100 border border-red-300 inline-block"/>알레르기 주의</span>}
+                {userAllergens.length > 0 && <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-sm bg-danger-100 border border-red-300 inline-block"/>알레르기 주의</span>}
               </div>
             )}
           </>

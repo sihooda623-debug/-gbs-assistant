@@ -199,7 +199,7 @@ export default function QuestionPage() {
   if (!question) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -215,11 +215,11 @@ export default function QuestionPage() {
       {/* 질문 */}
       <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-4">
         {/* 질문 카드 */}
-        <div className="bg-white rounded-2xl border-2 border-orange-200 p-4">
+        <div className="bg-white rounded-2xl border-2 border-warning-200 p-4">
           <div className="flex items-center gap-2 mb-3">
             <span className="text-lg">❓</span>
             <div className="flex-1">
-              <p className="text-xs font-bold text-orange-600">질문</p>
+              <p className="text-xs font-bold text-warning-600">질문</p>
               <p className="text-xs text-gray-500">{question.sender_name}</p>
             </div>
             <span className="text-xs text-gray-400">{formatTime(question.created_at)}</span>
@@ -253,11 +253,11 @@ export default function QuestionPage() {
             : answer.content;
 
           return (
-            <div key={answer.id} className="bg-white rounded-2xl border border-green-200 p-4">
+            <div key={answer.id} className="bg-white rounded-2xl border border-success-200 p-4">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-lg">✅</span>
                 <div className="flex-1">
-                  <p className="text-xs font-bold text-green-600">답변</p>
+                  <p className="text-xs font-bold text-success-600">답변</p>
                   <p className="text-xs text-gray-500">{answer.sender_name}</p>
                 </div>
                 <span className="text-xs text-gray-400">{formatTime(answer.created_at)}</span>
@@ -336,7 +336,7 @@ export default function QuestionPage() {
           <button
             onClick={handleSendAnswer}
             disabled={(!text.trim() && !imageFile) || sending || uploading}
-            className="w-9 h-9 bg-green-600 disabled:bg-gray-200 rounded-xl flex items-center justify-center shrink-0 transition-colors"
+            className="w-9 h-9 bg-success-600 disabled:bg-gray-200 rounded-xl flex items-center justify-center shrink-0 transition-colors"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2.5} className="w-4 h-4">
               <path
