@@ -199,7 +199,7 @@ export default function HomePage() {
   );
 
   return (
-    <div className="flex flex-col pb-4">
+    <div className="flex flex-col pb-4 bg-primary-200">
       {/* 헤더 */}
       <div className="bg-white border-b border-gray-200 px-4 pt-10 pb-6">
         <div className="flex items-center justify-between">

@@ -33,8 +33,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="h-full">
-      <body className={`${notoSansKR.className} h-full bg-white`}>
-        <div className="max-w-md mx-auto h-full flex flex-col bg-gray-50 relative">
+      <body className={`${notoSansKR.className} h-full bg-primary-100`}>
+        <div className="max-w-md mx-auto h-full flex flex-col bg-primary-100 relative">
           <main className="flex-1 overflow-y-auto pb-20">{children}</main>
           <BottomNav />
         </div>
