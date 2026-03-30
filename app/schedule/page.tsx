@@ -137,11 +137,17 @@ function Calendar({
               }`}>{d}</span>
               <div className="flex gap-1 mt-1 h-3 items-center">
                 {evList.length > 0 && (
-                  <div className={`text-xs font-bold px-1.5 py-0.5 rounded-sm ${isSelected ? "bg-white text-primary-500" : "bg-primary-500 text-white"}`}>
-                    {evList.length === 1 ? evList[0].type === "holiday" ? "휴" : evList[0].type === "exam" ? "시" : "일" : "일정"}
+                  <div className="flex gap-1">
+                    {evList.map((ev, idx) => (
+                      <div key={idx} className={`w-1.5 h-1.5 rounded-full ${
+                        ev.type === "holiday" ? "bg-danger-500" :
+                        ev.type === "exam" ? "bg-warning-400" :
+                        "bg-primary-500"
+                      }`} />
+                    ))}
                   </div>
                 )}
-                {hasHw && <div className={`text-xs font-bold px-1.5 py-0.5 rounded-sm ${isSelected ? "bg-yellow-100 text-yellow-700" : "bg-yellow-400 text-yellow-700"}`}>숙</div>}
+                {hasHw && <div className="w-1.5 h-1.5 rounded-full bg-yellow-400" />}
               </div>
             </button>
           );

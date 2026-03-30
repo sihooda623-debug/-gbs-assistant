@@ -100,10 +100,10 @@ export default function AIChatPage() {
         {messages.map((msg, i) => (
           <div key={i} className={`mb-3 flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
             <div
-              className={`px-3 py-2 rounded-lg max-w-xs ${
+              className={`px-4 py-2.5 rounded-lg max-w-xs ${
                 msg.role === "user"
-                  ? "bg-primary-500 text-white"
-                  : "bg-white border border-gray-200 text-gray-800"
+                  ? "bg-primary-500 text-white font-medium"
+                  : "bg-gray-50 border border-gray-200 text-gray-800"
               }`}
             >
               <p className="text-sm">{msg.content}</p>
@@ -112,7 +112,7 @@ export default function AIChatPage() {
         ))}
         {isLoading && (
           <div className="mb-3 flex justify-start">
-            <div className="bg-white border border-gray-200 px-3 py-2 rounded-lg">
+            <div className="bg-gray-50 border border-gray-200 px-4 py-2.5 rounded-lg">
               <p className="text-sm text-gray-500">생성 중...</p>
             </div>
           </div>
