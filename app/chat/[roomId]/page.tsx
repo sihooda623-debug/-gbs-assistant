@@ -21,6 +21,7 @@ type Room = {
   id: string;
   type: string;
   name: string;
+  created_by?: string;
 };
 
 export default function RoomPage() {
