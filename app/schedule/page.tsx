@@ -128,26 +128,23 @@ function Calendar({
             <button
               key={i}
               onClick={() => onSelectDate(dateStr)}
-              className={`flex flex-col items-center py-1 rounded-xl transition-colors ${isSelected ? "bg-primary-500" : isToday ? "bg-gray-50" : "hover:bg-gray-50"}`}
+              style={{backgroundColor: isSelected ? "#0052cc" : isToday ? "#f7f6f3" : "transparent"}}
+              className={`flex flex-col items-center py-1 rounded-xl transition-colors hover:bg-gray-50`}
             >
-              <span className={`text-xs font-medium ${
-                isSelected ? "text-white" :
-                isToday ? "text-primary-500 font-bold" :
-                isSun ? "text-danger-400" : isSat ? "text-primary-500" : "text-gray-700"
-              }`}>{d}</span>
+              <span style={{
+                color: isSelected ? "white" : isToday ? "#0052cc" : isSun ? "#ef4444" : isSat ? "#0052cc" : "#374151"
+              }} className={`text-xs font-medium ${isToday ? "font-bold" : ""}`}>{d}</span>
               <div className="flex gap-1 mt-1 h-3 items-center">
                 {evList.length > 0 && (
                   <div className="flex gap-1">
                     {evList.map((ev, idx) => (
-                      <div key={idx} className={`w-1.5 h-1.5 rounded-full ${
-                        ev.type === "holiday" ? "bg-danger-500" :
-                        ev.type === "exam" ? "bg-warning-400" :
-                        "bg-primary-500"
-                      }`} />
+                      <div key={idx} style={{
+                        backgroundColor: ev.type === "holiday" ? "#ef4444" : ev.type === "exam" ? "#f59e0b" : "#0052cc"
+                      }} className="w-1.5 h-1.5 rounded-full" />
                     ))}
                   </div>
                 )}
-                {hasHw && <div className="w-1.5 h-1.5 rounded-full bg-yellow-400" />}
+                {hasHw && <div className="w-1.5 h-1.5 rounded-full" style={{backgroundColor: "#f59e0b"}} />}
               </div>
             </button>
           );

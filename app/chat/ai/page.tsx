@@ -99,15 +99,15 @@ export default function AIChatPage() {
         )}
         {messages.map((msg, i) => (
           <div key={i} className={`mb-3 flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-            <div
-              className={`px-4 py-2.5 rounded-lg max-w-xs ${
-                msg.role === "user"
-                  ? "bg-primary-500 text-white font-medium"
-                  : "bg-gray-50 border border-gray-200 text-gray-800"
-              }`}
-            >
-              <p className="text-sm">{msg.content}</p>
-            </div>
+            {msg.role === "user" ? (
+              <div style={{backgroundColor: "#0052cc"}} className="px-4 py-2.5 rounded-lg max-w-xs text-white font-medium">
+                <p className="text-sm">{msg.content}</p>
+              </div>
+            ) : (
+              <div className="px-4 py-2.5 rounded-lg max-w-xs bg-gray-50 border border-gray-200 text-gray-800">
+                <p className="text-sm">{msg.content}</p>
+              </div>
+            )}
           </div>
         ))}
         {isLoading && (
@@ -134,7 +134,8 @@ export default function AIChatPage() {
         <button
           onClick={handleSend}
           disabled={isLoading || !inputText.trim()}
-          className="w-10 h-10 bg-primary-500 text-white rounded-lg flex items-center justify-center disabled:opacity-50"
+          style={{backgroundColor: "#0052cc"}}
+          className="w-10 h-10 text-white rounded-lg flex items-center justify-center disabled:opacity-50"
         >
           ↑
         </button>

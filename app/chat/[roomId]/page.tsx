@@ -929,7 +929,7 @@ export default function RoomPage() {
 
             <button
               onClick={() => setShowGuideModal(false)}
-              className="w-full bg-primary-500 text-white py-3 rounded-lg font-bold text-sm mt-2"
+              style={{"backgroundColor": "#0052cc"}} className="w-full text-white py-3 rounded-lg font-bold text-sm mt-2"
             >
               확인했습니다
             </button>
