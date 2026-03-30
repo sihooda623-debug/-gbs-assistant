@@ -176,19 +176,31 @@ export default function ChatPage() {
         </div>
       )}
 
-      {/* 익명 질문방 */}
+      {/* 익명 질문방 & AI 도우미 */}
       <div className="mx-4 mt-4">
         <p className="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wide">전체 공개</p>
-        <Link href={`/chat/${ANON_ROOM_ID}`}>
-          <div className="bg-white rounded-2xl px-4 py-4 flex items-center gap-3 border border-gray-100 active:bg-gray-50">
-            <div className="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-2xl shrink-0">💬</div>
-            <div className="flex-1">
-              <p className="text-sm font-bold text-gray-900">익명 질문방</p>
-              <p className="text-xs text-gray-400 mt-0.5">사진과 함께 익명으로 질문하세요</p>
+        <div className="flex flex-col gap-2">
+          <Link href={`/chat/${ANON_ROOM_ID}`}>
+            <div className="bg-white rounded-2xl px-4 py-4 flex items-center gap-3 border border-gray-100 active:bg-gray-50">
+              <div className="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-2xl shrink-0">💬</div>
+              <div className="flex-1">
+                <p className="text-sm font-bold text-gray-900">익명 질문방</p>
+                <p className="text-xs text-gray-400 mt-0.5">사진과 함께 익명으로 질문하세요</p>
+              </div>
+              <span className="text-gray-300 text-lg">›</span>
             </div>
-            <span className="text-gray-300 text-lg">›</span>
-          </div>
-        </Link>
+          </Link>
+          <Link href="/chat/ai">
+            <div className="bg-white rounded-2xl px-4 py-4 flex items-center gap-3 border border-gray-100 active:bg-gray-50">
+              <div className="w-12 h-12 bg-violet-100 rounded-2xl flex items-center justify-center text-2xl shrink-0">✨</div>
+              <div className="flex-1">
+                <p className="text-sm font-bold text-gray-900">AI 도우미</p>
+                <p className="text-xs text-gray-400 mt-0.5">학교 생활 관련 질문을 AI에게 물어보세요</p>
+              </div>
+              <span className="text-gray-300 text-lg">›</span>
+            </div>
+          </Link>
+        </div>
       </div>
 
       {/* 내 채팅방 */}
