@@ -132,7 +132,7 @@ export default function ChatPage() {
   }
 
   const TYPE_INFO: Record<string, { emoji: string; color: string; bg: string }> = {
-    anonymous: { emoji: "💬", color: "text-primary-700", bg: "bg-primary-50" },
+    anonymous: { emoji: "💬", color: "text-primary-500", bg: "bg-gray-50" },
     club:      { emoji: "🎯", color: "text-success-700", bg: "bg-success-50" },
     rne:       { emoji: "🔬", color: "text-purple-700", bg: "bg-purple-50" },
   };
@@ -140,8 +140,8 @@ export default function ChatPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 pb-24">
       {/* 헤더 */}
-      <div className="bg-white px-4 pt-10 pb-4 border-b border-gray-100">
-        <h1 className="text-xl font-bold text-gray-900">채팅</h1>
+      <div className="bg-white px-4 pt-10 pb-4 border-b border-gray-200">
+        <h1 className="text-xl font-bold text-gray-800">채팅</h1>
         <p className="text-sm text-gray-400 mt-0.5">질문방·동아리방·R&E방</p>
       </div>
 
@@ -153,7 +153,7 @@ export default function ChatPage() {
             {pendingInvites.map((inv) => {
               const info = TYPE_INFO[inv.chat_rooms.type] ?? TYPE_INFO.anonymous;
               return (
-                <div key={inv.id} className={`${info.bg} rounded-2xl px-4 py-3 flex items-center gap-3`}>
+                <div key={inv.id} className={`${info.bg} rounded-lg px-4 py-3 flex items-center gap-3`}>
                   <span className="text-2xl">{info.emoji}</span>
                   <div className="flex-1">
                     <p className={`text-sm font-semibold ${info.color}`}>{inv.chat_rooms.name}</p>
@@ -162,7 +162,7 @@ export default function ChatPage() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleInvite(inv.id, true)}
-                      className="text-xs bg-primary-600 text-white px-3 py-1.5 rounded-lg font-semibold"
+                      className="text-xs bg-primary-500 text-white px-3 py-1.5 rounded-lg font-semibold"
                     >수락</button>
                     <button
                       onClick={() => handleInvite(inv.id, false)}
@@ -181,20 +181,20 @@ export default function ChatPage() {
         <p className="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wide">전체 공개</p>
         <div className="flex flex-col gap-2">
           <Link href={`/chat/${ANON_ROOM_ID}`}>
-            <div className="bg-white rounded-2xl px-4 py-4 flex items-center gap-3 border border-gray-100 active:bg-gray-50">
-              <div className="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-2xl shrink-0">💬</div>
+            <div className="bg-white rounded-lg px-4 py-4 flex items-center gap-3 border border-gray-200 active:bg-gray-50">
+              <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-2xl shrink-0">💬</div>
               <div className="flex-1">
-                <p className="text-sm font-bold text-gray-900">익명 질문방</p>
+                <p className="text-sm font-bold text-gray-800">익명 질문방</p>
                 <p className="text-xs text-gray-400 mt-0.5">사진과 함께 익명으로 질문하세요</p>
               </div>
               <span className="text-gray-300 text-lg">›</span>
             </div>
           </Link>
           <Link href="/chat/ai">
-            <div className="bg-white rounded-2xl px-4 py-4 flex items-center gap-3 border border-gray-100 active:bg-gray-50">
-              <div className="w-12 h-12 bg-violet-100 rounded-2xl flex items-center justify-center text-2xl shrink-0">✨</div>
+            <div className="bg-white rounded-lg px-4 py-4 flex items-center gap-3 border border-gray-200 active:bg-gray-50">
+              <div className="w-12 h-12 bg-violet-100 rounded-lg flex items-center justify-center text-2xl shrink-0">✨</div>
               <div className="flex-1">
-                <p className="text-sm font-bold text-gray-900">AI 도우미</p>
+                <p className="text-sm font-bold text-gray-800">AI 도우미</p>
                 <p className="text-xs text-gray-400 mt-0.5">학교 생활 관련 질문을 AI에게 물어보세요</p>
               </div>
               <span className="text-gray-300 text-lg">›</span>
@@ -212,10 +212,10 @@ export default function ChatPage() {
               const info = TYPE_INFO[room.type] ?? TYPE_INFO.anonymous;
               return (
                 <Link key={room.id} href={`/chat/${room.id}`}>
-                  <div className="bg-white rounded-2xl px-4 py-4 flex items-center gap-3 border border-gray-100 active:bg-gray-50">
-                    <div className={`w-12 h-12 ${info.bg} rounded-2xl flex items-center justify-center text-2xl shrink-0`}>{info.emoji}</div>
+                  <div className="bg-white rounded-lg px-4 py-4 flex items-center gap-3 border border-gray-200 active:bg-gray-50">
+                    <div className={`w-12 h-12 ${info.bg} rounded-lg flex items-center justify-center text-2xl shrink-0`}>{info.emoji}</div>
                     <div className="flex-1">
-                      <p className="text-sm font-bold text-gray-900">{room.name}</p>
+                      <p className="text-sm font-bold text-gray-800">{room.name}</p>
                       <p className="text-xs text-gray-400 mt-0.5">{room.type === "club" ? "동아리방" : "R&E방"}</p>
                     </div>
                     <span className="text-gray-300 text-lg">›</span>
@@ -235,9 +235,9 @@ export default function ChatPage() {
             {profile.club_name && (
               <button
                 onClick={() => setCreateType("club")}
-                className="bg-white rounded-2xl px-4 py-4 flex items-center gap-3 border border-dashed border-success-300 active:bg-success-50 text-left"
+                className="bg-white rounded-lg px-4 py-4 flex items-center gap-3 border border-dashed border-success-300 active:bg-success-50 text-left"
               >
-                <div className="w-12 h-12 bg-success-50 rounded-2xl flex items-center justify-center text-2xl shrink-0">🎯</div>
+                <div className="w-12 h-12 bg-success-50 rounded-lg flex items-center justify-center text-2xl shrink-0">🎯</div>
                 <div className="flex-1">
                   <p className="text-sm font-bold text-success-700">{profile.club_name} 동아리방 만들기</p>
                   <p className="text-xs text-gray-400 mt-0.5">같은 동아리 멤버에게 초대 전송</p>
@@ -248,9 +248,9 @@ export default function ChatPage() {
             {profile.rne_name && (
               <button
                 onClick={() => setCreateType("rne")}
-                className="bg-white rounded-2xl px-4 py-4 flex items-center gap-3 border border-dashed border-purple-300 active:bg-purple-50 text-left"
+                className="bg-white rounded-lg px-4 py-4 flex items-center gap-3 border border-dashed border-purple-300 active:bg-purple-50 text-left"
               >
-                <div className="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center text-2xl shrink-0">🔬</div>
+                <div className="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center text-2xl shrink-0">🔬</div>
                 <div className="flex-1">
                   <p className="text-sm font-bold text-purple-700">{profile.rne_name} R&E방 만들기</p>
                   <p className="text-xs text-gray-400 mt-0.5">같은 R&E 팀원에게 초대 전송</p>
@@ -266,7 +266,7 @@ export default function ChatPage() {
       {createType && (
         <div className="fixed inset-0 bg-black/40 z-50 flex items-end justify-center" onClick={() => setCreateType(null)}>
           <div className="bg-white rounded-t-3xl w-full max-w-md px-6 py-8 flex flex-col gap-4" onClick={(e) => e.stopPropagation()}>
-            <p className="text-base font-bold text-gray-900 text-center">
+            <p className="text-base font-bold text-gray-800 text-center">
               {createType === "club" ? `${profile?.club_name} 동아리방` : `${profile?.rne_name} R&E방`}을 만들까요?
             </p>
             <p className="text-sm text-gray-500 text-center">
@@ -275,7 +275,7 @@ export default function ChatPage() {
             <button
               onClick={() => createRoom(createType)}
               disabled={creating}
-              className="w-full py-3.5 bg-primary-600 text-white font-bold rounded-2xl disabled:opacity-50"
+              className="w-full py-3.5 bg-primary-500 text-white font-bold rounded-lg disabled:opacity-50"
             >
               {creating ? "만드는 중..." : "방 만들기"}
             </button>

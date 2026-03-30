@@ -97,24 +97,24 @@ export default function TimetablePage() {
 
   return (
     <div className="flex flex-col">
-      <div className="bg-white px-4 pt-10 pb-0 border-b border-gray-100">
+      <div className="bg-white px-4 pt-10 pb-0 border-b border-gray-200">
         {/* 상단 탭: 시간표 / 급식 */}
         <div className="flex gap-1 mb-0">
           <button
             onClick={() => setMainTab("timetable")}
-            className={`flex-1 py-2.5 text-sm font-bold rounded-t-xl transition-colors ${mainTab === "timetable" ? "text-primary-600 border-b-2 border-primary-600" : "text-gray-400"}`}
+            className={`flex-1 py-2.5 text-sm font-bold rounded-t-xl transition-colors ${mainTab === "timetable" ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-400"}`}
           >시간표</button>
           <button
             onClick={() => setMainTab("meal")}
-            className={`flex-1 py-2.5 text-sm font-bold rounded-t-xl transition-colors ${mainTab === "meal" ? "text-primary-600 border-b-2 border-primary-600" : "text-gray-400"}`}
+            className={`flex-1 py-2.5 text-sm font-bold rounded-t-xl transition-colors ${mainTab === "meal" ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-400"}`}
           >급식</button>
         </div>
       </div>
 
       {mainTab === "meal" && <MealTab />}
       {mainTab === "timetable" && <div className="flex flex-col">
-      <div className="bg-white px-4 pt-3 pb-3 border-b border-gray-100">
-        <h1 className="text-xl font-bold text-gray-900">시간표</h1>
+      <div className="bg-white px-4 pt-3 pb-3 border-b border-gray-200">
+        <h1 className="text-xl font-bold text-gray-800">시간표</h1>
 
         {/* 학년/반 선택 */}
         <div className="flex gap-2 mt-3">
@@ -127,7 +127,7 @@ export default function TimetablePage() {
             {[1,2,3,4,5].map((c) => <option key={c} value={c}>{c}반</option>)}
           </select>
           <button onClick={() => fetchTimetable()}
-            className="bg-primary-600 text-white px-4 rounded-xl text-sm font-medium">
+            className="bg-primary-500 text-white px-4 rounded-xl text-sm font-medium">
             조회
           </button>
         </div>
@@ -137,7 +137,7 @@ export default function TimetablePage() {
           {(["daily","weekly"] as const).map((t) => (
             <button key={t} onClick={() => setTab(t)}
               className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
-                tab === t ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"}`}>
+                tab === t ? "bg-primary-500 text-white" : "bg-gray-100 text-gray-600"}`}>
               {t === "daily" ? "일과표" : "주간 시간표"}
             </button>
           ))}
@@ -157,7 +157,7 @@ export default function TimetablePage() {
             {DAYS.map((d, i) => (
               <button key={d} onClick={() => setSelectedDay(i)}
                 className={`flex-1 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  selectedDay === i ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"}`}>
+                  selectedDay === i ? "bg-primary-500 text-white" : "bg-gray-100 text-gray-600"}`}>
                 {d}
               </button>
             ))}
@@ -220,7 +220,7 @@ export default function TimetablePage() {
             {DAYS.map((d, i) => (
               <button key={d} onClick={() => setSelectedDay(i)}
                 className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
-                  selectedDay === i ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"}`}>
+                  selectedDay === i ? "bg-primary-500 text-white" : "bg-gray-100 text-gray-600"}`}>
                 {d}
               </button>
             ))}
@@ -242,12 +242,12 @@ export default function TimetablePage() {
                 );
 
                 return (
-                  <div key={idx} className="flex items-center gap-3 bg-primary-50 px-4 py-3 rounded-xl">
-                    <div className="w-8 h-8 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-bold shrink-0">
+                  <div key={idx} className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-xl">
+                    <div className="w-8 h-8 bg-primary-500 text-white rounded-lg flex items-center justify-center text-sm font-bold shrink-0">
                       {periodNum}
                     </div>
                     <div className="flex-1">
-                      <div className="text-sm font-semibold text-primary-700">
+                      <div className="text-sm font-semibold text-primary-500">
                         {subject.subject}
                         {isWedClub && profile?.club_name ? ` (${profile.club_name})` : ""}
                       </div>

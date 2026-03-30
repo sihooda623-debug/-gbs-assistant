@@ -108,7 +108,7 @@ export default function ActivityPage() {
     return { label: `D-${diff}`, urgent: diff <= 3, past: false };
   }
 
-  const inputClass = "w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-400 bg-white";
+  const inputClass = "w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-500 bg-white";
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -141,17 +141,17 @@ export default function ActivityPage() {
         {tab === "records" && (
           <>
             {showRecForm ? (
-              <div className="bg-white rounded-2xl border border-gray-100 p-4 flex flex-col gap-3">
+              <div className="bg-white rounded-lg border border-gray-200 p-4 flex flex-col gap-3">
                 <input value={recTitle} onChange={(e) => setRecTitle(e.target.value)}
                   placeholder="제목 (예: 3월 25일 실험 내용)" className={inputClass} />
                 <textarea value={recContent} onChange={(e) => setRecContent(e.target.value)}
                   placeholder="내용을 자유롭게 적어요" rows={5}
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-400 bg-white resize-none" />
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-500 bg-white resize-none" />
                 <div className="flex gap-2">
                   <button onClick={() => setShowRecForm(false)}
                     className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-500">취소</button>
                   <button onClick={saveRecord} disabled={loading || !recTitle.trim()}
-                    className="flex-1 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-semibold disabled:opacity-50">저장</button>
+                    className="flex-1 py-2.5 rounded-xl bg-primary-500 text-white text-sm font-semibold disabled:opacity-50">저장</button>
                 </div>
               </div>
             ) : (
@@ -166,7 +166,7 @@ export default function ActivityPage() {
             )}
 
             {records.map((r) => (
-              <div key={r.id} className="bg-white rounded-2xl border border-gray-100 p-4">
+              <div key={r.id} className="bg-white rounded-lg border border-gray-200 p-4">
                 <div className="flex items-start justify-between gap-2">
                   <p className="font-semibold text-sm text-gray-800">{r.title}</p>
                   <button onClick={() => deleteRecord(r.id)} className="text-gray-300 text-xs shrink-0">✕</button>
@@ -184,7 +184,7 @@ export default function ActivityPage() {
         {tab === "homework" && (
           <>
             {showHwForm ? (
-              <div className="bg-white rounded-2xl border border-gray-100 p-4 flex flex-col gap-3">
+              <div className="bg-white rounded-lg border border-gray-200 p-4 flex flex-col gap-3">
                 <input value={hwTitle} onChange={(e) => setHwTitle(e.target.value)}
                   placeholder="숙제 내용 (예: 실험 보고서 작성)" className={inputClass} />
                 <div>
@@ -195,7 +195,7 @@ export default function ActivityPage() {
                   <button onClick={() => setShowHwForm(false)}
                     className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-500">취소</button>
                   <button onClick={saveHomework} disabled={loading || !hwTitle.trim() || !hwDue}
-                    className="flex-1 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-semibold disabled:opacity-50">등록</button>
+                    className="flex-1 py-2.5 rounded-xl bg-primary-500 text-white text-sm font-semibold disabled:opacity-50">등록</button>
                 </div>
               </div>
             ) : (
@@ -212,8 +212,8 @@ export default function ActivityPage() {
             {homework.map((h) => {
               const { label, urgent, past } = dDay(h.due_date);
               return (
-                <div key={h.id} className={`bg-white rounded-2xl border p-4 flex items-center gap-3 ${
-                  h.completed ? "border-gray-100 opacity-60" : urgent ? "border-danger-100" : "border-gray-100"
+                <div key={h.id} className={`bg-white rounded-lg border p-4 flex items-center gap-3 ${
+                  h.completed ? "border-gray-200 opacity-60" : urgent ? "border-danger-100" : "border-gray-200"
                 }`}>
                   <button onClick={() => toggleHomework(h.id, h.completed)}
                     className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
@@ -232,7 +232,7 @@ export default function ActivityPage() {
                   <span className={`text-xs font-bold px-2 py-1 rounded-full ${
                     h.completed ? "bg-gray-100 text-gray-400" :
                     past ? "bg-gray-100 text-gray-400" :
-                    urgent ? "bg-danger-100 text-danger-600" : "bg-primary-100 text-primary-600"
+                    urgent ? "bg-danger-100 text-danger-600" : "bg-gray-100 text-primary-500"
                   }`}>
                     {h.completed ? "완료" : label}
                   </span>

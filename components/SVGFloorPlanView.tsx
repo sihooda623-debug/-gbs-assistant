@@ -27,21 +27,21 @@ export default function SVGFloorPlanView({ step }: Props) {
   if (step.isStairs) {
     const goUp = (step.stairTo ?? 0) > (step.stairFrom ?? 0);
     return (
-      <div className="w-full rounded-2xl overflow-hidden"
+      <div className="w-full rounded-lg overflow-hidden"
         style={{ background: "linear-gradient(135deg, #312e81 0%, #4338ca 100%)" }}>
         <div className="flex flex-col items-center justify-center py-12 gap-5">
           <span className="text-5xl">🪜</span>
           <div className="flex items-center gap-6">
             <div className="flex flex-col items-center gap-1">
               <span className="text-white/60 text-xs">현재</span>
-              <span className="bg-white/20 text-white font-bold text-2xl px-6 py-3 rounded-2xl">
+              <span className="bg-white/20 text-white font-bold text-2xl px-6 py-3 rounded-lg">
                 {step.stairFrom}층
               </span>
             </div>
             <span className="text-4xl text-white/80">{goUp ? "↑" : "↓"}</span>
             <div className="flex flex-col items-center gap-1">
               <span className="text-white/60 text-xs">이동</span>
-              <span className="bg-white text-indigo-700 font-bold text-2xl px-6 py-3 rounded-2xl shadow-lg">
+              <span className="bg-white text-indigo-700 font-bold text-2xl px-6 py-3 rounded-lg shadow-lg">
                 {step.stairTo}층
               </span>
             </div>
@@ -119,7 +119,7 @@ export default function SVGFloorPlanView({ step }: Props) {
   const accent = FLOOR_ACCENT[step.floor] ?? "#6b7280";
 
   return (
-    <div className="w-full rounded-2xl overflow-hidden border border-gray-200">
+    <div className="w-full rounded-lg overflow-hidden border border-gray-200">
       {/* 층 라벨 */}
       <div className="flex items-center gap-2 px-3 py-2" style={{ background: accent }}>
         <span className="text-white font-bold text-sm">{step.floor}층</span>

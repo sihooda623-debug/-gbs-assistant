@@ -205,18 +205,18 @@ export default function HomePage() {
 
   if (!authChecked) return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin" />
+      <div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
     </div>
   );
 
   return (
     <div className="flex flex-col pb-4 bg-white">
       {/* 헤더 */}
-      <div className="bg-white border-b border-gray-50 px-5 pt-12 pb-8">
+      <div className="bg-white border-b border-gray-200 px-5 pt-12 pb-8">
         <div className="flex items-center justify-between">
           <div className="flex-1">
             <p className="text-gray-400 text-sm font-medium">{dateStr}</p>
-            <h1 className="text-4xl font-bold mt-3 text-gray-900 leading-tight">
+            <h1 className="text-4xl font-bold mt-3 text-gray-800 leading-tight">
               {profile?.name ? (
                 <>
                   안녕하세요,
@@ -235,7 +235,7 @@ export default function HomePage() {
           </div>
           <button
             onClick={() => router.push("/profile")}
-            className="w-12 h-12 rounded-full bg-primary-50 hover:bg-primary-100 active:scale-95 flex items-center justify-center text-primary-700 font-bold text-lg transition-all ml-4 shrink-0"
+            className="w-12 h-12 rounded-full bg-gray-50 hover:bg-gray-100 active:scale-95 flex items-center justify-center text-primary-500 font-bold text-lg transition-all ml-4 shrink-0"
             title="프로필"
           >
             {profile?.name?.[0] ?? "?"}
@@ -246,13 +246,13 @@ export default function HomePage() {
       {/* 현재/다음 교시 카드 */}
       {!isWeekend && (
         <div className="px-5 mt-6">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-50 p-5">
+          <div className="bg-white rounded-lg  border border-gray-200 p-5">
             {current ? (
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-success-500 rounded-full animate-pulse shrink-0" />
                 <div>
                   <p className="text-xs text-gray-400">지금</p>
-                  <p className="text-base font-bold text-gray-900">{current.period}</p>
+                  <p className="text-base font-bold text-gray-800">{current.period}</p>
                   <p className="text-xs text-gray-500">{current.startTime} ~ {current.endTime}</p>
                 </div>
                 {current.period.match(/^\d교시/) && (() => {
@@ -260,7 +260,7 @@ export default function HomePage() {
                   const subj = todayPeriods[num - 1];
                   return subj?.subject ? (
                     <div className="ml-auto text-right">
-                      <p className="text-sm font-semibold text-primary-700">{subj.subject}</p>
+                      <p className="text-sm font-semibold text-primary-500">{subj.subject}</p>
                       {subj.teacher && (
                         <p className="text-xs text-gray-400">{getFullName(subj.teacher, subj.subject)} 선생님</p>
                       )}
@@ -270,10 +270,10 @@ export default function HomePage() {
               </div>
             ) : next ? (
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-primary-400 rounded-full shrink-0" />
+                <div className="w-2 h-2 bg-primary-500 rounded-full shrink-0" />
                 <div>
                   <p className="text-xs text-gray-400">다음</p>
-                  <p className="text-base font-bold text-gray-900">{next.period}</p>
+                  <p className="text-base font-bold text-gray-800">{next.period}</p>
                   <p className="text-xs text-gray-500">{next.startTime} ~ {next.endTime}</p>
                 </div>
                 {next.period.match(/^\d교시/) && (() => {
@@ -281,7 +281,7 @@ export default function HomePage() {
                   const subj = todayPeriods[num - 1];
                   return subj?.subject ? (
                     <div className="ml-auto text-right">
-                      <p className="text-sm font-semibold text-primary-700">{subj.subject}</p>
+                      <p className="text-sm font-semibold text-primary-500">{subj.subject}</p>
                       {subj.teacher && (
                         <p className="text-xs text-gray-400">{getFullName(subj.teacher, subj.subject)} 선생님</p>
                       )}
@@ -308,8 +308,8 @@ export default function HomePage() {
             </div>
           )}
           {isAfterToday && profile?.after_name && (
-            <div className="flex items-center gap-1.5 bg-purple-50 border border-purple-100 rounded-full px-3 py-1.5">
-              <span className="text-xs font-medium text-purple-700">방과후 · {profile.after_name}</span>
+            <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-200 rounded-full px-3 py-1.5">
+              <span className="text-xs font-medium text-gray-700">방과후 · {profile.after_name}</span>
             </div>
           )}
         </div>
@@ -318,15 +318,15 @@ export default function HomePage() {
 
       {/* 월요일 시간표 */}
       <div className="px-5 mt-8">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">월요일 시간표</h2>
+        <h2 className="text-lg font-bold text-gray-800 mb-4">월요일 시간표</h2>
         {allPeriods.length > 0 && allPeriods[0]?.length > 0 ? (
-          <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
             {allPeriods[0]
               .map((p, i) => ({ ...p, periodNum: i + 1 }))
               .filter((p) => p.subject)
               .map((p, i) => (
-                <div key={i} className={`flex items-center gap-3 px-4 py-2.5 ${i > 0 ? "border-t border-gray-50" : ""}`}>
-                  <div className="w-6 h-6 bg-primary-100 text-primary-600 rounded-md flex items-center justify-center text-xs font-bold shrink-0">
+                <div key={i} className={`flex items-center gap-3 px-4 py-2.5 ${i > 0 ? "border-t border-gray-200" : ""}`}>
+                  <div className="w-6 h-6 bg-gray-100 text-primary-500 rounded-md flex items-center justify-center text-xs font-bold shrink-0">
                     {p.periodNum}
                   </div>
                   <div className="flex-1">
@@ -357,13 +357,13 @@ export default function HomePage() {
       {/* 방과후 시간표 */}
       {isAfterToday && afterTimes.length > 0 && (
         <div className="px-5 mt-8">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">방과후</h2>
-          <div className="bg-purple-50 rounded-2xl border border-purple-100 px-4 py-3 flex flex-col gap-1">
+          <h2 className="text-lg font-bold text-gray-800 mb-4">방과후</h2>
+          <div className="bg-gray-50 rounded-lg border border-gray-200 px-4 py-3 flex flex-col gap-1">
             {afterTimes.map((t, i) => (
               <div key={i} className="flex items-center gap-2">
-                <span className="text-xs text-purple-400">▸</span>
-                <span className="text-sm font-medium text-purple-700">{t}</span>
-                <span className="text-xs text-purple-400 ml-auto">{profile?.after_name}</span>
+                <span className="text-xs text-gray-400">▸</span>
+                <span className="text-sm font-medium text-gray-700">{t}</span>
+                <span className="text-xs text-gray-400 ml-auto">{profile?.after_name}</span>
               </div>
             ))}
           </div>
@@ -374,7 +374,7 @@ export default function HomePage() {
       {!isWeekend && lunchFavs.length > 0 && (
         <div className="px-5 mt-8">
           <Link href="/meal">
-            <div className="bg-warning-50 border border-warning-100 rounded-2xl px-4 py-3 flex items-center gap-3">
+            <div className="bg-warning-50 border border-warning-100 rounded-lg px-4 py-3 flex items-center gap-3">
               <div className="flex-1">
                 <p className="text-sm font-semibold text-warning-700">오늘 좋아하는 거 나와요!</p>
                 <p className="text-xs text-warning-500 mt-0.5">{lunchFavs.join(", ")}</p>
@@ -388,23 +388,23 @@ export default function HomePage() {
       {/* 활동 카드 */}
       {profile && (
         <div className="px-5 mt-8">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">내 활동</h2>
+          <h2 className="text-lg font-bold text-gray-800 mb-4">내 활동</h2>
           <div className="grid grid-cols-4 gap-2">
             <Link href="/activity/general">
-              <div className="bg-gray-50 rounded-2xl p-3 flex flex-col items-center gap-1 active:opacity-70">
+              <div className="bg-gray-50 rounded-lg p-3 flex flex-col items-center gap-1 active:opacity-70">
                 <span className="text-xs font-semibold text-gray-700">기타</span>
               </div>
             </Link>
             <Link href="/activity/rne">
-              <div className="bg-purple-50 rounded-2xl p-3 flex flex-col items-center gap-1 active:opacity-70">
-                <span className="text-xs font-semibold text-purple-700">R&amp;E</span>
+              <div className="bg-gray-50 rounded-lg p-3 flex flex-col items-center gap-1 active:opacity-70">
+                <span className="text-xs font-semibold text-gray-700">R&amp;E</span>
                 {profile.rne_name && (
-                  <span className="text-xs text-purple-400 text-center line-clamp-1">{profile.rne_name}</span>
+                  <span className="text-xs text-gray-400 text-center line-clamp-1">{profile.rne_name}</span>
                 )}
               </div>
             </Link>
             <Link href="/activity/club">
-              <div className="bg-success-50 rounded-2xl p-3 flex flex-col items-center gap-1 active:opacity-70">
+              <div className="bg-success-50 rounded-lg p-3 flex flex-col items-center gap-1 active:opacity-70">
                 <span className="text-xs font-semibold text-success-700">동아리</span>
                 {profile.club_name && (
                   <span className="text-xs text-success-400 text-center line-clamp-1">{profile.club_name}</span>
@@ -412,7 +412,7 @@ export default function HomePage() {
               </div>
             </Link>
             <Link href="/activity/after">
-              <div className="bg-warning-50 rounded-2xl p-3 flex flex-col items-center gap-1 active:opacity-70">
+              <div className="bg-warning-50 rounded-lg p-3 flex flex-col items-center gap-1 active:opacity-70">
                 <span className="text-xs font-semibold text-warning-700">방과후</span>
                 {profile.after_name && (
                   <span className="text-xs text-warning-400 text-center line-clamp-1">{profile.after_name}</span>
@@ -426,7 +426,7 @@ export default function HomePage() {
       {/* 숙제 알림 */}
       {upcomingHw.length > 0 && (
         <div className="px-5 mt-8">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">다가오는 숙제</h2>
+          <h2 className="text-lg font-bold text-gray-800 mb-4">다가오는 숙제</h2>
           <div className="flex flex-col gap-2">
             {upcomingHw.map((h) => {
               const diff = Math.ceil((new Date(h.due_date).getTime() - new Date().setHours(0,0,0,0)) / 86400000);
@@ -441,12 +441,12 @@ export default function HomePage() {
               const act = actMeta[h.activity_type] ?? { name: "" };
               return (
                 <Link key={h.id} href={`/activity/${h.activity_type}`}>
-                  <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${urgent ? "bg-danger-50 border-danger-100" : "bg-white border-gray-100"}`}>
+                  <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${urgent ? "bg-danger-50 border-danger-100" : "bg-white border-gray-200"}`}>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-800">{h.title}</p>
                       <p className="text-xs text-gray-400">{act.name} · {new Date(h.due_date).toLocaleDateString("ko-KR", { month: "long", day: "numeric" })}</p>
                     </div>
-                    <span className={`text-xs font-bold px-2 py-1 rounded-full ${urgent ? "bg-danger-100 text-danger-600" : "bg-primary-100 text-primary-600"}`}>
+                    <span className={`text-xs font-bold px-2 py-1 rounded-full ${urgent ? "bg-danger-100 text-danger-600" : "bg-gray-100 text-primary-500"}`}>
                       {label}
                     </span>
                   </div>
@@ -466,13 +466,13 @@ export default function HomePage() {
         if (todaySchoolEvents.length === 0 && todayHw.length === 0) return null;
         return (
           <div className="px-5 mt-8">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">오늘의 일정</h2>
+            <h2 className="text-lg font-bold text-gray-800 mb-4">오늘의 일정</h2>
             <div className="flex flex-col gap-2">
               {todaySchoolEvents.map((ev, i) => (
                 <div key={i} className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${
                   ev.type === "holiday" ? "bg-danger-50 border-danger-100" :
                   ev.type === "exam" ? "bg-warning-50 border-warning-100" :
-                  "bg-primary-50 border-primary-100"
+                  "bg-gray-50 border-gray-200"
                 }`}>
                   <span className="text-sm font-medium text-gray-800">{ev.title}</span>
                 </div>
@@ -497,10 +497,10 @@ export default function HomePage() {
       {/* 프로필 미설정 안내 */}
       {!profile && (
         <div className="px-5 mt-8">
-          <div className="bg-primary-50 border border-primary-100 rounded-xl p-4 flex items-center gap-3">
+          <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-center gap-3">
             <div>
-              <p className="text-sm font-semibold text-primary-800">프로필을 설정해보세요</p>
-              <p className="text-xs text-primary-600 mt-0.5">
+              <p className="text-sm font-semibold text-primary-500">프로필을 설정해보세요</p>
+              <p className="text-xs text-primary-500 mt-0.5">
                 학년·반·동아리를 등록하면
                 <br />
                 오늘 시간표와 일정이 자동으로 표시돼요

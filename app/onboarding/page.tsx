@@ -113,13 +113,13 @@ export default function OnboardingPage() {
             <div
               key={s}
               className={`flex-1 h-1.5 rounded-full transition-colors ${
-                i <= step ? "bg-primary-600" : "bg-gray-200"
+                i <= step ? "bg-primary-500" : "bg-gray-200"
               }`}
             />
           ))}
         </div>
         <p className="text-xs text-gray-400">{step + 1} / {STEPS.length}</p>
-        <h2 className="text-xl font-bold text-gray-900 mt-1">{STEPS[step]} 입력</h2>
+        <h2 className="text-xl font-bold text-gray-800 mt-1">{STEPS[step]} 입력</h2>
       </div>
 
       <div className="flex-1 px-6 pt-4 flex flex-col gap-4 overflow-y-auto pb-4">
@@ -159,7 +159,7 @@ export default function OnboardingPage() {
               <button
                 onClick={() => setRneDecided(true)}
                 className={`flex-1 py-3 rounded-xl text-sm font-semibold border-2 transition-colors ${
-                  rneDecided === true ? "border-primary-600 bg-primary-50 text-primary-700" : "border-gray-200 text-gray-500"
+                  rneDecided === true ? "border-primary-500 bg-gray-50 text-primary-500" : "border-gray-200 text-gray-500"
                 }`}
               >
                 결정됐어요
@@ -167,7 +167,7 @@ export default function OnboardingPage() {
               <button
                 onClick={() => setRneDecided(false)}
                 className={`flex-1 py-3 rounded-xl text-sm font-semibold border-2 transition-colors ${
-                  rneDecided === false ? "border-primary-600 bg-primary-50 text-primary-700" : "border-gray-200 text-gray-500"
+                  rneDecided === false ? "border-primary-500 bg-gray-50 text-primary-500" : "border-gray-200 text-gray-500"
                 }`}
               >
                 아직 미결정
@@ -184,7 +184,7 @@ export default function OnboardingPage() {
                       key={f}
                       onClick={() => setRneField(f)}
                       className={`px-4 py-2 rounded-full text-sm font-medium border-2 transition-colors ${
-                        rneField === f ? "border-primary-600 bg-primary-50 text-primary-700" : "border-gray-200 text-gray-500"
+                        rneField === f ? "border-primary-500 bg-gray-50 text-primary-500" : "border-gray-200 text-gray-500"
                       }`}
                     >
                       {f}
@@ -204,7 +204,7 @@ export default function OnboardingPage() {
                       key={f}
                       onClick={() => setRneField(f)}
                       className={`px-4 py-2 rounded-full text-sm font-medium border-2 transition-colors ${
-                        rneField === f ? "border-primary-600 bg-primary-50 text-primary-700" : "border-gray-200 text-gray-500"
+                        rneField === f ? "border-primary-500 bg-gray-50 text-primary-500" : "border-gray-200 text-gray-500"
                       }`}
                     >
                       {f}
@@ -236,12 +236,12 @@ export default function OnboardingPage() {
                   onClick={() => setClubName(clubName === club.name ? "" : club.name)}
                   className={`flex items-center justify-between px-4 py-3 rounded-xl border-2 text-left transition-colors ${
                     clubName === club.name
-                      ? "border-primary-600 bg-primary-50"
+                      ? "border-primary-500 bg-gray-50"
                       : "border-gray-200 bg-white"
                   }`}
                 >
                   <div>
-                    <span className={`font-semibold text-sm ${clubName === club.name ? "text-primary-700" : "text-gray-800"}`}>
+                    <span className={`font-semibold text-sm ${clubName === club.name ? "text-primary-500" : "text-gray-800"}`}>
                       {club.name}
                     </span>
                     <span className={`text-xs ml-2 ${clubName === club.name ? "text-primary-500" : "text-gray-400"}`}>
@@ -249,14 +249,14 @@ export default function OnboardingPage() {
                     </span>
                   </div>
                   {clubName === club.name && (
-                    <span className="text-primary-600 text-lg">✓</span>
+                    <span className="text-primary-500 text-lg">✓</span>
                   )}
                 </button>
               ))}
             </div>
 
             {clubName && (
-              <div className="bg-primary-50 border border-primary-100 rounded-xl px-4 py-3 text-sm text-primary-700 mt-1">
+              <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-primary-500 mt-1">
                 📅 동아리 활동은 <strong>매주 수요일 7교시 (16:00 ~ 16:50)</strong> 고정이에요
               </div>
             )}
@@ -278,7 +278,7 @@ export default function OnboardingPage() {
                     type="button"
                     onClick={() => setAfterDay(d)}
                     className={`px-4 py-2 rounded-full text-sm font-medium border-2 transition-colors ${
-                      afterDay === d ? "border-primary-600 bg-primary-50 text-primary-700" : "border-gray-200 text-gray-500"
+                      afterDay === d ? "border-primary-500 bg-gray-50 text-primary-500" : "border-gray-200 text-gray-500"
                     }`}
                   >
                     {d}요일
@@ -301,15 +301,15 @@ export default function OnboardingPage() {
                           : [...afterTimes, p.period]
                       )}
                       className={`flex items-center justify-between px-4 py-3 rounded-xl border-2 text-left transition-colors ${
-                        selected ? "border-primary-600 bg-primary-50" : "border-gray-200"
+                        selected ? "border-primary-500 bg-gray-50" : "border-gray-200"
                       }`}
                     >
-                      <span className={`text-sm font-semibold ${selected ? "text-primary-700" : "text-gray-700"}`}>
+                      <span className={`text-sm font-semibold ${selected ? "text-primary-500" : "text-gray-700"}`}>
                         {p.period}
                       </span>
                       <div className="flex items-center gap-2">
                         <span className="text-xs text-gray-400">{p.startTime} ~ {p.endTime}</span>
-                        {selected && <span className="text-primary-600">✓</span>}
+                        {selected && <span className="text-primary-500">✓</span>}
                       </div>
                     </button>
                   );
@@ -323,11 +323,11 @@ export default function OnboardingPage() {
       {/* 하단 버튼 */}
       <div className="px-6 pb-10 pt-4">
         {step < STEPS.length - 1 ? (
-          <button onClick={nextStep} className="w-full bg-primary-600 text-white py-3 rounded-xl font-semibold text-sm">
+          <button onClick={nextStep} className="w-full bg-primary-500 text-white py-3 rounded-xl font-semibold text-sm">
             다음
           </button>
         ) : (
-          <button onClick={handleFinish} disabled={loading} className="w-full bg-primary-600 text-white py-3 rounded-xl font-semibold text-sm disabled:opacity-60">
+          <button onClick={handleFinish} disabled={loading} className="w-full bg-primary-500 text-white py-3 rounded-xl font-semibold text-sm disabled:opacity-60">
             {loading ? "저장 중..." : "완료! 시작하기 🚀"}
           </button>
         )}
@@ -336,7 +336,7 @@ export default function OnboardingPage() {
   );
 }
 
-const inputClass = "w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-400 bg-white";
+const inputClass = "w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-500 bg-white";
 
 function Field({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
   return (

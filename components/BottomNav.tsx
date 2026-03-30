@@ -64,7 +64,7 @@ export default function BottomNav() {
   if (pathname.startsWith("/chat/")) return null; // 채팅방 내부는 네비 숨김
 
   return (
-    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-100 z-50 shadow-lg">
+    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 z-50 ">
       <div className="flex">
         {navItems.map((item) => {
           const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
@@ -73,7 +73,7 @@ export default function BottomNav() {
               key={item.href}
               href={item.href}
               className={`flex-1 flex flex-col items-center py-4 gap-2 text-xs font-semibold transition-colors ${
-                active ? "text-primary-600" : "text-gray-400 hover:text-gray-600"
+                active ? "text-primary-500" : "text-gray-400 hover:text-gray-600"
               }`}
             >
               {item.icon(active)}

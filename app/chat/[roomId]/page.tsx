@@ -493,7 +493,7 @@ export default function RoomPage() {
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       {/* 헤더 */}
-      <div className="flex items-center gap-3 px-4 pt-10 pb-3 bg-white border-b border-gray-100 shrink-0">
+      <div className="flex items-center gap-3 px-4 pt-10 pb-3 bg-white border-b border-gray-200 shrink-0">
         <button onClick={() => router.back()} className="text-gray-400 text-xl p-1">‹</button>
         <div
           className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0"
@@ -502,7 +502,7 @@ export default function RoomPage() {
           {room?.type === "anonymous" ? "💬" : room?.type === "club" ? "🎯" : "🔬"}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-bold text-gray-900 truncate">{room?.name ?? "채팅방"}</p>
+          <p className="text-sm font-bold text-gray-800 truncate">{room?.name ?? "채팅방"}</p>
           {room?.type === "anonymous" && (
             <p className="text-xs text-gray-400">익명으로 질문하세요</p>
           )}
@@ -548,10 +548,10 @@ export default function RoomPage() {
                 {!mine && <p className="text-xs text-gray-400 px-2">{msg.sender_name}</p>}
                 <button
                   onClick={() => router.push(`/chat/question/${msg.id}`)}
-                  className={`max-w-[98%] rounded-2xl px-3 py-3 text-left transition-colors ${
+                  className={`max-w-[98%] rounded-lg px-3 py-3 text-left transition-colors ${
                     mine
                       ? "bg-warning-500 text-white rounded-tr-sm hover:bg-warning-600"
-                      : "bg-warning-50 text-gray-900 border-2 border-warning-200 rounded-tl-sm hover:bg-warning-100"
+                      : "bg-warning-50 text-gray-800 border-2 border-warning-200 rounded-tl-sm hover:bg-warning-100"
                   }`}
                 >
                   <p className="text-xs font-semibold mb-1">❓ 질문</p>
@@ -577,10 +577,10 @@ export default function RoomPage() {
                 {!mine && <p className="text-xs text-gray-400 px-2">{msg.sender_name}</p>}
                 <button
                   onClick={() => questionId && router.push(`/chat/question/${questionId}`)}
-                  className={`max-w-[98%] rounded-2xl px-3 py-2.5 text-left ${
+                  className={`max-w-[98%] rounded-lg px-3 py-2.5 text-left ${
                     mine
                       ? "bg-success-600 text-white rounded-tr-sm hover:bg-success-700"
-                      : "bg-success-50 text-gray-900 rounded-tl-sm border border-success-200 hover:bg-success-100"
+                      : "bg-success-50 text-gray-800 rounded-tl-sm border border-success-200 hover:bg-success-100"
                   }`}
                 >
                   {/* 카톡 스타일 질문 미리보기 */}
@@ -614,10 +614,10 @@ export default function RoomPage() {
               {!mine && <p className="text-xs text-gray-400 px-2">{msg.sender_name}</p>}
               <div className={`flex items-start gap-2 ${mine ? "flex-row-reverse" : ""}`}>
                 <div
-                  className={`max-w-[98%] rounded-2xl px-4 py-2.5 ${
+                  className={`max-w-[98%] rounded-lg px-4 py-2.5 ${
                     mine
-                      ? "bg-primary-600 text-white rounded-tr-sm"
-                      : "bg-white text-gray-900 rounded-tl-sm border border-gray-100"
+                      ? "bg-primary-500 text-white rounded-tr-sm"
+                      : "bg-white text-gray-800 rounded-tl-sm border border-gray-200"
                   }`}
                 >
                   {msg.image_url && (
@@ -648,7 +648,7 @@ export default function RoomPage() {
       </div>
 
       {/* 입력창 */}
-      <div className="bg-white border-t border-gray-100 px-4 py-3 pb-safe shrink-0">
+      <div className="bg-white border-t border-gray-200 px-4 py-3 pb-safe shrink-0">
         {banInfo && (
           <div className="mb-3 bg-danger-50 border border-danger-200 rounded-xl p-3 text-sm text-danger-700">
             <p className="font-semibold">⚠️ 채팅 정지 중</p>
@@ -677,7 +677,7 @@ export default function RoomPage() {
             <button
               onClick={() => setIsAnon(v => !v)}
               className={`text-xs px-3 py-1 rounded-full font-medium transition-colors ${
-                isAnon ? "bg-gray-200 text-gray-700" : "bg-primary-100 text-primary-700"
+                isAnon ? "bg-gray-200 text-gray-700" : "bg-gray-100 text-primary-500"
               }`}
             >
               {isAnon ? "익명" : "실명"}
@@ -690,7 +690,7 @@ export default function RoomPage() {
           <button
             onClick={() => { setMessageType("message"); setSelectedQuestion(null); }}
             className={`text-xs px-3 py-1 rounded-full font-medium transition-colors ${
-              messageType === "message" ? "bg-primary-200 text-primary-700" : "bg-gray-100 text-gray-600"
+              messageType === "message" ? "bg-primary-200 text-primary-500" : "bg-gray-100 text-gray-600"
             }`}
           >
             💬 메시지
@@ -754,12 +754,12 @@ export default function RoomPage() {
             }}
             placeholder="메시지를 입력하세요..."
             rows={3}
-            className="flex-1 resize-none bg-gray-100 rounded-2xl px-4 py-2.5 text-sm outline-none max-h-32 overflow-y-auto leading-relaxed"
+            className="flex-1 resize-none bg-gray-100 rounded-lg px-4 py-2.5 text-sm outline-none max-h-32 overflow-y-auto leading-relaxed"
           />
           <button
             onClick={handleSend}
             disabled={(!text.trim() && !imageFile) || sending || uploading || !!banInfo}
-            className="w-9 h-9 bg-primary-600 disabled:bg-gray-200 rounded-xl flex items-center justify-center shrink-0 transition-colors"
+            className="w-9 h-9 bg-primary-500 disabled:bg-gray-200 rounded-xl flex items-center justify-center shrink-0 transition-colors"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2.5} className="w-4 h-4">
               <path
@@ -776,7 +776,7 @@ export default function RoomPage() {
       {showReportModal && reportingMsg && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-end justify-center">
           <div className="bg-white w-full rounded-t-3xl px-6 py-8 flex flex-col gap-4 max-w-md">
-            <h2 className="text-lg font-bold text-gray-900">메시지 신고</h2>
+            <h2 className="text-lg font-bold text-gray-800">메시지 신고</h2>
 
             <div className="bg-danger-50 rounded-xl p-3 border border-danger-200">
               <p className="text-sm text-gray-600 mb-2">
@@ -811,14 +811,14 @@ export default function RoomPage() {
                   setReportingMsg(null);
                   setReportReason("");
                 }}
-                className="flex-1 px-4 py-3 bg-gray-200 text-gray-700 rounded-2xl font-semibold text-sm"
+                className="flex-1 px-4 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold text-sm"
               >
                 취소
               </button>
               <button
                 onClick={() => handleReport(reportingMsg, reportReason)}
                 disabled={!reportReason}
-                className="flex-1 px-4 py-3 bg-danger-600 disabled:bg-gray-200 text-white rounded-2xl font-semibold text-sm"
+                className="flex-1 px-4 py-3 bg-danger-600 disabled:bg-gray-200 text-white rounded-lg font-semibold text-sm"
               >
                 신고하기
               </button>
@@ -831,7 +831,7 @@ export default function RoomPage() {
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-end justify-center">
           <div className="bg-white w-full rounded-t-3xl px-6 py-8 flex flex-col gap-4 max-w-md">
-            <h2 className="text-lg font-bold text-gray-900">방을 삭제하시겠어요?</h2>
+            <h2 className="text-lg font-bold text-gray-800">방을 삭제하시겠어요?</h2>
 
             <div className="bg-danger-50 rounded-xl p-3 border border-danger-200">
               <p className="text-sm text-danger-700">
@@ -842,14 +842,14 @@ export default function RoomPage() {
             <div className="flex gap-2">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="flex-1 px-4 py-3 bg-gray-200 text-gray-700 rounded-2xl font-semibold text-sm"
+                className="flex-1 px-4 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold text-sm"
               >
                 취소
               </button>
               <button
                 onClick={deleteRoom}
                 disabled={deleting}
-                className="flex-1 px-4 py-3 bg-danger-600 disabled:bg-gray-200 text-white rounded-2xl font-semibold text-sm"
+                className="flex-1 px-4 py-3 bg-danger-600 disabled:bg-gray-200 text-white rounded-lg font-semibold text-sm"
               >
                 {deleting ? "삭제 중..." : "삭제하기"}
               </button>
@@ -864,13 +864,13 @@ export default function RoomPage() {
           <div className="bg-white w-full rounded-t-3xl px-6 py-8 flex flex-col gap-4 max-w-md max-h-[80vh] flex-col-reverse">
             <button
               onClick={() => setShowAnswerModal(false)}
-              className="w-full bg-gray-200 text-gray-700 py-2.5 rounded-2xl font-medium text-sm"
+              className="w-full bg-gray-200 text-gray-700 py-2.5 rounded-lg font-medium text-sm"
             >
               취소
             </button>
 
             <div className="flex-1 overflow-y-auto">
-              <h2 className="text-lg font-bold text-gray-900 mb-4 sticky top-0 bg-white">답할 질문 선택</h2>
+              <h2 className="text-lg font-bold text-gray-800 mb-4 sticky top-0 bg-white">답할 질문 선택</h2>
               {questions.length === 0 ? (
                 <p className="text-sm text-gray-500 text-center py-8">등록된 질문이 없어요</p>
               ) : (
@@ -889,7 +889,7 @@ export default function RoomPage() {
                       }`}
                     >
                       <p className="text-xs text-gray-500 mb-1">{q.sender_name}</p>
-                      <p className="text-sm text-gray-900 line-clamp-2">{q.content}</p>
+                      <p className="text-sm text-gray-800 line-clamp-2">{q.content}</p>
                     </button>
                   ))}
                 </div>
@@ -905,7 +905,7 @@ export default function RoomPage() {
           <div className="bg-white w-full rounded-t-3xl px-6 py-8 flex flex-col gap-4 max-w-md">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-2xl">🔒</span>
-              <h2 className="text-lg font-bold text-gray-900">익명 보장 안내</h2>
+              <h2 className="text-lg font-bold text-gray-800">익명 보장 안내</h2>
             </div>
 
             <div className="space-y-3 text-sm text-gray-700 leading-relaxed">
@@ -929,7 +929,7 @@ export default function RoomPage() {
 
             <button
               onClick={() => setShowGuideModal(false)}
-              className="w-full bg-primary-600 text-white py-3 rounded-2xl font-bold text-sm mt-2"
+              className="w-full bg-primary-500 text-white py-3 rounded-lg font-bold text-sm mt-2"
             >
               확인했습니다
             </button>

@@ -56,7 +56,7 @@ export default function SignupPage() {
       {/* 상단 */}
       <div className="bg-white border-b border-gray-200 px-6 pt-16 pb-10 text-center">
         <div className="text-4xl mb-3">🔬</div>
-        <h1 className="text-3xl font-bold text-gray-900">GBS 어시스트</h1>
+        <h1 className="text-3xl font-bold text-gray-800">GBS 어시스트</h1>
         <p className="text-gray-500 text-sm mt-2">처음 오셨군요! 계정을 만들어요</p>
       </div>
 
@@ -72,7 +72,7 @@ export default function SignupPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="example@email.com"
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-400"
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-500"
               required
             />
           </div>
@@ -84,7 +84,7 @@ export default function SignupPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="6자 이상"
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-400"
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-500"
               required
             />
           </div>
@@ -96,7 +96,7 @@ export default function SignupPage() {
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}
               placeholder="비밀번호 다시 입력"
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-400"
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-500"
               required
             />
           </div>
@@ -108,7 +108,7 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary-600 text-white py-3 rounded-xl font-semibold text-sm disabled:opacity-60 mt-2"
+            className="w-full bg-primary-500 text-white py-3 rounded-xl font-semibold text-sm disabled:opacity-60 mt-2"
           >
             {loading ? "가입 중..." : "회원가입"}
           </button>
@@ -116,7 +116,7 @@ export default function SignupPage() {
 
         <p className="text-center text-sm text-gray-500 mt-6">
           이미 계정이 있으신가요?{" "}
-          <Link href="/login" className="text-primary-600 font-semibold">
+          <Link href="/login" className="text-primary-500 font-semibold">
             로그인
           </Link>
         </p>

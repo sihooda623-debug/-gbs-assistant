@@ -145,14 +145,14 @@ export default function MealPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* 헤더 */}
-      <div className="bg-white px-4 pt-10 pb-3 border-b border-gray-100">
+      <div className="bg-white px-4 pt-10 pb-3 border-b border-gray-200">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-gray-900">급식표</h1>
+            <h1 className="text-xl font-bold text-gray-800">급식표</h1>
             <p className="text-sm text-gray-500 mt-0.5">경기북과학고등학교</p>
           </div>
           <button onClick={() => setShowSettings((v) => !v)}
-            className={`text-sm px-3 py-1.5 rounded-xl transition-colors ${showSettings ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"}`}>
+            className={`text-sm px-3 py-1.5 rounded-xl transition-colors ${showSettings ? "bg-primary-500 text-white" : "bg-gray-100 text-gray-600"}`}>
             ⚙️ 설정
           </button>
         </div>
@@ -175,8 +175,8 @@ export default function MealPage() {
             return (
               <button key={dStr} onClick={() => setSelectedDate(d)}
                 className={`flex-1 flex flex-col items-center py-2 rounded-xl transition-colors ${
-                  dStr === selStr ? "bg-primary-600 text-white" :
-                  dStr === todayStr ? "bg-primary-50 text-primary-600" : "text-gray-500"
+                  dStr === selStr ? "bg-primary-500 text-white" :
+                  dStr === todayStr ? "bg-gray-50 text-primary-500" : "text-gray-500"
                 }`}>
                 <span className="text-xs">{DAY_NAMES[d.getDay()]}</span>
                 <span className="text-sm font-bold">{d.getDate()}</span>
@@ -190,7 +190,7 @@ export default function MealPage() {
           {MEAL_TYPES.map((mt) => (
             <button key={mt.code} onClick={() => setMealTab(mt.code)}
               className={`flex-1 py-1.5 rounded-xl text-xs font-medium transition-colors ${
-                mealTab === mt.code ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-500"
+                mealTab === mt.code ? "bg-primary-500 text-white" : "bg-gray-100 text-gray-500"
               }`}>
               {mt.label}
               {meals[mt.code] ? "" : " -"}
@@ -201,7 +201,7 @@ export default function MealPage() {
 
       {/* 설정 패널 */}
       {showSettings && (
-        <div className="px-4 py-4 bg-gray-50 border-b border-gray-100 flex flex-col gap-4">
+        <div className="px-4 py-4 bg-gray-50 border-b border-gray-200 flex flex-col gap-4">
           {/* 선호 음식 */}
           <div>
             <p className="text-sm font-semibold text-gray-700 mb-2">선호 음식 <span className="text-xs font-normal text-gray-400">(있으면 형광펜 표시)</span></p>
@@ -243,7 +243,7 @@ export default function MealPage() {
       <div className="px-4 pt-4 flex flex-col gap-3 pb-8">
         {/* 알레르기 경고 배너 */}
         {dangerItems.length > 0 && (
-          <div className="bg-danger-50 border border-danger-200 rounded-2xl px-4 py-3 flex items-start gap-2">
+          <div className="bg-danger-50 border border-danger-200 rounded-lg px-4 py-3 flex items-start gap-2">
             <span className="text-lg shrink-0">⚠️</span>
             <div>
               <p className="text-sm font-semibold text-danger-700">알레르기 주의!</p>
@@ -255,14 +255,14 @@ export default function MealPage() {
         )}
 
         {loading && (
-          <div className="bg-gray-50 rounded-2xl p-8 text-center text-gray-400 text-sm">불러오는 중...</div>
+          <div className="bg-gray-50 rounded-lg p-8 text-center text-gray-400 text-sm">불러오는 중...</div>
         )}
         {error && (
-          <div className="bg-danger-50 rounded-2xl p-6 text-center text-danger-400 text-sm">{error}</div>
+          <div className="bg-danger-50 rounded-lg p-6 text-center text-danger-400 text-sm">{error}</div>
         )}
 
         {!loading && !error && !currentMeal && (
-          <div className="bg-gray-50 rounded-2xl p-8 text-center">
+          <div className="bg-gray-50 rounded-lg p-8 text-center">
             <p className="text-3xl mb-2">🍽️</p>
             <p className="text-gray-400 text-sm">
               {Object.keys(meals).length === 0 ? "급식 정보가 없어요" : "이 끼니 정보가 없어요"}
@@ -278,18 +278,18 @@ export default function MealPage() {
                 {selectedDate.getMonth()+1}월 {selectedDate.getDate()}일{" "}
                 <span className="text-gray-400 font-normal">({DAY_NAMES[selectedDate.getDay()]})</span>
                 {" "}{MEAL_TYPES.find(m=>m.code===mealTab)?.label}
-                {selStr === todayStr && <span className="ml-2 text-xs text-primary-600 font-medium">오늘</span>}
+                {selStr === todayStr && <span className="ml-2 text-xs text-primary-500 font-medium">오늘</span>}
               </h2>
               {currentMeal.cal && <span className="text-xs text-gray-400">{currentMeal.cal}</span>}
             </div>
 
-            <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
               {currentMeal.items.map((item, i) => {
                 const fav = isFav(item);
                 const danger = isDanger(item);
                 const EMOJIS = ["🍚","🍲","🥗","🍖","🥬","🍱","🥘","🍜","🍳","🫕"];
                 return (
-                  <div key={i} className={`flex items-center gap-3 px-4 py-3 ${i > 0 ? "border-t border-gray-50" : ""} ${
+                  <div key={i} className={`flex items-center gap-3 px-4 py-3 ${i > 0 ? "border-t border-gray-200" : ""} ${
                     danger ? "bg-danger-50" : fav ? "bg-yellow-50" : ""
                   }`}>
                     <span className="text-lg shrink-0">{EMOJIS[i % EMOJIS.length]}</span>

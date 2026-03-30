@@ -21,7 +21,7 @@ const EVENT_COLOR: Record<SchoolEvent["type"], string> = {
 const EVENT_TEXT: Record<SchoolEvent["type"], string> = {
   holiday: "text-danger-600",
   exam:    "text-warning-600",
-  event:   "text-primary-600",
+  event:   "text-primary-500",
 };
 
 // ───── 탭 / 분류 ─────
@@ -34,13 +34,13 @@ const TABS = [
 ];
 
 const TYPE_META: Record<string, { label: string; color: string }> = {
-  school: { label: "학교",   color: "bg-primary-100 text-primary-700" },
+  school: { label: "학교",   color: "bg-gray-100 text-primary-500" },
   rne:    { label: "R&E",    color: "bg-purple-100 text-purple-700" },
   club:   { label: "동아리", color: "bg-success-100 text-success-700" },
   after:  { label: "방과후", color: "bg-warning-100 text-warning-700" },
 };
 
-const inputClass = "w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-400 bg-white";
+const inputClass = "w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-500 bg-white";
 const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
 // ───── 캘린더 컴포넌트 ─────
@@ -89,7 +89,7 @@ function Calendar({
   while (cells.length % 7 !== 0) cells.push(null);
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 p-4">
+    <div className="bg-white rounded-lg border border-gray-200 p-4">
       {/* 월 네비게이션 */}
       <div className="flex items-center justify-between mb-3">
         <button
@@ -106,7 +106,7 @@ function Calendar({
       {/* 요일 헤더 */}
       <div className="grid grid-cols-7 mb-1">
         {WEEKDAYS.map((d, i) => (
-          <div key={d} className={`text-center text-xs font-medium py-1 ${i === 0 ? "text-danger-400" : i === 6 ? "text-primary-400" : "text-gray-400"}`}>
+          <div key={d} className={`text-center text-xs font-medium py-1 ${i === 0 ? "text-danger-400" : i === 6 ? "text-primary-500" : "text-gray-400"}`}>
             {d}
           </div>
         ))}
@@ -128,16 +128,16 @@ function Calendar({
             <button
               key={i}
               onClick={() => onSelectDate(dateStr)}
-              className={`flex flex-col items-center py-1 rounded-xl transition-colors ${isSelected ? "bg-primary-600" : isToday ? "bg-primary-50" : "hover:bg-gray-50"}`}
+              className={`flex flex-col items-center py-1 rounded-xl transition-colors ${isSelected ? "bg-primary-500" : isToday ? "bg-gray-50" : "hover:bg-gray-50"}`}
             >
               <span className={`text-xs font-medium ${
                 isSelected ? "text-white" :
-                isToday ? "text-primary-600 font-bold" :
-                isSun ? "text-danger-400" : isSat ? "text-primary-400" : "text-gray-700"
+                isToday ? "text-primary-500 font-bold" :
+                isSun ? "text-danger-400" : isSat ? "text-primary-500" : "text-gray-700"
               }`}>{d}</span>
               <div className="flex gap-1 mt-1 h-3 items-center">
                 {evList.length > 0 && (
-                  <div className={`text-xs font-bold px-1.5 py-0.5 rounded-sm ${isSelected ? "bg-white text-primary-600" : "bg-primary-600 text-white"}`}>
+                  <div className={`text-xs font-bold px-1.5 py-0.5 rounded-sm ${isSelected ? "bg-white text-primary-500" : "bg-primary-500 text-white"}`}>
                     {evList.length === 1 ? evList[0].type === "holiday" ? "휴" : evList[0].type === "exam" ? "시" : "일" : "일정"}
                   </div>
                 )}
@@ -149,7 +149,7 @@ function Calendar({
       </div>
 
       {/* 범례 */}
-      <div className="flex gap-3 mt-3 pt-3 border-t border-gray-50 flex-wrap">
+      <div className="flex gap-3 mt-3 pt-3 border-t border-gray-200 flex-wrap">
         <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-danger-500" /><span className="text-xs text-gray-400">공휴일</span></div>
         <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-warning-400" /><span className="text-xs text-gray-400">시험</span></div>
         <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-primary-500" /><span className="text-xs text-gray-400">학사일정</span></div>
@@ -257,9 +257,9 @@ export default function SchedulePage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* 헤더 */}
-      <div className="bg-white px-4 pt-10 pb-3 border-b border-gray-100">
+      <div className="bg-white px-4 pt-10 pb-3 border-b border-gray-200">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-bold text-gray-900">일정</h1>
+          <h1 className="text-xl font-bold text-gray-800">일정</h1>
           <span className="text-xs text-gray-400">미완료 {incomplete.length}개</span>
         </div>
         {/* 탭 */}
@@ -267,7 +267,7 @@ export default function SchedulePage() {
           {TABS.map((t) => (
             <button key={t.key} onClick={() => setTab(t.key)}
               className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                tab === t.key ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"
+                tab === t.key ? "bg-primary-500 text-white" : "bg-gray-100 text-gray-600"
               }`}>
               {t.label}
             </button>
@@ -291,7 +291,7 @@ export default function SchedulePage() {
               <div key={i} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border ${
                 ev.type === "holiday" ? "bg-danger-50 border-danger-100" :
                 ev.type === "exam" ? "bg-warning-50 border-warning-100" :
-                "bg-primary-50 border-primary-100"
+                "bg-gray-50 border-gray-200"
               }`}>
                 <span className={`text-xs font-semibold shrink-0 ${EVENT_TEXT[ev.type]}`}>
                   {ev.type === "holiday" ? "공휴일" : ev.type === "exam" ? "시험" : "학사일정"}
@@ -322,7 +322,7 @@ export default function SchedulePage() {
 
         {/* 등록 폼 */}
         {showForm ? (
-          <div className="bg-white rounded-2xl border border-gray-100 p-4 flex flex-col gap-3">
+          <div className="bg-white rounded-lg border border-gray-200 p-4 flex flex-col gap-3">
             <input value={title} onChange={(e) => setTitle(e.target.value)}
               placeholder="내용 (예: 수학 수행평가 준비, 동아리 보고서)" className={inputClass} />
             <div>
@@ -331,7 +331,7 @@ export default function SchedulePage() {
                 {Object.entries(TYPE_META).map(([k, v]) => (
                   <button key={k} onClick={() => setType(k)}
                     className={`px-3 py-1.5 rounded-full text-xs font-medium border-2 transition-colors ${
-                      type === k ? "border-primary-600 bg-primary-50 text-primary-700" : "border-gray-200 text-gray-500"
+                      type === k ? "border-primary-500 bg-gray-50 text-primary-500" : "border-gray-200 text-gray-500"
                     }`}>
                     {v.label}
                   </button>
@@ -347,7 +347,7 @@ export default function SchedulePage() {
               <button onClick={() => setShowForm(false)}
                 className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-500">취소</button>
               <button onClick={save} disabled={loading || !title.trim() || !dueDate}
-                className="flex-1 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-semibold disabled:opacity-50">등록</button>
+                className="flex-1 py-2.5 rounded-xl bg-primary-500 text-white text-sm font-semibold disabled:opacity-50">등록</button>
             </div>
           </div>
         ) : (
@@ -370,9 +370,9 @@ export default function SchedulePage() {
           const { label, urgent, past } = dDay(h.due_date);
           const meta = TYPE_META[h.activity_type] ?? TYPE_META.school;
           return (
-            <div key={h.id} className={`bg-white rounded-2xl border p-4 flex items-center gap-3 ${
-              h.completed ? "border-gray-100 opacity-60" :
-              urgent ? "border-danger-100" : "border-gray-100"
+            <div key={h.id} className={`bg-white rounded-lg border p-4 flex items-center gap-3 ${
+              h.completed ? "border-gray-200 opacity-60" :
+              urgent ? "border-danger-100" : "border-gray-200"
             }`}>
               <button onClick={() => toggle(h.id, h.completed)}
                 className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
@@ -394,7 +394,7 @@ export default function SchedulePage() {
               <span className={`text-xs font-bold px-2 py-1 rounded-full shrink-0 ${
                 h.completed ? "bg-gray-100 text-gray-400" :
                 past ? "bg-gray-100 text-gray-500" :
-                urgent ? "bg-danger-100 text-danger-600" : "bg-primary-100 text-primary-600"
+                urgent ? "bg-danger-100 text-danger-600" : "bg-gray-100 text-primary-500"
               }`}>
                 {h.completed ? "완료" : label}
               </span>

@@ -261,7 +261,7 @@ export default function ProfilePage() {
   if (!authChecked) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -305,7 +305,7 @@ export default function ProfilePage() {
           >
             {isEditing ? "✕" : "‹"}
           </button>
-          <h1 className="text-xl font-bold text-gray-900">내 프로필</h1>
+          <h1 className="text-xl font-bold text-gray-800">내 프로필</h1>
         </div>
       </div>
 
@@ -359,7 +359,7 @@ export default function ProfilePage() {
               <>
                 <button
                   onClick={() => setShowQrModal(true)}
-                  className="w-full aspect-square rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center border-2 border-primary-200 hover:border-primary-400 transition-colors"
+                  className="w-full aspect-square rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center border-2 border-primary-200 hover:border-primary-500 transition-colors"
                 >
                   <img src={dormQrImage} alt="기숙사QR" className="w-full h-full object-cover" />
                 </button>
@@ -376,7 +376,7 @@ export default function ProfilePage() {
                       onClick={(e) => {
                         e.currentTarget.parentElement?.querySelector("input")?.click();
                       }}
-                      className="w-full px-4 py-2 bg-primary-50 text-primary-700 rounded-xl text-sm font-semibold border border-primary-200 hover:bg-primary-100 transition-colors"
+                      className="w-full px-4 py-2 bg-gray-50 text-primary-500 rounded-xl text-sm font-semibold border border-primary-200 hover:bg-gray-100 transition-colors"
                     >
                       변경
                     </button>
@@ -402,7 +402,7 @@ export default function ProfilePage() {
                   onClick={(e) => {
                     e.currentTarget.parentElement?.querySelector("input")?.click();
                   }}
-                  className="w-full aspect-square rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-2 hover:border-primary-400 hover:bg-primary-50 transition-colors"
+                  className="w-full aspect-square rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-2 hover:border-primary-500 hover:bg-gray-50 transition-colors"
                 >
                   <span className="text-3xl">📸</span>
                   <span className="text-sm font-medium text-gray-600">사진 업로드</span>
@@ -432,7 +432,7 @@ export default function ProfilePage() {
                 <button
                   onClick={() => setRneDecided(true)}
                   className={`flex-1 py-3 rounded-xl text-sm font-semibold border-2 transition-colors ${
-                    rneDecided === true ? "border-primary-600 bg-primary-50 text-primary-700" : "border-gray-200 text-gray-500"
+                    rneDecided === true ? "border-primary-500 bg-gray-50 text-primary-500" : "border-gray-200 text-gray-500"
                   }`}
                 >
                   결정됐어요
@@ -440,7 +440,7 @@ export default function ProfilePage() {
                 <button
                   onClick={() => setRneDecided(false)}
                   className={`flex-1 py-3 rounded-xl text-sm font-semibold border-2 transition-colors ${
-                    rneDecided === false ? "border-primary-600 bg-primary-50 text-primary-700" : "border-gray-200 text-gray-500"
+                    rneDecided === false ? "border-primary-500 bg-gray-50 text-primary-500" : "border-gray-200 text-gray-500"
                   }`}
                 >
                   아직 미결정
@@ -456,7 +456,7 @@ export default function ProfilePage() {
                         key={f}
                         onClick={() => setRneField(f)}
                         className={`px-4 py-2 rounded-full text-sm font-medium border-2 transition-colors ${
-                          rneField === f ? "border-primary-600 bg-primary-50 text-primary-700" : "border-gray-200 text-gray-500"
+                          rneField === f ? "border-primary-500 bg-gray-50 text-primary-500" : "border-gray-200 text-gray-500"
                         }`}
                       >
                         {f}
@@ -475,7 +475,7 @@ export default function ProfilePage() {
                         key={f}
                         onClick={() => setRneField(f)}
                         className={`px-4 py-2 rounded-full text-sm font-medium border-2 transition-colors ${
-                          rneField === f ? "border-primary-600 bg-primary-50 text-primary-700" : "border-gray-200 text-gray-500"
+                          rneField === f ? "border-primary-500 bg-gray-50 text-primary-500" : "border-gray-200 text-gray-500"
                         }`}
                       >
                         {f}
@@ -534,24 +534,24 @@ export default function ProfilePage() {
                     key={club.name}
                     onClick={() => setClubName(clubName === club.name ? "" : club.name)}
                     className={`flex items-center justify-between px-4 py-3 rounded-xl border-2 text-left transition-colors ${
-                      clubName === club.name ? "border-primary-600 bg-primary-50" : "border-gray-200 bg-white"
+                      clubName === club.name ? "border-primary-500 bg-gray-50" : "border-gray-200 bg-white"
                     }`}
                   >
                     <div>
-                      <span className={`font-semibold text-sm ${clubName === club.name ? "text-primary-700" : "text-gray-800"}`}>
+                      <span className={`font-semibold text-sm ${clubName === club.name ? "text-primary-500" : "text-gray-800"}`}>
                         {club.name}
                       </span>
                       <span className={`text-xs ml-2 ${clubName === club.name ? "text-primary-500" : "text-gray-400"}`}>
                         {club.desc}
                       </span>
                     </div>
-                    {clubName === club.name && <span className="text-primary-600 text-lg">✓</span>}
+                    {clubName === club.name && <span className="text-primary-500 text-lg">✓</span>}
                   </button>
                 ))}
               </div>
               {clubName && (
                 <>
-                  <div className="bg-primary-50 border border-primary-100 rounded-xl px-4 py-3 text-sm text-primary-700">
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-primary-500">
                     📅 동아리 활동은 <strong>매주 수요일 7교시 (16:00 ~ 16:50)</strong> 고정이에요
                   </div>
                   <Field label="활동 장소">
@@ -613,7 +613,7 @@ export default function ProfilePage() {
                           type="button"
                           onClick={() => setAfterDay(d)}
                           className={`px-4 py-2 rounded-full text-sm font-medium border-2 transition-colors ${
-                            afterDay === d ? "border-primary-600 bg-primary-50 text-primary-700" : "border-gray-200 text-gray-500"
+                            afterDay === d ? "border-primary-500 bg-gray-50 text-primary-500" : "border-gray-200 text-gray-500"
                           }`}
                         >
                           {d}요일
@@ -636,17 +636,17 @@ export default function ProfilePage() {
                               )
                             }
                             className={`flex items-center justify-between px-4 py-3 rounded-xl border-2 text-left transition-colors ${
-                              selected ? "border-primary-600 bg-primary-50" : "border-gray-200"
+                              selected ? "border-primary-500 bg-gray-50" : "border-gray-200"
                             }`}
                           >
-                            <span className={`text-sm font-semibold ${selected ? "text-primary-700" : "text-gray-700"}`}>
+                            <span className={`text-sm font-semibold ${selected ? "text-primary-500" : "text-gray-700"}`}>
                               {p.period}
                             </span>
                             <div className="flex items-center gap-2">
                               <span className="text-xs text-gray-400">
                                 {p.startTime} ~ {p.endTime}
                               </span>
-                              {selected && <span className="text-primary-600">✓</span>}
+                              {selected && <span className="text-primary-500">✓</span>}
                             </div>
                           </button>
                         );
@@ -675,7 +675,7 @@ export default function ProfilePage() {
         <div className="px-4 pb-6 pt-4 border-t border-gray-200 bg-white sticky bottom-0">
           <button
             onClick={() => setIsEditing(true)}
-            className="w-full bg-primary-600 text-white py-3 rounded-xl font-semibold text-sm hover:bg-primary-700 transition-colors"
+            className="w-full bg-primary-500 text-white py-3 rounded-xl font-semibold text-sm hover:bg-primary-500 transition-colors"
           >
             ✎ 수정하기
           </button>
@@ -707,7 +707,7 @@ export default function ProfilePage() {
           <button
             onClick={handleSave}
             disabled={loading}
-            className="flex-1 px-4 py-3 bg-primary-600 text-white rounded-xl font-semibold text-sm hover:bg-primary-700 transition-colors disabled:opacity-60"
+            className="flex-1 px-4 py-3 bg-primary-500 text-white rounded-xl font-semibold text-sm hover:bg-primary-500 transition-colors disabled:opacity-60"
           >
             {loading ? "저장 중..." : "저장"}
           </button>
@@ -750,7 +750,7 @@ export default function ProfilePage() {
                 onClick={(el) => {
                   el.currentTarget.parentElement?.querySelector("input")?.click();
                 }}
-                className="w-full px-4 py-3 bg-primary-600 text-white rounded-xl text-sm font-semibold hover:bg-primary-700 transition-colors"
+                className="w-full px-4 py-3 bg-primary-500 text-white rounded-xl text-sm font-semibold hover:bg-primary-500 transition-colors"
               >
                 변경
               </button>
@@ -770,13 +770,13 @@ export default function ProfilePage() {
   );
 }
 
-const inputClass = "w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-400 bg-white";
+const inputClass = "w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-500 bg-white";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-4">
       <h2 className="text-base font-bold text-gray-800 mb-3">{title}</h2>
-      <div className="bg-white rounded-2xl border border-gray-100 p-4">{children}</div>
+      <div className="bg-white rounded-lg border border-gray-200 p-4">{children}</div>
     </div>
   );
 }
@@ -785,7 +785,7 @@ function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between items-center py-1">
       <span className="text-gray-600 font-medium">{label}</span>
-      <span className="text-gray-900">{value}</span>
+      <span className="text-gray-800">{value}</span>
     </div>
   );
 }

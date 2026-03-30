@@ -199,7 +199,7 @@ export default function QuestionPage() {
   if (!question) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -207,15 +207,15 @@ export default function QuestionPage() {
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       {/* 헤더 */}
-      <div className="flex items-center gap-3 px-4 pt-10 pb-3 bg-white border-b border-gray-100 shrink-0">
+      <div className="flex items-center gap-3 px-4 pt-10 pb-3 bg-white border-b border-gray-200 shrink-0">
         <button onClick={() => router.back()} className="text-gray-400 text-xl p-1">‹</button>
-        <h1 className="text-sm font-bold text-gray-900">질문 상세</h1>
+        <h1 className="text-sm font-bold text-gray-800">질문 상세</h1>
       </div>
 
       {/* 질문 */}
       <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-4">
         {/* 질문 카드 */}
-        <div className="bg-white rounded-2xl border-2 border-warning-200 p-4">
+        <div className="bg-white rounded-lg border-2 border-warning-200 p-4">
           <div className="flex items-center gap-2 mb-3">
             <span className="text-lg">❓</span>
             <div className="flex-1">
@@ -230,7 +230,7 @@ export default function QuestionPage() {
             </div>
           )}
           {question.content && (
-            <p className="text-sm leading-relaxed text-gray-900">
+            <p className="text-sm leading-relaxed text-gray-800">
               {question.content.startsWith("[Q] ") ? question.content.substring(4) : question.content}
             </p>
           )}
@@ -253,7 +253,7 @@ export default function QuestionPage() {
             : answer.content;
 
           return (
-            <div key={answer.id} className="bg-white rounded-2xl border border-success-200 p-4">
+            <div key={answer.id} className="bg-white rounded-lg border border-success-200 p-4">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-lg">✅</span>
                 <div className="flex-1">
@@ -267,7 +267,7 @@ export default function QuestionPage() {
                   <img src={answer.image_url} alt="답변 이미지" className="w-full rounded-xl" />
                 </div>
               )}
-              {displayContent && <p className="text-sm leading-relaxed text-gray-900">{displayContent}</p>}
+              {displayContent && <p className="text-sm leading-relaxed text-gray-800">{displayContent}</p>}
             </div>
           );
         })}
@@ -283,7 +283,7 @@ export default function QuestionPage() {
       </div>
 
       {/* 답변 입력 */}
-      <div className="bg-white border-t border-gray-100 px-4 py-3 pb-safe shrink-0">
+      <div className="bg-white border-t border-gray-200 px-4 py-3 pb-safe shrink-0">
         {imagePreview && (
           <div className="relative w-20 h-20 mb-2">
             <img src={imagePreview} alt="미리보기" className="w-20 h-20 object-cover rounded-xl" />
@@ -331,7 +331,7 @@ export default function QuestionPage() {
             }}
             placeholder="답변을 입력하세요..."
             rows={1}
-            className="flex-1 resize-none bg-gray-100 rounded-2xl px-4 py-2.5 text-sm outline-none max-h-32 leading-relaxed"
+            className="flex-1 resize-none bg-gray-100 rounded-lg px-4 py-2.5 text-sm outline-none max-h-32 leading-relaxed"
           />
           <button
             onClick={handleSendAnswer}

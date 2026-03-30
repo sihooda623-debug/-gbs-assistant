@@ -1,8 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Noto_Sans_KR } from "next/font/google";
+import { Plus_Jakarta_Sans, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import BottomNavWrapper from "@/components/BottomNavWrapper";
 import Script from "next/script";
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  fallback: ["system-ui", "-apple-system", "sans-serif"],
+});
 
 const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
@@ -21,7 +27,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#a64d5c",
+  themeColor: "#37352f",
   width: "device-width",
   initialScale: 1,
 };
@@ -33,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="h-full">
-      <body className={`${notoSansKR.className} h-full bg-white`} suppressHydrationWarning>
+      <body className={`${plusJakarta.className} h-full bg-white`} suppressHydrationWarning>
         <div className="max-w-md mx-auto h-full flex flex-col bg-white relative">
           <main className="flex-1 overflow-y-auto pb-20">{children}</main>
           <BottomNavWrapper />

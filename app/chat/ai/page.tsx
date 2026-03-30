@@ -77,12 +77,12 @@ export default function AIChatPage() {
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       {/* 헤더 */}
-      <div className="bg-white border-b border-gray-100 px-4 py-4 flex items-center gap-3">
+      <div className="bg-white border-b border-gray-200 px-4 py-4 flex items-center gap-3">
         <Link href="/chat">
           <button className="text-2xl text-gray-400">‹</button>
         </Link>
         <div className="flex-1">
-          <h1 className="text-base font-bold text-gray-900">AI 도우미</h1>
+          <h1 className="text-base font-bold text-gray-800">AI 도우미</h1>
           <p className="text-xs text-gray-400">Claude Haiku</p>
         </div>
         <span className="text-2xl">✨</span>
@@ -93,7 +93,7 @@ export default function AIChatPage() {
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center">
             <p className="text-5xl mb-4">✨</p>
-            <p className="font-bold text-gray-900">AI 도우미에게 물어보세요</p>
+            <p className="font-bold text-gray-800">AI 도우미에게 물어보세요</p>
             <p className="text-sm text-gray-500 mt-2">학사일정, 시간표 등</p>
           </div>
         )}
@@ -102,8 +102,8 @@ export default function AIChatPage() {
             <div
               className={`px-3 py-2 rounded-lg max-w-xs ${
                 msg.role === "user"
-                  ? "bg-blue-500 text-white"
-                  : "bg-white border border-gray-200 text-gray-900"
+                  ? "bg-primary-500 text-white"
+                  : "bg-white border border-gray-200 text-gray-800"
               }`}
             >
               <p className="text-sm">{msg.content}</p>
@@ -121,7 +121,7 @@ export default function AIChatPage() {
       </div>
 
       {/* 입력 */}
-      <div className="bg-white border-t border-gray-100 p-4 flex gap-2">
+      <div className="bg-white border-t border-gray-200 p-4 flex gap-2">
         <input
           type="text"
           value={inputText}
@@ -134,7 +134,7 @@ export default function AIChatPage() {
         <button
           onClick={handleSend}
           disabled={isLoading || !inputText.trim()}
-          className="w-10 h-10 bg-blue-500 text-white rounded-lg flex items-center justify-center disabled:opacity-50"
+          className="w-10 h-10 bg-primary-500 text-white rounded-lg flex items-center justify-center disabled:opacity-50"
         >
           ↑
         </button>

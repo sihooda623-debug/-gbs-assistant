@@ -6,7 +6,7 @@ import { findPath, PathStep } from "@/lib/pathfinding";
 import FloorPlanView from "@/components/FloorPlanView";
 
 const STEP_STYLES: Record<string, { bg: string; border: string; icon: string }> = {
-  indoor:  { bg: "bg-primary-50",   border: "border-primary-200",   icon: "🚶" },
+  indoor:  { bg: "bg-gray-50",   border: "border-primary-200",   icon: "🚶" },
   outdoor: { bg: "bg-amber-50",  border: "border-amber-200",  icon: "☀️" },
   stairs:  { bg: "bg-indigo-50", border: "border-indigo-200", icon: "🪜" },
   arrive:  { bg: "bg-success-50",  border: "border-success-200",  icon: "🎯" },
@@ -135,11 +135,11 @@ export default function MapPage() {
       </div>
 
       {/* 검색 영역 */}
-      <div className="mx-4 -mt-3 bg-white rounded-2xl shadow-md px-4 py-4 flex flex-col gap-2.5 z-10 relative">
+      <div className="mx-4 -mt-3 bg-white rounded-lg shadow-md px-4 py-4 flex flex-col gap-2.5 z-10 relative">
         {/* 출발지 */}
         <div className="relative">
           <div className={`flex items-center gap-2.5 border-2 rounded-xl px-3 py-2.5 transition-colors
-            ${fromRoom ? "border-emerald-400 bg-emerald-50" : "border-gray-100 bg-gray-50 focus-within:border-emerald-300"}`}>
+            ${fromRoom ? "border-emerald-400 bg-emerald-50" : "border-gray-200 bg-gray-50 focus-within:border-emerald-300"}`}>
             <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center shrink-0">
               <span className="text-white text-xs font-bold">S</span>
             </div>
@@ -159,7 +159,7 @@ export default function MapPage() {
             <ul className="absolute z-30 left-0 right-0 bg-white border border-gray-200 rounded-xl mt-1 shadow-xl overflow-hidden">
               {fromResults.map((r) => (
                 <li key={r.id} onClick={() => selectFrom(r)}
-                  className="px-4 py-3 text-sm cursor-pointer hover:bg-emerald-50 flex justify-between items-center border-b border-gray-50 last:border-0">
+                  className="px-4 py-3 text-sm cursor-pointer hover:bg-emerald-50 flex justify-between items-center border-b border-gray-200 last:border-0">
                   <span className="font-medium text-gray-800">{r.name}</span>
                   <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
                     {r.building} {r.floor}층
@@ -179,7 +179,7 @@ export default function MapPage() {
         {/* 도착지 */}
         <div className="relative">
           <div className={`flex items-center gap-2.5 border-2 rounded-xl px-3 py-2.5 transition-colors
-            ${toRoom ? "border-danger-400 bg-danger-50" : "border-gray-100 bg-gray-50 focus-within:border-danger-300"}`}>
+            ${toRoom ? "border-danger-400 bg-danger-50" : "border-gray-200 bg-gray-50 focus-within:border-danger-300"}`}>
             <div className="w-6 h-6 bg-danger-500 rounded-full flex items-center justify-center shrink-0">
               <span className="text-white text-xs font-bold">E</span>
             </div>
@@ -199,7 +199,7 @@ export default function MapPage() {
             <ul className="absolute z-30 left-0 right-0 bg-white border border-gray-200 rounded-xl mt-1 shadow-xl overflow-hidden">
               {toResults.map((r) => (
                 <li key={r.id} onClick={() => selectTo(r)}
-                  className="px-4 py-3 text-sm cursor-pointer hover:bg-danger-50 flex justify-between items-center border-b border-gray-50 last:border-0">
+                  className="px-4 py-3 text-sm cursor-pointer hover:bg-danger-50 flex justify-between items-center border-b border-gray-200 last:border-0">
                   <span className="font-medium text-gray-800">{r.name}</span>
                   <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
                     {r.building} {r.floor}층
@@ -227,8 +227,8 @@ export default function MapPage() {
         <div className="flex flex-col px-4 pt-4 gap-3">
 
           {/* 단계 진행 바 */}
-          <div className="bg-white rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm">
-            <span className="text-xs font-bold text-primary-700 bg-primary-100 px-2.5 py-1 rounded-full shrink-0">
+          <div className="bg-white rounded-lg px-4 py-3 flex items-center gap-3 ">
+            <span className="text-xs font-bold text-primary-500 bg-gray-100 px-2.5 py-1 rounded-full shrink-0">
               {currentStep + 1} / {steps.length}
             </span>
             <div className="flex-1 flex gap-1 items-center overflow-hidden">
@@ -236,7 +236,7 @@ export default function MapPage() {
                 <button
                   key={i}
                   onClick={() => setCurrentStep(i)}
-                  className={`transition-all rounded-full h-2 ${i === currentStep ? "bg-primary-600 flex-[2]" : "bg-gray-200 flex-1"}`}
+                  className={`transition-all rounded-full h-2 ${i === currentStep ? "bg-primary-500 flex-[2]" : "bg-gray-200 flex-1"}`}
                   title={s.instruction}
                 />
               ))}
@@ -245,12 +245,12 @@ export default function MapPage() {
           </div>
 
           {/* 현재 단계 카드 */}
-          <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+          <div className="bg-white rounded-lg overflow-hidden  border border-gray-200">
             {/* 카드 헤더 */}
             <div className={`px-4 py-3 flex items-center gap-3 ${style.bg} border-b ${style.border}`}>
               <span className="text-2xl">{style.icon}</span>
               <div className="flex-1 min-w-0">
-                <p className="text-base font-bold text-gray-900 leading-tight">{step.instruction}</p>
+                <p className="text-base font-bold text-gray-800 leading-tight">{step.instruction}</p>
                 <p className="text-xs text-gray-500 mt-0.5">
                   {step.isStairs
                     ? `${step.stairFrom}층 → ${step.stairTo}층`
@@ -268,7 +268,7 @@ export default function MapPage() {
             </div>
 
             {/* 상세 설명 */}
-            <div className="mx-3 mb-3 bg-gray-50 rounded-xl px-4 py-3 border border-gray-100">
+            <div className="mx-3 mb-3 bg-gray-50 rounded-xl px-4 py-3 border border-gray-200">
               <p className="text-sm text-gray-700 leading-relaxed">{step.detail}</p>
             </div>
           </div>
@@ -293,8 +293,8 @@ export default function MapPage() {
           </div>
 
           {/* 전체 경로 요약 */}
-          <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
-            <div className="px-4 py-3 border-b border-gray-50 flex items-center gap-2">
+          <div className="bg-white border border-gray-200 rounded-lg overflow-hidden ">
+            <div className="px-4 py-3 border-b border-gray-200 flex items-center gap-2">
               <span className="text-xs font-bold text-gray-400 uppercase tracking-wide">전체 경로</span>
               <span className="text-xs text-gray-300">·</span>
               <span className="text-xs text-gray-400">{steps.length}단계</span>
@@ -307,13 +307,13 @@ export default function MapPage() {
                   <li
                     key={i}
                     onClick={() => setCurrentStep(i)}
-                    className={`flex items-center gap-3 py-2.5 cursor-pointer border-b border-gray-50 last:border-0 rounded-xl px-2 my-0.5 transition-colors ${active ? "bg-primary-50" : "hover:bg-gray-50"}`}
+                    className={`flex items-center gap-3 py-2.5 cursor-pointer border-b border-gray-200 last:border-0 rounded-xl px-2 my-0.5 transition-colors ${active ? "bg-gray-50" : "hover:bg-gray-50"}`}
                   >
-                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-sm shrink-0 ${active ? "bg-primary-100" : "bg-gray-100"}`}>
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-sm shrink-0 ${active ? "bg-gray-100" : "bg-gray-100"}`}>
                       {st.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-sm truncate ${active ? "font-semibold text-primary-700" : "text-gray-600"}`}>
+                      <p className={`text-sm truncate ${active ? "font-semibold text-primary-500" : "text-gray-600"}`}>
                         {s.instruction}
                       </p>
                       <p className="text-xs text-gray-400">
@@ -346,7 +346,7 @@ export default function MapPage() {
               { icon: "🔬", title: "실험동", desc: "과학 실험실" },
               { icon: "⚠️", title: "2층 연결", desc: "실외 통로 이용" },
             ].map((item) => (
-              <div key={item.title} className="bg-white rounded-2xl p-3 text-left shadow-sm border border-gray-100">
+              <div key={item.title} className="bg-white rounded-lg p-3 text-left  border border-gray-200">
                 <span className="text-xl">{item.icon}</span>
                 <p className="text-xs font-semibold text-gray-700 mt-1">{item.title}</p>
                 <p className="text-xs text-gray-400">{item.desc}</p>
