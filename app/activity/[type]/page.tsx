@@ -149,9 +149,9 @@ export default function ActivityPage() {
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary-500 bg-white resize-none" />
                 <div className="flex gap-2">
                   <button onClick={() => setShowRecForm(false)}
-                    className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-500">취소</button>
+                    className="flex-1 py-2.5 rounded-xl border-2 border-gray-300 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100">취소</button>
                   <button onClick={saveRecord} disabled={loading || !recTitle.trim()}
-                    className="flex-1 py-2.5 rounded-xl bg-primary-500 text-white text-sm font-semibold disabled:opacity-50">저장</button>
+                    className="flex-1 py-2.5 rounded-xl bg-white border-2 border-primary-500 text-primary-600 text-sm font-bold hover:bg-primary-50 disabled:opacity-50 disabled:border-gray-300 disabled:text-gray-400">저장</button>
                 </div>
               </div>
             ) : (
@@ -193,9 +193,9 @@ export default function ActivityPage() {
                 </div>
                 <div className="flex gap-2">
                   <button onClick={() => setShowHwForm(false)}
-                    className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-500">취소</button>
+                    className="flex-1 py-2.5 rounded-xl border-2 border-gray-300 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100">취소</button>
                   <button onClick={saveHomework} disabled={loading || !hwTitle.trim() || !hwDue}
-                    className="flex-1 py-2.5 rounded-xl bg-primary-500 text-white text-sm font-semibold disabled:opacity-50">등록</button>
+                    className="flex-1 py-2.5 rounded-xl bg-white border-2 border-primary-500 text-primary-600 text-sm font-bold hover:bg-primary-50 disabled:opacity-50 disabled:border-gray-300 disabled:text-gray-400">등록</button>
                 </div>
               </div>
             ) : (

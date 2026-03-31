@@ -316,12 +316,12 @@ export default function HomePage() {
       )}
 
 
-      {/* 월요일 시간표 */}
+      {/* 오늘 시간표 */}
       <div className="px-5 mt-8">
-        <h2 className="text-lg font-bold text-gray-800 mb-4">월요일 시간표</h2>
-        {allPeriods.length > 0 && allPeriods[0]?.length > 0 ? (
+        <h2 className="text-lg font-bold text-gray-800 mb-4">{isWeekend ? "주말 시간표" : `${DAYS[todayIdx]}요일 시간표`}</h2>
+        {!isWeekend && allPeriods.length > 0 && allPeriods[todayIdx]?.length > 0 ? (
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-            {allPeriods[0]
+            {allPeriods[todayIdx]
               .map((p, i) => ({ ...p, periodNum: i + 1 }))
               .filter((p) => p.subject)
               .map((p, i) => (

@@ -1,9 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
+import { verifyAdminToken } from "@/lib/auth-middleware";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY!;
 
 export async function POST(req: NextRequest) {
+  if (!verifyAdminToken(req)) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
   try {
     // PostgreSQL 직접 접근
     const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/exec_sql`, {

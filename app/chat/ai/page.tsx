@@ -100,12 +100,12 @@ export default function AIChatPage() {
         {messages.map((msg, i) => (
           <div key={i} className={`mb-3 flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
             {msg.role === "user" ? (
-              <div style={{backgroundColor: "#0052cc"}} className="px-4 py-2.5 rounded-lg max-w-xs text-white font-medium">
-                <p className="text-sm">{msg.content}</p>
+              <div style={{backgroundColor: "#0052cc"}} className="px-4 py-3 rounded-lg max-w-xs text-white font-semibold shadow-sm">
+                <p className="text-sm leading-relaxed">{msg.content}</p>
               </div>
             ) : (
-              <div className="px-4 py-2.5 rounded-lg max-w-xs bg-gray-50 border border-gray-200 text-gray-800">
-                <p className="text-sm">{msg.content}</p>
+              <div className="px-4 py-3 rounded-lg max-w-xs bg-gray-100 border-2 border-gray-400 text-gray-900 shadow-sm">
+                <p className="text-sm font-medium leading-relaxed">{msg.content}</p>
               </div>
             )}
           </div>

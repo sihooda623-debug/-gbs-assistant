@@ -1,12 +1,20 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { verifyAdminToken } from "@/lib/auth-middleware";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const serviceKey = process.env.SUPABASE_SERVICE_KEY!;
 
 const supabase = createClient(supabaseUrl, serviceKey);
 
-export async function POST() {
+export async function POST(req: NextRequest) {
+  if (!verifyAdminToken(req)) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
   try {
     // SQL 1: 익명 번호 테이블
     console.log("실행 중: SQL 1 - 익명 번호 테이블");

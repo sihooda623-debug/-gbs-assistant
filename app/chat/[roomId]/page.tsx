@@ -551,7 +551,7 @@ export default function RoomPage() {
                   className={`max-w-[98%] rounded-lg px-3 py-3 text-left transition-colors ${
                     mine
                       ? "bg-warning-500 text-white rounded-tr-sm hover:bg-warning-600"
-                      : "bg-warning-50 text-gray-800 border-2 border-warning-200 rounded-tl-sm hover:bg-warning-100"
+                      : "bg-warning-100 text-gray-900 border-2 border-warning-300 rounded-tl-sm hover:bg-warning-200"
                   }`}
                 >
                   <p className="text-xs font-semibold mb-1">❓ 질문</p>
@@ -580,7 +580,7 @@ export default function RoomPage() {
                   className={`max-w-[98%] rounded-lg px-3 py-2.5 text-left ${
                     mine
                       ? "bg-success-600 text-white rounded-tr-sm hover:bg-success-700"
-                      : "bg-success-50 text-gray-800 rounded-tl-sm border border-success-200 hover:bg-success-100"
+                      : "bg-success-100 text-gray-900 rounded-tl-sm border-2 border-success-300 hover:bg-success-200"
                   }`}
                 >
                   {/* 카톡 스타일 질문 미리보기 */}
@@ -617,7 +617,7 @@ export default function RoomPage() {
                   className={`max-w-[98%] rounded-lg px-4 py-2.5 ${
                     mine
                       ? "bg-primary-500 text-white rounded-tr-sm"
-                      : "bg-white text-gray-800 rounded-tl-sm border border-gray-200"
+                      : "bg-white text-gray-900 rounded-tl-sm border-2 border-gray-300"
                   }`}
                 >
                   {msg.image_url && (
