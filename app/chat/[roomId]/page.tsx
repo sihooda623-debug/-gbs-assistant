@@ -550,8 +550,8 @@ export default function RoomPage() {
                   onClick={() => router.push(`/chat/question/${msg.id}`)}
                   className={`max-w-[98%] rounded-lg px-3 py-3 text-left transition-colors ${
                     mine
-                      ? "bg-warning-500 text-white rounded-tr-sm hover:bg-warning-600"
-                      : "bg-warning-100 text-gray-900 border-2 border-warning-300 rounded-tl-sm hover:bg-warning-200"
+                      ? "bg-green-600 text-white rounded-tr-sm hover:bg-green-700"
+                      : "bg-green-100 text-gray-900 border-2 border-green-300 rounded-tl-sm hover:bg-green-200"
                   }`}
                 >
                   <p className="text-xs font-semibold mb-1">❓ 질문</p>
@@ -579,14 +579,14 @@ export default function RoomPage() {
                   onClick={() => questionId && router.push(`/chat/question/${questionId}`)}
                   className={`max-w-[98%] rounded-lg px-3 py-2.5 text-left ${
                     mine
-                      ? "bg-success-600 text-white rounded-tr-sm hover:bg-success-700"
-                      : "bg-success-100 text-gray-900 rounded-tl-sm border-2 border-success-300 hover:bg-success-200"
+                      ? "bg-orange-600 text-white rounded-tr-sm hover:bg-orange-700"
+                      : "bg-orange-100 text-gray-900 rounded-tl-sm border-2 border-orange-300 hover:bg-orange-200"
                   }`}
                 >
                   {/* 카톡 스타일 질문 미리보기 */}
                   {questionPreview && (
                     <div className={`rounded-lg px-2.5 py-1.5 mb-2 text-xs border-l-2 ${
-                      mine ? "bg-success-700/30 border-success-300 text-success-100" : "bg-gray-100 border-gray-300 text-gray-600"
+                      mine ? "bg-orange-700/30 border-orange-300 text-orange-100" : "bg-gray-100 border-gray-300 text-gray-600"
                     }`}>
                       <p className="font-semibold mb-0.5">❓ 질문</p>
                       <p className="line-clamp-2 opacity-90">{questionPreview}</p>
@@ -689,16 +689,16 @@ export default function RoomPage() {
         <div className="flex items-center gap-2 mb-2 flex-wrap">
           <button
             onClick={() => { setMessageType("message"); setSelectedQuestion(null); }}
-            className={`text-xs px-3 py-1 rounded-full font-medium transition-colors ${
-              messageType === "message" ? "bg-primary-200 text-primary-500" : "bg-gray-100 text-gray-600"
+            className={`text-xs px-3 py-1 rounded-full font-bold transition-colors ${
+              messageType === "message" ? "bg-primary-500 text-white" : "bg-gray-100 text-gray-600"
             }`}
           >
             💬 메시지
           </button>
           <button
             onClick={() => { setMessageType("question"); setSelectedQuestion(null); }}
-            className={`text-xs px-3 py-1 rounded-full font-medium transition-colors ${
-              messageType === "question" ? "bg-warning-200 text-warning-700" : "bg-gray-100 text-gray-600"
+            className={`text-xs px-3 py-1 rounded-full font-bold transition-colors ${
+              messageType === "question" ? "bg-primary-500 text-white" : "bg-gray-100 text-gray-600"
             }`}
           >
             ❓ 질문
@@ -708,8 +708,8 @@ export default function RoomPage() {
               setMessageType("answer");
               setShowAnswerModal(true);
             }}
-            className={`text-xs px-3 py-1 rounded-full font-medium transition-colors ${
-              messageType === "answer" ? "bg-success-200 text-success-700" : "bg-gray-100 text-gray-600"
+            className={`text-xs px-3 py-1 rounded-full font-bold transition-colors ${
+              messageType === "answer" ? "bg-primary-500 text-white" : "bg-gray-100 text-gray-600"
             }`}
           >
             ✅ 답하기

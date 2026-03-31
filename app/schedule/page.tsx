@@ -269,7 +269,7 @@ export default function SchedulePage() {
         <div className="flex gap-1.5 mt-3 overflow-x-auto pb-1">
           {TABS.map((t) => (
             <button key={t.key} onClick={() => setTab(t.key)}
-              className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+              className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
                 tab === t.key ? "bg-primary-500 text-white" : "bg-gray-100 text-gray-600"
               }`}>
               {t.label}
@@ -333,8 +333,8 @@ export default function SchedulePage() {
               <div className="flex gap-2 flex-wrap">
                 {Object.entries(TYPE_META).map(([k, v]) => (
                   <button key={k} onClick={() => setType(k)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium border-2 transition-colors ${
-                      type === k ? "border-primary-500 bg-gray-50 text-primary-500" : "border-gray-200 text-gray-500"
+                    className={`px-3 py-1.5 rounded-full text-xs font-bold border-2 transition-colors ${
+                      type === k ? "border-primary-500 bg-primary-500 text-white" : "border-gray-200 text-gray-500"
                     }`}>
                     {v.label}
                   </button>

@@ -102,11 +102,11 @@ export default function TimetablePage() {
         <div className="flex gap-1 mb-0">
           <button
             onClick={() => setMainTab("timetable")}
-            className={`flex-1 py-2.5 text-sm font-bold rounded-t-xl transition-colors ${mainTab === "timetable" ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-400"}`}
+            className={`flex-1 py-2.5 text-sm font-bold rounded-t-xl transition-colors ${mainTab === "timetable" ? "bg-primary-500 text-white" : "bg-gray-100 text-gray-600"}`}
           >시간표</button>
           <button
             onClick={() => setMainTab("meal")}
-            className={`flex-1 py-2.5 text-sm font-bold rounded-t-xl transition-colors ${mainTab === "meal" ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-400"}`}
+            className={`flex-1 py-2.5 text-sm font-bold rounded-t-xl transition-colors ${mainTab === "meal" ? "bg-primary-500 text-white" : "bg-gray-100 text-gray-600"}`}
           >급식</button>
         </div>
       </div>
@@ -136,7 +136,7 @@ export default function TimetablePage() {
         <div className="flex gap-2 mt-3">
           {(["daily","weekly"] as const).map((t) => (
             <button key={t} onClick={() => setTab(t)}
-              className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
+              className={`flex-1 py-2 rounded-xl text-sm font-bold transition-colors ${
                 tab === t ? "bg-primary-500 text-white" : "bg-gray-100 text-gray-600"}`}>
               {t === "daily" ? "일과표" : "주간 시간표"}
             </button>
@@ -156,7 +156,7 @@ export default function TimetablePage() {
           <div className="flex gap-1 mb-2">
             {DAYS.map((d, i) => (
               <button key={d} onClick={() => setSelectedDay(i)}
-                className={`flex-1 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition-colors ${
                   selectedDay === i ? "bg-primary-500 text-white" : "bg-gray-100 text-gray-600"}`}>
                 {d}
               </button>
@@ -219,7 +219,7 @@ export default function TimetablePage() {
           <div className="flex gap-1 mb-4">
             {DAYS.map((d, i) => (
               <button key={d} onClick={() => setSelectedDay(i)}
-                className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
+                className={`flex-1 py-2 rounded-xl text-sm font-bold transition-colors ${
                   selectedDay === i ? "bg-primary-500 text-white" : "bg-gray-100 text-gray-600"}`}>
                 {d}
               </button>
